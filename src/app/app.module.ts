@@ -7,13 +7,17 @@ import { SidebarComponent } from './sidebar/sidebar.component';
 import { RouterModule } from '@angular/router';
 import { AppRoutingModule } from './app-routing.module';
 import { DashboardComponent } from './dashboard/dashboard.component';
+import { ProjectComponent } from './project/project.component';
+import { RecentProjectComponent } from './project/recent-project/recent-project.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     HeaderComponent,
     SidebarComponent,
-    DashboardComponent
+    DashboardComponent,
+    ProjectComponent,
+    RecentProjectComponent
   ],
   imports: [
     BrowserModule,

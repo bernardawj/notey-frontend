@@ -1,0 +1,32 @@
+<div id="project">
+  <h1>Projects</h1>
+  <div id="project__recently-viewed">
+    <app-recent-project></app-recent-project>
+  </div>
+  <div id="project__list">
+    <h3 class="clearfix">
+      All Projects
+      <a [routerLink]="['create']" class="button button--primary pull-right no-margin">Add Project</a>
+    </h3>
+    <div class="table">
+      <table>
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Description</th>
+            <th>Start At</th>
+            <th>End At</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><a [routerLink]="['detail', 1]">Project #1</a></td>
+            <td>Project #1 Description</td>
+            <td>01/08/2021</td>
+            <td>01/11/2021</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
