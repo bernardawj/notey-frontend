@@ -10,6 +10,7 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 import { ProjectComponent } from './project/project.component';
 import { RecentProjectComponent } from './project/recent-project/recent-project.component';
 import { HttpClientModule } from '@angular/common/http';
+import { ProjectListComponent } from './project/project-list/project-list.component';
 
 @NgModule({
   declarations: [
@@ -18,7 +19,8 @@ import { HttpClientModule } from '@angular/common/http';
     SidebarComponent,
     DashboardComponent,
     ProjectComponent,
-    RecentProjectComponent
+    RecentProjectComponent,
+    ProjectListComponent
   ],
   imports: [
     BrowserModule,
