@@ -9,6 +9,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { ProjectComponent } from './project/project.component';
 import { RecentProjectComponent } from './project/recent-project/recent-project.component';
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [
@@ -22,6 +23,7 @@ import { RecentProjectComponent } from './project/recent-project/recent-project.
   imports: [
     BrowserModule,
     RouterModule,
+    HttpClientModule,
     AppRoutingModule
   ],
   providers: [],

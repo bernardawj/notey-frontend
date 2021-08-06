@@ -19,11 +19,11 @@
           </tr>
         </thead>
         <tbody>
-          <tr>
-            <td><a [routerLink]="['detail', 1]">Project #1</a></td>
-            <td>Project #1 Description</td>
-            <td>01/08/2021</td>
-            <td>01/11/2021</td>
+          <tr *ngFor="let project of projects">
+            <td><a [routerLink]="['detail', project.id]">{{ project.name }}</a></td>
+            <td>{{ project.description }}</td>
+            <td>{{ project.startAt }}</td>
+            <td>{{ project.endAt }}</td>
           </tr>
         </tbody>
       </table>

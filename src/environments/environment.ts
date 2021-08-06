@@ -2,8 +2,15 @@
 // `ng build` replaces `environment.ts` with `environment.prod.ts`.
 // The list of file replacements can be found in `angular.json`.
 
+const INITIAL_URI = 'http://localhost:4444/api';
+
 export const environment = {
-  production: false
+  production: false,
+  endpoints: {
+    project: {
+      getAllManagedProjects: `${ INITIAL_URI }/v1/project/managed`
+    }
+  }
 };
 
 /*
