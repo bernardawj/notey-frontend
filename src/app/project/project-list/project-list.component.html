@@ -1,26 +1,2 @@
-<div id="project__list">
-  <h3 class="clearfix">
-    All Projects
-    <a [routerLink]="['create']" class="button button--primary pull-right no-margin">Add Project</a>
-  </h3>
-  <div class="table">
-    <table>
-      <thead>
-      <tr>
-        <th>Name</th>
-        <th>Description</th>
-        <th>Start At</th>
-        <th>End At</th>
-      </tr>
-      </thead>
-      <tbody>
-      <tr *ngFor="let project of projects">
-        <td><a [routerLink]="['detail', project.id]">{{ project.name }}</a></td>
-        <td>{{ project.description }}</td>
-        <td>{{ project.startAt }}</td>
-        <td>{{ project.endAt }}</td>
-      </tr>
-      </tbody>
-    </table>
-  </div>
-</div>
+<app-project-list-item [isManaged]="true"></app-project-list-item>
+<app-project-list-item [isManaged]="false"></app-project-list-item>

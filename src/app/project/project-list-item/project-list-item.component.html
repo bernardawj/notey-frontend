@@ -1,0 +1,28 @@
+<div class="project__list">
+  <h3 class="clearfix">
+    {{ isManaged ? 'Managed' : 'Assigned' }} Projects
+    <a [routerLink]="['../create']" class="button button--primary pull-right no-margin" *ngIf="isManaged">Add Project</a>
+  </h3>
+  <div class="table">
+    <table *ngIf="!isLoading && projects.length > 0">
+      <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+        <th>Start At</th>
+        <th>End At</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let project of projects">
+        <td><a [routerLink]="['detail', project.id]">{{ project.name }}</a></td>
+        <td>{{ project.description }}</td>
+        <td>{{ project.startAt }}</td>
+        <td>{{ project.endAt }}</td>
+      </tr>
+      </tbody>
+    </table>
+    <div class="alert alert--info" *ngIf="!isLoading && projects.length == 0">No projects found.</div>
+    <div class="load" *ngIf="isLoading"></div>
+  </div>
+</div>

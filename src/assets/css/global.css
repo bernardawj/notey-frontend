@@ -60,6 +60,14 @@ h1, h2, h3, h4, h5, h6 {
   color: #ff6f6f;
 }
 
+button {
+  padding: 0;
+  border: 0;
+  font-family: inherit;
+  font-size: inherit;
+  line-height: inherit;
+}
+
 /******************************
   Alignments
 *******************************/
@@ -79,6 +87,59 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 /******************************
+  Form
+*******************************/
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+form > .form-group:nth-last-child(1) {
+  margin-bottom: 0;
+}
+
+.form-group > label {
+  display: inline-block;
+  margin-bottom: 10px;
+}
+
+.form-group > .button {
+  margin-bottom: 0;
+}
+
+.form-group > .button:nth-last-child(1) {
+  margin-right: 0;
+}
+
+.form-validation {
+  display: inline-block;
+  margin-top: 10px;
+  color: #7f0000;
+}
+
+.form-control {
+  width: 100%;
+  padding: 12px 15px;
+  border: 0;
+  box-shadow: 0 3px 5px 0 rgba(0, 0, 0, 0.1);
+}
+
+.form-control:focus {
+  outline: #ff6f6f solid 2px;
+}
+
+.form-control[disabled] {
+  background-color: #E8E8E8;
+  color: #F7F7F7;
+}
+
+.form-control,
+::placeholder {
+  font-family: inherit;
+  font-weight: 500;
+}
+
+/******************************
   Button
 *******************************/
 
@@ -92,11 +153,19 @@ h1, h2, h3, h4, h5, h6 {
   margin-bottom: 10px;
   font-size: 14px;
   font-weight: 500;
+  box-shadow: 0 3px 5px 0 rgba(0, 0, 0, 0.1);
 }
 
 .button--primary {
   background-color: #ff6f6f;
+  border-color: #ff6f6f;
   color: #F6F6F6;
+}
+
+.button--secondary {
+  background-color: #fff0f0;
+  border: #fff0f0;
+  color: #ff6f6f;
 }
 
 .button--width-full {
@@ -149,10 +218,12 @@ h1, h2, h3, h4, h5, h6 {
 *******************************/
 
 .table {
+  position: relative;
   display: block;
   background-color: #F6F6F6;
   padding: 15px;
   border-top: 2px solid #ff6f6f;
+  box-shadow: 0 3px 5px 0 rgba(0, 0, 0, 0.1);
 }
 
 table {
@@ -280,6 +351,47 @@ th, td {
 
 .col-lg-12 {
   flex: 0 0 100%;
+}
+
+/******************************
+  Alert
+*******************************/
+
+.alert {
+  padding: 15px 20px;
+  background-color: transparent;
+  border-color: transparent;
+  box-shadow: 0 3px 5px 0 rgba(0, 0, 0, 0.1);
+}
+
+.alert--info {
+  background-color: #6f6fff;
+  color: #f6f6f6;
+}
+
+/******************************
+  Load
+*******************************/
+
+.load {
+  position: relative;
+  padding: 10px 15px;
+  border-radius: 10px;
+  width: 200%;
+  background: linear-gradient(to right, rgba(0, 0, 0, 0.2), #f6f6f6, rgba(0, 0, 0, 0.2)) 0 50% no-repeat;
+  background-size: 200% 100%;
+  animation: load 3s linear infinite;
+}
+
+@keyframes load {
+  from {
+    /*background-image: linear-gradient(to right, rgba(0, 0, 0, 0.1), #f6f6f6);*/
+    background-position-x: 0;
+  }
+  to {
+    /*background-image: linear-gradient(to right, #f6f6f6, rgba(0, 0, 0, 0.1));*/
+    background-position-x: 100%;
+  }
 }
 
 /******************************

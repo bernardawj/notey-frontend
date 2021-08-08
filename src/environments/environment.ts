@@ -8,7 +8,9 @@ export const environment = {
   production: false,
   endpoints: {
     project: {
-      getAllManagedProjects: `${ INITIAL_URI }/v1/project/managed`
+      getAllManagedProjects: `${ INITIAL_URI }/v1/project/managed`,
+      getAllAssignedProjects: `${ INITIAL_URI }/v1/project/assigned`,
+      createProject: `${INITIAL_URI}/v1/project`
     }
   }
 };
