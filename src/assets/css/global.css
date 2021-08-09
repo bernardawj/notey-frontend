@@ -66,6 +66,12 @@ button {
   font-family: inherit;
   font-size: inherit;
   line-height: inherit;
+  cursor: pointer;
+}
+
+button[disabled] {
+  opacity: 0.5;
+  cursor: not-allowed;
 }
 
 /******************************
@@ -374,6 +380,7 @@ th, td {
 
 .alert {
   padding: 15px 20px;
+  margin-bottom: 20px;
   background-color: transparent;
   border-color: transparent;
   box-shadow: 0 3px 5px 0 rgba(0, 0, 0, 0.1);
@@ -384,18 +391,28 @@ th, td {
   color: #f6f6f6;
 }
 
+.alert--danger {
+  background-color: #7f0000;
+  color: #f6f6f6;
+}
+
+.alert--success {
+  background-color: #6fff6f;
+  color: #f6f6f6;
+}
+
 /******************************
   Load
 *******************************/
 
 .load {
   position: relative;
-  padding: 10px 15px;
-  border-radius: 10px;
-  width: 200%;
-  background: linear-gradient(to right, rgba(0, 0, 0, 0.2) 15%, #f6f6f6 45%, rgba(0, 0, 0, 0.2) 50%) 0 50% no-repeat;
+  padding: 0.5em;
+  border-radius: 5px;
+  width: 100%;
+  background: linear-gradient(to right, rgba(0, 0, 0, 0.3) 0%, #F6F6F6 45%, rgba(0, 0, 0, 0.3) 100%) 0 50% no-repeat;
   background-size: 200% 100%;
-  animation: load 2s linear infinite;
+  animation: load 1.5s linear infinite;
 }
 
 @keyframes load {

@@ -11,7 +11,8 @@ export const environment = {
       getAllManagedProjects: `${ INITIAL_URI }/v1/project/managed`,
       getAllAssignedProjects: `${ INITIAL_URI }/v1/project/assigned`,
       getProject: `${ INITIAL_URI }/v1/project`,
-      createProject: `${ INITIAL_URI }/v1/project`
+      createProject: `${ INITIAL_URI }/v1/project`,
+      updateProject: `${ INITIAL_URI }/v1/project`
     }
   }
 };

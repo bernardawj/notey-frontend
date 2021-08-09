@@ -28,4 +28,8 @@ export class ProjectService {
   createProject(project: Project): Observable<Project> {
     return this.httpClient.post<Project>(environment.endpoints.project.createProject, project).pipe(retry(3));
   }
+
+  updateProject(project: Project): Observable<Project> {
+    return this.httpClient.put<Project>(environment.endpoints.project.updateProject, project).pipe(retry(3));
+  }
 }

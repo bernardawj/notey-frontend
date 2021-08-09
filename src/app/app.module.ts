@@ -20,6 +20,7 @@ import { ProjectListItemComponent } from './project/project-list-item/project-li
 import { ProjectDetailsComponent } from './project/project-details/project-details.component';
 
 import { NameInitialsPipe } from './shared/name-initials.pipe';
+import { ProjectEditComponent } from './project/project-edit/project-edit.component';
 
 @NgModule({
   declarations: [
@@ -34,7 +35,8 @@ import { NameInitialsPipe } from './shared/name-initials.pipe';
     ProjectFormComponent,
     ProjectCreateComponent,
     ProjectDetailsComponent,
-    NameInitialsPipe
+    NameInitialsPipe,
+    ProjectEditComponent
   ],
   imports: [
     BrowserModule,

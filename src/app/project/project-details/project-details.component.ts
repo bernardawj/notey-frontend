@@ -12,10 +12,12 @@ export class ProjectDetailsComponent implements OnInit {
 
   project: Project | null;
   isManager: boolean;
+  isLoading: boolean;
 
   constructor(private projectService: ProjectService, private router: Router, private activatedRoute: ActivatedRoute) {
     this.project = null;
     this.isManager = false;
+    this.isLoading = true;
   }
 
   ngOnInit(): void {
@@ -27,6 +29,8 @@ export class ProjectDetailsComponent implements OnInit {
             this.isManager = this.project.manager.id == 1;
           }, error => {
             this.router.navigate(['/project']).finally();
+          }, () => {
+            this.isLoading = false;
           }
         );
       }
