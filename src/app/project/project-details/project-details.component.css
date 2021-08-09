@@ -25,6 +25,7 @@
 
 .project__user-label {
   margin-bottom: 10px;
+  font-weight: 600;
 }
 
 .project__user-details {
@@ -41,5 +42,9 @@
   -moz-transform: translateY(-50%);
   -o-transform: translateY(-50%);
   transform: translateY(-50%);
+}
+
+.project__user-name > span {
+  color: #bababa;
 }
 
