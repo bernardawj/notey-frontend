@@ -21,6 +21,10 @@ export class ProjectService {
     return this.httpClient.get<Project[]>(`${ environment.endpoints.project.getAllAssignedProjects }/${ userId }`).pipe(retry(3));
   }
 
+  getProject(projectId: number): Observable<Project> {
+    return this.httpClient.get<Project>(`${ environment.endpoints.project.getProject }/${ projectId }`).pipe(retry(3));
+  }
+
   createProject(project: Project): Observable<Project> {
     return this.httpClient.post<Project>(environment.endpoints.project.createProject, project).pipe(retry(3));
   }

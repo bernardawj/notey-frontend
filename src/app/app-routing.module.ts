@@ -5,6 +5,7 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 import { ProjectComponent } from './project/project.component';
 import { ProjectListComponent } from './project/project-list/project-list.component';
 import { ProjectCreateComponent } from './project/project-create/project-create.component';
+import { ProjectDetailsComponent } from './project/project-details/project-details.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/dashboard', pathMatch: 'full' },
@@ -13,9 +14,10 @@ const routes: Routes = [
     path: 'project',
     component: ProjectComponent,
     children: [
-      { path: '', redirectTo: '/project/list', pathMatch: 'full'},
+      { path: '', redirectTo: '/project/list', pathMatch: 'full' },
       { path: 'list', component: ProjectListComponent },
-      { path: 'create', component: ProjectCreateComponent }
+      { path: 'create', component: ProjectCreateComponent },
+      { path: 'details/:id', component: ProjectDetailsComponent }
     ]
   }
 ];

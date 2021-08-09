@@ -42,7 +42,7 @@ export class ProjectFormComponent implements OnInit {
     if (this.isEdit) {
       // this.projectService.updateProject();
     } else {
-      this.projectService.createProject(new Project(0, name, description,startAt, endAt, user)).subscribe(
+      this.projectService.createProject(new Project(0, name, description,startAt, endAt, user, [])).subscribe(
         response => {
           this.router.navigate(['/project']).finally();
         }, error => {

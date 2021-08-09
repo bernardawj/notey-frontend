@@ -1,0 +1,48 @@
+<div class="row">
+  <div class="col-lg-8">
+    <h3>Project Details: {{ project?.name }}</h3>
+    <div class="card">
+      <div class="card-group">
+        <label>Project Description</label>
+        <p>{{ project?.description }}</p>
+      </div>
+      <div class="card-group">
+        <label>Project Start Date</label>
+        <p>{{ project?.startAt }}</p>
+      </div>
+      <div class="card-group">
+        <label>Project End Date</label>
+        <p>{{ project?.endAt }}</p>
+      </div>
+      <div class="card-group">
+        <a [routerLink]="['/project']" class="button button--secondary">Back</a>
+        <a [routerLink]="['/project/edit', project?.id]" class="button button--primary">Edit</a>
+      </div>
+    </div>
+  </div>
+  <div class="col-lg-4">
+    <h3>Assigned Users</h3>
+    <div class="card">
+      <div class="card-group project__user">
+        <div class="project__user-label">Project Manager</div>
+        <div class="project__user-details">
+          <div class="user__initials image-rounded">
+            <span>{{ project?.manager?.firstName + ' ' + project?.manager?.lastName | nameInitials }}</span>
+          </div>
+          <div class="project__user-name">{{ project?.manager?.firstName + ' ' + project?.manager?.lastName }}</div>
+        </div>
+        <div class="card-group project__user">
+          <div class="project__user-label clearfix">
+            Project Members
+            <a [routerLink]="['assign']" class="pull-right">Manage</a>
+          </div>
+          <div class="project__user-details" *ngFor="let user of project?.users">
+            <div class="user__initials image-rounded">
+              <span>{{ user.firstName + ' ' + user.lastName | nameInitials }}</span>
+            </div>
+            <div class="project__user-name">{{ user.firstName + ' ' + user.lastName }}</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>

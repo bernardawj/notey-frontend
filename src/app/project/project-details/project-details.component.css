@@ -1,0 +1,45 @@
+.user__initials {
+  position: absolute;
+  left: 0;
+  height: 40px;
+  width: 40px;
+  letter-spacing: 1px;
+  background-color: #ff6f6f;
+  color: #f6f6f6;
+  box-shadow: 0 3px 5px 0 rgba(0, 0, 0, 0.1);
+}
+
+.user__initials > span {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  -webkit-transform: translate(-50%, -50%);
+  -moz-transform: translate(-50%, -50%);
+  -o-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+}
+
+.project__user {
+  margin-bottom: 10px;
+}
+
+.project__user-label {
+  margin-bottom: 10px;
+}
+
+.project__user-details {
+  position: relative;
+  padding-left: 50px;
+  height: 40px;
+  margin-bottom: 10px;
+}
+
+.project__user-name {
+  position: absolute;
+  top: 50%;
+  -webkit-transform: translateY(-50%);
+  -moz-transform: translateY(-50%);
+  -o-transform: translateY(-50%);
+  transform: translateY(-50%);
+}
+

@@ -213,6 +213,19 @@ form > .form-group:nth-last-child(1) {
   font-size: 12px;
 }
 
+.card-group {
+  margin-bottom: 20px;
+}
+
+.card-group > label {
+  display: inline-block;
+  margin-bottom: 10px;
+}
+
+.card > .card-group:nth-last-child(1) {
+  margin-bottom: 0;
+}
+
 /******************************
   Table
 *******************************/
@@ -378,9 +391,9 @@ th, td {
   padding: 10px 15px;
   border-radius: 10px;
   width: 200%;
-  background: linear-gradient(to right, rgba(0, 0, 0, 0.2), #f6f6f6, rgba(0, 0, 0, 0.2)) 0 50% no-repeat;
+  background: linear-gradient(to right, rgba(0, 0, 0, 0.2) 15%, #f6f6f6 45%, rgba(0, 0, 0, 0.2) 50%) 0 50% no-repeat;
   background-size: 200% 100%;
-  animation: load 3s linear infinite;
+  animation: load 2s linear infinite;
 }
 
 @keyframes load {
@@ -392,6 +405,16 @@ th, td {
     /*background-image: linear-gradient(to right, #f6f6f6, rgba(0, 0, 0, 0.1));*/
     background-position-x: 100%;
   }
+}
+
+/******************************
+  Scaling
+*******************************/
+
+.mat-icon {
+  height: 18px !important;
+  width: 18px !important;
+  font-size: 18px !important;
 }
 
 /******************************

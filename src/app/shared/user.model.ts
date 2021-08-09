@@ -4,6 +4,7 @@ export class User {
   email: string;
   firstName: string;
   lastName: string;
+  fullName: string = '';
 
   constructor(id: number, email: string, firstName: string, lastName: string) {
     this.id = id;

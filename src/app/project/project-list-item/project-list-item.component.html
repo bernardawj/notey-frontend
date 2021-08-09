@@ -15,7 +15,7 @@
       </thead>
       <tbody>
       <tr *ngFor="let project of projects">
-        <td><a [routerLink]="['detail', project.id]">{{ project.name }}</a></td>
+        <td><a [routerLink]="['/project/details', project.id]">{{ project.name }}</a></td>
         <td>{{ project.description }}</td>
         <td>{{ project.startAt }}</td>
         <td>{{ project.endAt }}</td>
