@@ -26,24 +26,20 @@ export class ProjectListItemComponent implements OnInit {
 
   ngOnInit(): void {
     if (this.isManaged) {
-      this.projectService.getAllManagedProjects(1).subscribe(
+      this.projectService.getAllManagedProjects(2).subscribe(
         response => {
           this.projects = response;
-          this.isLoading = false;
         }, error => {
           this.error = error;
-          this.isLoading = false;
-        }
+        }, () => this.isLoading = false
       );
     } else {
-      this.projectService.getAllAssignedProjects(1).subscribe(
+      this.projectService.getAllAssignedProjects(2).subscribe(
         response => {
           this.projects = response;
-          this.isLoading = false;
         }, error => {
           this.error = error;
-          this.isLoading = false;
-        }
+        }, () => this.isLoading = false
       );
     }
   }

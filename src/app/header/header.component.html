@@ -2,7 +2,10 @@
   <div id="header__logo">Notey</div>
   <div id="header__user">
     <div id="header__user-profile-image">
-      <img src="" alt="" class="image-fluid image-rounded" />
+      <div class="user__initials image-rounded">
+        <span>{{ user?.firstName + ' ' + user?.lastName | nameInitials }}</span>
+      </div>
+      <div class="user__details">Hi, {{ user?.firstName }}!</div>
     </div>
   </div>
 </header>

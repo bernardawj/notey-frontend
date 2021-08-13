@@ -7,6 +7,10 @@ const INITIAL_URI = 'http://localhost:4444/api';
 export const environment = {
   production: false,
   endpoints: {
+    user: {
+      getUserDetails: `${INITIAL_URI}/v1/user`,
+      updateProjectAcceptance: `${INITIAL_URI}/v1/user/project/acceptance`
+    },
     project: {
       getAllManagedProjects: `${ INITIAL_URI }/v1/project/managed`,
       getAllAssignedProjects: `${ INITIAL_URI }/v1/project/assigned`,

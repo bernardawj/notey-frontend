@@ -92,6 +92,10 @@ button[disabled] {
   margin: 0 !important;
 }
 
+.no-margin-bottom {
+  margin-bottom: 0 !important;
+}
+
 /******************************
   Form
 *******************************/
@@ -171,8 +175,20 @@ form > .form-group:nth-last-child(1) {
 
 .button--secondary {
   background-color: #fff0f0;
-  border: #fff0f0;
+  border-color: #fff0f0;
   color: #ff6f6f;
+}
+
+.button--success {
+  background-color: #6fff6f;
+  border-color: #6fff6f;
+  color: #f6f6f6;
+}
+
+.button--danger {
+  background-color: #7f0000;
+  border-color: #7f0000;
+  color: #f6f6f6;
 }
 
 .button--width-full {
@@ -384,6 +400,7 @@ th, td {
   background-color: transparent;
   border-color: transparent;
   box-shadow: 0 3px 5px 0 rgba(0, 0, 0, 0.1);
+  text-align: center;
 }
 
 .alert--info {
@@ -432,6 +449,47 @@ th, td {
 
 .mat-icon-2x {
   transform: scale(2);
+}
+
+/******************************
+  User
+*******************************/
+
+.user__initials {
+  position: absolute;
+  left: 0;
+  height: 40px;
+  width: 40px;
+  letter-spacing: 1px;
+  background-color: #ff6f6f;
+  color: #f6f6f6;
+  box-shadow: 0 3px 5px 0 rgba(0, 0, 0, 0.1);
+}
+
+.user__initials > span {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  -webkit-transform: translate(-50%, -50%);
+  -moz-transform: translate(-50%, -50%);
+  -o-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+}
+
+.user__details {
+  position: relative;
+  padding-left: 50px;
+  height: 40px;
+  margin-bottom: 10px;
+}
+
+.user-name {
+  position: absolute;
+  top: 50%;
+  -webkit-transform: translateY(-50%);
+  -moz-transform: translateY(-50%);
+  -o-transform: translateY(-50%);
+  transform: translateY(-50%);
 }
 
 /******************************

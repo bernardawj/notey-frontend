@@ -1,7 +1,7 @@
 <div class="project__list">
   <h3 class="clearfix">
     {{ isManaged ? 'Managed' : 'Assigned' }} Projects
-    <a [routerLink]="['../create']" class="button button--primary pull-right no-margin" *ngIf="isManaged">Add Project</a>
+    <a [routerLink]="['../create']" class="button button--primary pull-right no-margin" *ngIf="isManaged">New Project</a>
   </h3>
   <div class="table">
     <table *ngIf="!isLoading && projects.length > 0">

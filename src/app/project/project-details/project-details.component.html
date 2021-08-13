@@ -1,7 +1,16 @@
 <div class="row">
   <div class="col-lg-8">
-    <h3>Project Details: {{ project?.name }}</h3>
+    <h3>Project Details</h3>
     <div class="card">
+      <div *ngIf="!hasAccepted" class="alert alert--info">
+        {{ project?.manager?.firstName }} {{ project?.manager?.lastName }} has assigned you this project.
+        <button (click)="onUpdateAcceptance(true)" class="button button--primary no-margin-bottom">Accept</button>
+        <button (click)="onUpdateAcceptance(false)" class="button button--danger no-margin-bottom">Reject</button>
+      </div>
+      <div class="card-group">
+        <label>Project Name</label>
+        <p [ngClass]="isLoading ? 'load' : ''">{{ project?.name }}</p>
+      </div>
       <div class="card-group">
         <label>Project Description</label>
         <p [ngClass]="isLoading ? 'load' : ''">{{ project?.description }}</p>
@@ -16,7 +25,7 @@
       </div>
       <div class="card-group">
         <a [routerLink]="['/project']" class="button button--secondary">Back</a>
-        <a [routerLink]="['/project/edit', project?.id]" class="button button--primary">Edit</a>
+        <a [routerLink]="['/project/edit', project?.id]" *ngIf="isManager" class="button button--primary">Edit</a>
       </div>
     </div>
   </div>
@@ -40,11 +49,15 @@
           Project Members
           <a [routerLink]="['assign']" class="pull-right">Manage</a>
         </div>
-        <div class="project__user-details" [ngClass]="isLoading ? 'load' : ''" *ngFor="let user of project?.users">
+        <div class="project__user-details" [ngClass]="isLoading ? 'load' : ''" *ngFor="let user of project?.assignedUsers">
           <div class="user__initials image-rounded" *ngIf="!isLoading">
             <span>{{ user.firstName + ' ' + user.lastName | nameInitials }}</span>
           </div>
-          <div class="project__user-name" *ngIf="!isLoading">{{ user.firstName + ' ' + user.lastName }}</div>
+          <div class="project__user-name" *ngIf="!isLoading">
+            {{ user.firstName + ' ' + user.lastName }}
+            <span *ngIf="user.userId === 2">(You)</span>
+            <span *ngIf="!user.hasAccepted">(Pending)</span>
+          </div>
         </div>
       </div>
     </div>

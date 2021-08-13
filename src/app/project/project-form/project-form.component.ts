@@ -3,7 +3,7 @@ import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms'
 import { ProjectService } from '../project.service';
 import { Project } from '../project.model';
 import { ActivatedRoute, Router } from '@angular/router';
-import { User } from '../../shared/user.model';
+import { User } from '../../shared/user/user.model';
 
 @Component({
   selector: 'app-project-form',
@@ -59,7 +59,7 @@ export class ProjectFormComponent implements OnInit {
     const description = this.form.get('description')?.value;
     const startAt = this.form.get('startAt')?.value;
     const endAt = this.form.get('endAt')?.value;
-    const user = new User(1, '', '', '');
+    const user = new User(2, '', '', '');
 
     if (this.isEdit && this.project) {
       // Update details and call update project endpoint
@@ -77,9 +77,8 @@ export class ProjectFormComponent implements OnInit {
     } else {
       // Call create project endpoint with entered details
       this.projectService.createProject(new Project(0, name, description, startAt, endAt, user, [])).subscribe(
-        response => {
-          this.router.navigate(['/project']).finally();
-        }, error => {
+        response => this.router.navigate(['/project']),
+        error => {
           this.error = error.message;
         }
       );

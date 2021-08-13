@@ -20,9 +20,15 @@
 }
 
 #header__user-profile-image {
-  height: 50px;
-  width: 50px;
+  position: relative;
+  height: 60px;
   padding: 10px;
+}
+
+#header__user-profile-image > .user__initials {
+  left: 10px;
+  background-color: #f6f6f6;
+  color: #ff6f6f;
 }
 
 #header__user-profile-image > img {
