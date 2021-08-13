@@ -59,7 +59,7 @@ export class ProjectFormComponent implements OnInit {
     const description = this.form.get('description')?.value;
     const startAt = this.form.get('startAt')?.value;
     const endAt = this.form.get('endAt')?.value;
-    const user = new User(2, '', '', '');
+    const user = new User(2, '', '', '', '');
 
     if (this.isEdit && this.project) {
       // Update details and call update project endpoint

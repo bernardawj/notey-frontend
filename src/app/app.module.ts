@@ -3,7 +3,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatIconModule } from '@angular/material/icon';
 import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module';
-import { HttpClientModule } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 
@@ -21,6 +21,8 @@ import { ProjectDetailsComponent } from './project/project-details/project-detai
 
 import { NameInitialsPipe } from './shared/name-initials.pipe';
 import { ProjectEditComponent } from './project/project-edit/project-edit.component';
+import { AuthComponent } from './auth/auth.component';
+import { AuthInterceptor } from './auth/auth.interceptor';
 
 @NgModule({
   declarations: [
@@ -36,7 +38,8 @@ import { ProjectEditComponent } from './project/project-edit/project-edit.compon
     ProjectCreateComponent,
     ProjectDetailsComponent,
     NameInitialsPipe,
-    ProjectEditComponent
+    ProjectEditComponent,
+    AuthComponent
   ],
   imports: [
     BrowserModule,
@@ -47,7 +50,11 @@ import { ProjectEditComponent } from './project/project-edit/project-edit.compon
     MatIconModule,
     BrowserAnimationsModule
   ],
-  providers: [],
+  providers: [{
+    provide: HTTP_INTERCEPTORS,
+    useClass: AuthInterceptor,
+    multi: true
+  }],
   bootstrap: [AppComponent]
 })
 export class AppModule {
