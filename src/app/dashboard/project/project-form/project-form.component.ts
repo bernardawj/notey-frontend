@@ -41,6 +41,10 @@ export class ProjectFormComponent implements OnInit {
     this.activatedRoute.params.subscribe(param => {
       this.authService.user.subscribe(user => {
         if (param['id']) {
+          if (!user) {
+            return;
+          }
+
           this.projectService.getProject(+param['id'], user.id).subscribe(
             project => {
               this.project = project;

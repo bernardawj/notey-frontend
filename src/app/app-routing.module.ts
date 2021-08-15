@@ -17,7 +17,8 @@ const routes: Routes = [
     component: DashboardComponent,
     canActivate: [AuthGuard],
     loadChildren: () => import('./dashboard/dashboard.module').then(module => module.DashboardModule)
-  }
+  },
+  { path: '**', redirectTo: '/dashboard/home', pathMatch: 'full'}
 ];
 
 @NgModule({

@@ -9,10 +9,10 @@ import { environment } from '../../environments/environment';
 })
 export class AuthService {
 
-  user: BehaviorSubject<User>;
+  user: BehaviorSubject<User | null>;
 
   constructor(private httpClient: HttpClient) {
-    this.user = new BehaviorSubject<User>(new User(2, 'test@test.com', 'test123', 'Test', 'Tester'));
+    this.user = new BehaviorSubject<User | null>(null);
   }
 
   login(email: string, password: string): Observable<User> {

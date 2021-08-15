@@ -31,6 +31,10 @@ export class ProjectDetailsComponent implements OnInit {
     this.activatedRoute.params.subscribe(
       param => {
         this.authService.user.subscribe(user => {
+          if (!user) {
+            return;
+          }
+
           this.projectService.getProject(+param['id'], user.id).subscribe(
             project => {
               this.project = project;
