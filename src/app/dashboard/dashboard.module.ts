@@ -1,10 +1,7 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { DashboardRoutingModule } from './dashboard-routing.module';
-import { RouterModule } from '@angular/router';
-import { HttpClientModule } from '@angular/common/http';
-import { ReactiveFormsModule } from '@angular/forms';
 import { SharedModule } from '../shared/shared.module';
+import { DashboardRoutingModule } from './dashboard-routing.module';
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
 
 import { DashboardComponent } from './dashboard.component';
 import { ProjectComponent } from '../project/project.component';
@@ -15,6 +12,7 @@ import { ProjectFormComponent } from '../project/project-form/project-form.compo
 import { ProjectCreateComponent } from '../project/project-create/project-create.component';
 import { ProjectDetailsComponent } from '../project/project-details/project-details.component';
 import { ProjectEditComponent } from '../project/project-edit/project-edit.component';
+import { AuthInterceptor } from '../auth/auth.interceptor';
 
 @NgModule({
   declarations: [
@@ -29,14 +27,14 @@ import { ProjectEditComponent } from '../project/project-edit/project-edit.compo
     ProjectEditComponent
   ],
   imports: [
-    CommonModule,
-    RouterModule,
-    HttpClientModule,
-    ReactiveFormsModule,
-    DashboardRoutingModule,
-    SharedModule
+    SharedModule,
+    DashboardRoutingModule
   ],
-  providers: []
+  providers: [{
+    provide: HTTP_INTERCEPTORS,
+    useClass: AuthInterceptor,
+    multi: true
+  }]
 })
 export class DashboardModule {
 }
