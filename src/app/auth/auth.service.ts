@@ -12,7 +12,7 @@ export class AuthService {
   user: BehaviorSubject<User>;
 
   constructor(private httpClient: HttpClient) {
-    this.user = new BehaviorSubject<User>(new User(0, 'test@test.com', 'test123', '', ''));
+    this.user = new BehaviorSubject<User>(new User(2, 'test@test.com', 'test123', 'Test', 'Tester'));
   }
 
   login(email: string, password: string): Observable<User> {
@@ -24,5 +24,12 @@ export class AuthService {
 
   register(user: User): Observable<User> {
     return this.httpClient.post<User>(environment.endpoints.auth.register, user);
+  }
+
+  logout(): void {
+    if (this.user) {
+      this.user.unsubscribe();
+      this.user.next(new User(0, '', '', '', ''));
+    }
   }
 }

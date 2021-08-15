@@ -4,6 +4,8 @@ import { ProjectService } from '../project.service';
 import { Project } from '../project.model';
 import { ActivatedRoute, Router } from '@angular/router';
 import { User } from '../../shared/user/user.model';
+import { UserService } from '../../shared/user/user.service';
+import { AuthService } from '../../auth/auth.service';
 
 @Component({
   selector: 'app-project-form',
@@ -21,7 +23,7 @@ export class ProjectFormComponent implements OnInit {
   isEdit: boolean;
   isLoading: boolean;
 
-  constructor(private projectService: ProjectService, private formBuilder: FormBuilder,
+  constructor(private projectService: ProjectService, private authService: AuthService, private formBuilder: FormBuilder,
               private activatedRoute: ActivatedRoute, private router: Router) {
     this.error = '';
     this.isEdit = false;
@@ -37,19 +39,21 @@ export class ProjectFormComponent implements OnInit {
     });
 
     this.activatedRoute.params.subscribe(param => {
-      if (param['id']) {
-        this.projectService.getProject(+param['id']).subscribe(
-          project => {
-            this.project = project;
-            this.form.get('name')?.setValue(this.project.name);
-            this.form.get('description')?.setValue(this.project.description);
-            this.form.get('startAt')?.setValue(this.project.startAt);
-            this.form.get('endAt')?.setValue(this.project.endAt);
-          },
-          error => this.router.navigate(['/project']).finally(),
-          () => this.isLoading = false
-        );
-      }
+      this.authService.user.subscribe(user => {
+        if (param['id']) {
+          this.projectService.getProject(+param['id'], user.id).subscribe(
+            project => {
+              this.project = project;
+              this.form.get('name')?.setValue(this.project.name);
+              this.form.get('description')?.setValue(this.project.description);
+              this.form.get('startAt')?.setValue(this.project.startAt);
+              this.form.get('endAt')?.setValue(this.project.endAt);
+            },
+            error => this.router.navigate(['/project']).finally(),
+            () => this.isLoading = false
+          );
+        }
+      });
     });
 
   }

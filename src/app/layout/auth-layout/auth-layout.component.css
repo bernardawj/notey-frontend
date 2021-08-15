@@ -1,0 +1,41 @@
+#auth-section {
+  height: 100%;
+  width: 100%;
+}
+
+#auth-section__image-wrapper {
+  position: relative;
+  height: 100vh;
+  background-image: url("https://images.pexels.com/photos/1559402/pexels-photo-1559402.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260");
+  background-position: 50% 30%;
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+
+#auth-section__form-wrapper {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 400px;
+  padding: 20px 20px 40px 20px;
+  background-color: #F6F6F6;
+  -webkit-transform: translate(-50%, -50%);
+  -moz-transform: translate(-50%, -50%);
+  -o-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+  box-shadow: 0 3px 5px 0 rgba(0, 0, 0, 0.1);
+}
+
+#auth-section__form-title-wrapper {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+#auth-section__form-title {
+  font-size: 32px;
+  margin-bottom: 0;
+}
+
+#auth-section__form-subtitle {
+  font-size: 12px;
+}

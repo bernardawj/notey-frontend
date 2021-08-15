@@ -10,7 +10,7 @@ import { ProjectAcceptance } from '../model/project-acceptance.model';
 })
 export class UserService {
 
-  user: BehaviorSubject<User> | null;
+  user: User | null;
 
   constructor(private httpClient: HttpClient) {
     this.user = null;

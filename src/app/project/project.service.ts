@@ -3,14 +3,15 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Project } from './project.model';
 import { environment } from '../../environments/environment';
-import { retry } from 'rxjs/operators';
+import { exhaustMap, retry, take } from 'rxjs/operators';
+import { AuthService } from '../auth/auth.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ProjectService {
 
-  constructor(private httpClient: HttpClient) {
+  constructor(private httpClient: HttpClient, private authService: AuthService) {
   }
 
   getAllManagedProjects(userId: number): Observable<Project[]> {
@@ -21,8 +22,8 @@ export class ProjectService {
     return this.httpClient.get<Project[]>(`${ environment.endpoints.project.getAllAssignedProjects }/${ userId }`).pipe(retry(3));
   }
 
-  getProject(projectId: number): Observable<Project> {
-    return this.httpClient.get<Project>(`${ environment.endpoints.project.getProject }/${ projectId }`).pipe(retry(3));
+  getProject(projectId: number, userId: number): Observable<Project> {
+    return this.httpClient.get<Project>(`${ environment.endpoints.project.getProject }/${ projectId }/${ userId }`).pipe(retry(3));
   }
 
   createProject(project: Project): Observable<Project> {

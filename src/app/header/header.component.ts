@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { UserService } from '../shared/user/user.service';
 import { User } from '../shared/user/user.model';
+import { AuthService } from '../auth/auth.service';
 
 @Component({
   selector: 'app-header',
@@ -11,14 +11,13 @@ export class HeaderComponent implements OnInit {
 
   user: User | null;
 
-  constructor(private userService: UserService) {
+  constructor(private authService: AuthService) {
     this.user = null;
   }
 
   ngOnInit(): void {
-    this.userService.getUserDetails().subscribe(
-      response => this.user = response
-    );
+    this.authService.user.subscribe(user => {
+      this.user = user;
+    });
   }
-
 }

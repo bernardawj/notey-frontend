@@ -16,12 +16,12 @@
     </div>
     <div class="form-group">
       <label for="startAt">Start At</label>
-      <input type="date" id="startAt" formControlName="startAt" class="form-control"/>
+      <input type="datetime-local" id="startAt" formControlName="startAt" class="form-control"/>
       <span class="form-validation" *ngIf="form.get('startAt')?.invalid && form?.get('startAt')?.touched">Please enter a valid start date.</span>
     </div>
     <div class="form-group">
       <label for="endAt">End At</label>
-      <input type="date" id="endAt" formControlName="endAt" class="form-control"/>
+      <input type="datetime-local" id="endAt" formControlName="endAt" class="form-control"/>
       <span class="form-validation" *ngIf="form.get('endAt')?.invalid && form?.get('endAt')?.touched">Please enter a valid end date.</span>
     </div>
     <div class="form-group">

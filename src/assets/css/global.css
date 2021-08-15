@@ -130,7 +130,7 @@ form > .form-group:nth-last-child(1) {
 
 .form-control {
   width: 100%;
-  padding: 12px 15px;
+  padding: 10px 15px;
   border: 0;
   box-shadow: 0 3px 5px 0 rgba(0, 0, 0, 0.1);
 }
@@ -150,6 +150,17 @@ form > .form-group:nth-last-child(1) {
   font-weight: 500;
 }
 
+.form-group__auth-link {
+  display: block;
+  text-align: center;
+  font-size: 14px;
+  margin-top: 10px;
+}
+
+.form-group__auth-link:nth-child(1) {
+  margin-top: 10px;
+}
+
 /******************************
   Button
 *******************************/
@@ -162,7 +173,6 @@ form > .form-group:nth-last-child(1) {
   text-align: center;
   margin-right: 5px;
   margin-bottom: 10px;
-  font-size: 14px;
   font-weight: 500;
   box-shadow: 0 3px 5px 0 rgba(0, 0, 0, 0.1);
 }
@@ -401,6 +411,7 @@ th, td {
   border-color: transparent;
   box-shadow: 0 3px 5px 0 rgba(0, 0, 0, 0.1);
   text-align: center;
+  line-height: 1.25em;
 }
 
 .alert--info {
@@ -428,7 +439,7 @@ th, td {
   border-radius: 5px;
   width: 100%;
   background: linear-gradient(to right, rgba(0, 0, 0, 0.3) 0%, #F6F6F6 45%, rgba(0, 0, 0, 0.3) 100%) 0 50% no-repeat;
-  background-size: 200% 100%;
+  background-size: 300% 100%;
   animation: load 1.5s linear infinite;
 }
 
@@ -490,6 +501,25 @@ th, td {
   -moz-transform: translateY(-50%);
   -o-transform: translateY(-50%);
   transform: translateY(-50%);
+}
+
+/******************************
+  SVG
+*******************************/
+
+.svg-wrapper {
+  text-align: center;
+}
+
+.svg-wrapper > object,
+.svg-wrapper > object > img {
+  max-width: 100px;
+  margin-bottom: 10px;
+}
+
+.svg-wrapper__text {
+  display: block;
+  font-weight: 600;
 }
 
 /******************************
