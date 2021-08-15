@@ -1,11 +1,10 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Project } from '../project.model';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ProjectService } from '../project.service';
 import { UserService } from '../../../shared/user/user.service';
 import { ProjectAcceptance } from '../../../shared/model/project-acceptance.model';
 import { AuthService } from '../../../auth/auth.service';
-import { take } from 'rxjs/operators';
 
 @Component({
   selector: 'app-project-details',
@@ -38,14 +37,14 @@ export class ProjectDetailsComponent implements OnInit {
           this.projectService.getProject(+param['id'], user.id).subscribe(
             project => {
               this.project = project;
-              this.isManager = this.project.manager.id == 2;
+              this.isManager = this.project.manager.id == user.id;
 
-              const assignedUser = this.project.assignedUsers.find(s => s.userId === 2);
+              const assignedUser = this.project.assignedUsers.find(u => u.userId === user.id);
               if (assignedUser) {
                 this.hasAccepted = assignedUser.hasAccepted;
               }
             }, error => {
-              this.router.navigate(['/project']).finally();
+              this.router.navigate(['/dashboard/project']).finally();
             }, () => {
               this.isLoading = false;
             }

@@ -24,8 +24,8 @@
         <p [ngClass]="isLoading ? 'load' : ''">{{ project?.endAt }}</p>
       </div>
       <div class="card-group">
-        <a [routerLink]="['/project']" class="button button--secondary">Back</a>
-        <a [routerLink]="['/project/edit', project?.id]" *ngIf="isManager" class="button button--primary">Edit</a>
+        <a [routerLink]="['../../list']" class="button button--secondary">Back</a>
+        <a [routerLink]="['../../edit', project?.id]" *ngIf="isManager" class="button button--primary">Edit</a>
       </div>
     </div>
   </div>

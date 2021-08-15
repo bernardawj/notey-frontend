@@ -1,6 +1,8 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Project } from '../project.model';
 import { ProjectService } from '../project.service';
+import { AuthService } from '../../../auth/auth.service';
+import { take } from 'rxjs/operators';
 
 @Component({
   selector: 'app-project-list-item',
@@ -17,7 +19,7 @@ export class ProjectListItemComponent implements OnInit {
   @Input()
   isManaged: boolean;
 
-  constructor(private projectService: ProjectService) {
+  constructor(private authService: AuthService, private projectService: ProjectService) {
     this.projects = [];
     this.error = "";
     this.isLoading = true;
@@ -25,22 +27,28 @@ export class ProjectListItemComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    if (this.isManaged) {
-      this.projectService.getAllManagedProjects(2).subscribe(
-        response => {
-          this.projects = response;
-        }, error => {
-          this.error = error;
-        }, () => this.isLoading = false
-      );
-    } else {
-      this.projectService.getAllAssignedProjects(2).subscribe(
-        response => {
-          this.projects = response;
-        }, error => {
-          this.error = error;
-        }, () => this.isLoading = false
-      );
-    }
+    this.authService.user.pipe(take(1)).subscribe(user => {
+      if (!user) {
+        return;
+      }
+
+      if (this.isManaged) {
+        this.projectService.getAllManagedProjects(user.id).subscribe(
+          response => {
+            this.projects = response;
+          }, error => {
+            this.error = error;
+          }, () => this.isLoading = false
+        );
+      } else {
+        this.projectService.getAllAssignedProjects(user.id).subscribe(
+          response => {
+            this.projects = response;
+          }, error => {
+            this.error = error;
+          }, () => this.isLoading = false
+        );
+      }
+    });
   }
 }

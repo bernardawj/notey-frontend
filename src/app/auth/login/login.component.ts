@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { AuthService } from '../auth.service';
 import { Router } from '@angular/router';
@@ -17,7 +17,6 @@ export class LoginComponent implements OnInit {
     this.error = '';
   }
 
-
   ngOnInit(): void {
     this.loginForm = this.formBuilder.group({
       email: new FormControl('', [Validators.required, Validators.email]),
@@ -29,7 +28,9 @@ export class LoginComponent implements OnInit {
     const email = this.loginForm.get('email')?.value;
     const password = this.loginForm.get('password')?.value;
 
-    this.authService.login(email, password).subscribe(response => {
+    this.authService.login(email, password).subscribe(
+      response => {
+        response.password = password;
         this.authService.user.next(response);
         this.router.navigate(['/dashboard']).finally();
       }, error => {

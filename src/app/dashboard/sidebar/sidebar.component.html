@@ -2,7 +2,7 @@
   <div id="sidebar__tools" class="sidebar__sections">
     <label>Quick Access</label>
     <div id="sidebar__quick-access">
-      <a [routerLink]="['/project/create']" class="button button--primary button--width-full">New Project</a>
+      <a [routerLink]="['/dashboard/project/create']" class="button button--primary button--width-full">New Project</a>
       <a [routerLink]="['/note/create']" class="button button--primary button--width-full">New Note</a>
     </div>
   </div>
@@ -11,8 +11,8 @@
     <div id="sidebar__navigation-links">
       <ul>
         <li><a [routerLink]="['/dashboard']">Dashboard</a></li>
-        <li><a [routerLink]="['/project']">Project</a></li>
-        <li><a [routerLink]="['/note']">Note</a></li>
+        <li><a [routerLink]="['/dashboard/project']">Project</a></li>
+        <li><a [routerLink]="['/dashboard/note']">Note</a></li>
       </ul>
     </div>
   </div>

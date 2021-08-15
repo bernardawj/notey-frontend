@@ -3,4 +3,5 @@
   left: 300px;
   width: calc(100% - 300px);
   height: calc(100% - 60px);
+  overflow-y: scroll;
 }

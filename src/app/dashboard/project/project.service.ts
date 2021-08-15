@@ -5,6 +5,7 @@ import { Project } from './project.model';
 import { environment } from '../../../environments/environment';
 import { exhaustMap, retry, take } from 'rxjs/operators';
 import { AuthService } from '../../auth/auth.service';
+import { CreateProject } from '../../model/project/create-project.model';
 
 @Injectable({
   providedIn: 'root'
@@ -26,7 +27,7 @@ export class ProjectService {
     return this.httpClient.get<Project>(`${ environment.endpoints.project.getProject }/${ projectId }/${ userId }`).pipe(retry(3));
   }
 
-  createProject(project: Project): Observable<Project> {
+  createProject(project: CreateProject): Observable<Project> {
     return this.httpClient.post<Project>(environment.endpoints.project.createProject, project).pipe(retry(3));
   }
 

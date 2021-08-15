@@ -3,9 +3,9 @@ import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms'
 import { ProjectService } from '../project.service';
 import { Project } from '../project.model';
 import { ActivatedRoute, Router } from '@angular/router';
-import { User } from '../../../shared/user/user.model';
-import { UserService } from '../../../shared/user/user.service';
 import { AuthService } from '../../../auth/auth.service';
+import { take } from 'rxjs/operators';
+import { CreateProject } from '../../../model/project/create-project.model';
 
 @Component({
   selector: 'app-project-form',
@@ -67,29 +67,34 @@ export class ProjectFormComponent implements OnInit {
     const description = this.form.get('description')?.value;
     const startAt = this.form.get('startAt')?.value;
     const endAt = this.form.get('endAt')?.value;
-    const user = new User(2, '', '', '', '');
 
-    if (this.isEdit && this.project) {
-      // Update details and call update project endpoint
-      this.project.name = name;
-      this.project.description = description;
-      this.project.startAt = startAt;
-      this.project.endAt = endAt;
-      this.projectService.updateProject(this.project).subscribe(
-        response => this.router.navigate(['/project/details', response.id]),
-        error => {
-          console.log(error);
-          this.error = error.error.message;
-        }
-      );
-    } else {
-      // Call create project endpoint with entered details
-      this.projectService.createProject(new Project(0, name, description, startAt, endAt, user, [])).subscribe(
-        response => this.router.navigate(['/project']),
-        error => {
-          this.error = error.message;
-        }
-      );
-    }
+    this.authService.user.pipe(take(1)).subscribe(user => {
+      if (!user) {
+        return;
+      }
+
+      if (this.isEdit && this.project) {
+        // Update details and call update project endpoint
+        this.project.name = name;
+        this.project.description = description;
+        this.project.startAt = startAt;
+        this.project.endAt = endAt;
+        this.projectService.updateProject(this.project).subscribe(
+          response => this.router.navigate(['/dashboard/project/details', response.id]),
+          error => {
+            console.log(error);
+            this.error = error.error.message;
+          }
+        );
+      } else {
+        // Call create project endpoint with entered details
+        this.projectService.createProject(new CreateProject(name, description, startAt, endAt, user.id)).subscribe(
+          response => this.router.navigate(['/dashboard/project']),
+          error => {
+            this.error = error.message;
+          }
+        );
+      }
+    });
   }
 }
