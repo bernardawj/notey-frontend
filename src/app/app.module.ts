@@ -8,18 +8,14 @@ import { DashboardModule } from './dashboard/dashboard.module';
 import { SharedModule } from './shared/shared.module';
 
 import { AppComponent } from './app.component';
-import { AuthLayoutComponent } from './layout/auth-layout/auth-layout.component';
-import { DashboardLayoutComponent } from './layout/dashboard-layout/dashboard-layout.component';
-import { HeaderComponent } from './header/header.component';
-import { SidebarComponent } from './sidebar/sidebar.component';
+import { AuthComponent } from './auth/auth.component';
+import { DashboardComponent } from './dashboard/dashboard.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    AuthLayoutComponent,
-    DashboardLayoutComponent,
-    HeaderComponent,
-    SidebarComponent
+    AuthComponent,
+    DashboardComponent
   ],
   imports: [
     BrowserModule,

@@ -1,5 +1,5 @@
-import { User } from '../shared/user/user.model';
-import { AssignedUser } from '../shared/model/assigned-user.model';
+import { User } from '../../shared/user/user.model';
+import { AssignedUser } from '../../shared/model/assigned-user.model';
 
 export class Project {
 

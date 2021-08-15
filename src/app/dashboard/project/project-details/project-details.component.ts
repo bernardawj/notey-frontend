@@ -2,9 +2,9 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Project } from '../project.model';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ProjectService } from '../project.service';
-import { UserService } from '../../shared/user/user.service';
-import { ProjectAcceptance } from '../../shared/model/project-acceptance.model';
-import { AuthService } from '../../auth/auth.service';
+import { UserService } from '../../../shared/user/user.service';
+import { ProjectAcceptance } from '../../../shared/model/project-acceptance.model';
+import { AuthService } from '../../../auth/auth.service';
 import { take } from 'rxjs/operators';
 
 @Component({

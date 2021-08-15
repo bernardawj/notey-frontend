@@ -3,9 +3,9 @@ import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms'
 import { ProjectService } from '../project.service';
 import { Project } from '../project.model';
 import { ActivatedRoute, Router } from '@angular/router';
-import { User } from '../../shared/user/user.model';
-import { UserService } from '../../shared/user/user.service';
-import { AuthService } from '../../auth/auth.service';
+import { User } from '../../../shared/user/user.model';
+import { UserService } from '../../../shared/user/user.service';
+import { AuthService } from '../../../auth/auth.service';
 
 @Component({
   selector: 'app-project-form',
