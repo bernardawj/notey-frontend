@@ -1,5 +1,5 @@
 export enum TaskType {
 
-  URGENT,
-  NON_URGENT
+  URGENT = 'URGENT',
+  NON_URGENT = 'NON_URGENT'
 }

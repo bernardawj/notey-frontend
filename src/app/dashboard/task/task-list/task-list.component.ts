@@ -3,6 +3,7 @@ import { Task } from '../task.model';
 import { TaskService } from '../task.service';
 import { AuthService } from '../../../auth/auth.service';
 import { take } from 'rxjs/operators';
+import { TaskType } from '../task-type.enum';
 
 @Component({
   selector: 'app-task-list',
@@ -18,7 +19,7 @@ export class TaskListComponent implements OnInit {
 
   @Input() isManaged : boolean;
 
-  @Input() tasks: Task[] | undefined;
+  @Input() tasks: Task[];
 
   constructor(private authService: AuthService, private taskService: TaskService) {
     this.loadProjectTasks = false;
@@ -30,11 +31,8 @@ export class TaskListComponent implements OnInit {
 
   ngOnInit(): void {
     if (this.loadProjectTasks) {
-      // Call the tasks service to populate
       console.log(this.tasks);
-      if (this.tasks && this.tasks.length === 0) {
-        this.isLoading = false;
-      }
+      this.isLoading = false;
     } else {
       this.authService.user.pipe(take(1)).subscribe(
         user => {
@@ -56,6 +54,16 @@ export class TaskListComponent implements OnInit {
 
         }
       )
+    }
+  }
+
+  determineTaskTypeTag(type: TaskType): string {
+    if (type == TaskType.URGENT) {
+      return 'label-tag label-tag--danger';
+    } else if (type == TaskType.NON_URGENT) {
+      return 'label-tag label-tag--info';
+    } else {
+      return '';
     }
   }
 }

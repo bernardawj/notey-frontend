@@ -9,12 +9,11 @@ import { AuthService } from '../../auth/auth.service';
 })
 export class HeaderComponent implements OnInit {
 
-  user: User | null;
+  user: User | undefined;
   notificationCount: number;
   expandNotification: boolean;
 
   constructor(private authService: AuthService) {
-    this.user = null;
     this.notificationCount = 0;
     this.expandNotification = false;
   }

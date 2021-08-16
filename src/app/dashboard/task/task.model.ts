@@ -5,6 +5,7 @@ import { User } from '../../shared/user/user.model';
 export class Task {
 
   constructor(public id: number, public name: string, public description: string, public type: TaskType,
-              isCompleted: boolean, startAt: Date, endAt: Date, createdAt: Date, project: Project, user: User) {
+              public isCompleted: boolean, public startAt: Date, public endAt: Date, public createdAt: Date,
+              public project: Project, public user: User) {
   }
 }

@@ -18,6 +18,8 @@ import { AuthInterceptor } from '../auth/auth.interceptor';
 import { NotificationComponent } from './notification/notification.component';
 import { TaskComponent } from './task/task.component';
 import { TaskListComponent } from './task/task-list/task-list.component';
+import { AssignUserComponent } from './project/assign-user/assign-user.component';
+import { RenameTaskTypePipe } from './task/rename-task-type.pipe';
 
 @NgModule({
   declarations: [
@@ -34,7 +36,9 @@ import { TaskListComponent } from './task/task-list/task-list.component';
     ProjectEditComponent,
     NotificationComponent,
     TaskComponent,
-    TaskListComponent
+    TaskListComponent,
+    AssignUserComponent,
+    RenameTaskTypePipe
   ],
   imports: [
     SharedModule,

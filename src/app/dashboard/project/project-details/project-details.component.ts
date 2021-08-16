@@ -5,6 +5,7 @@ import { ProjectService } from '../project.service';
 import { UserService } from '../../../shared/user/user.service';
 import { ProjectAcceptance } from '../../../shared/model/project-acceptance.model';
 import { AuthService } from '../../../auth/auth.service';
+import { take } from 'rxjs/operators';
 
 @Component({
   selector: 'app-project-details',
@@ -13,17 +14,20 @@ import { AuthService } from '../../../auth/auth.service';
 })
 export class ProjectDetailsComponent implements OnInit {
 
-  project: Project | null;
+  project!: Project;
   isManager: boolean;
   isLoading: boolean;
   hasAccepted: boolean;
+  manageUserMode: boolean;
+  userId: number | null;
 
   constructor(private projectService: ProjectService, private userService: UserService, private authService: AuthService,
               private router: Router, private activatedRoute: ActivatedRoute) {
-    this.project = null;
     this.isManager = false;
     this.isLoading = true;
-    this.hasAccepted = false;
+    this.hasAccepted = true;
+    this.manageUserMode = false;
+    this.userId = null;
   }
 
   ngOnInit(): void {
@@ -34,31 +38,58 @@ export class ProjectDetailsComponent implements OnInit {
             return;
           }
 
-          this.projectService.getProject(+param['id'], user.id).subscribe(
-            project => {
-              this.project = project;
-              this.isManager = this.hasAccepted = this.project.manager.id == user.id;
-
-              const assignedUser = this.project.assignedUsers.find(u => u.userId === user.id);
-              if (assignedUser) {
-                this.hasAccepted = assignedUser.hasAccepted;
-              }
-            }, error => {
-              this.router.navigate(['/dashboard/project']).finally();
-            }, () => {
-              this.isLoading = false;
-            }
-          );
+          this.userId = user.id;
+          this.getProject(+param['id'], this.userId);
         });
       }
     )
   }
 
   onUpdateAcceptance(accept: boolean): void {
-    if (this.project) {
-      this.userService.updateProjectAcceptance(new ProjectAcceptance(this.project.id, 2, accept)).subscribe(
-        response => this.router.navigate(['.'])
-      );
+    this.authService.user.pipe(take(1)).subscribe(
+      user => {
+        if (!user) {
+          return;
+        }
+
+        this.projectService.updateProjectAcceptance(new ProjectAcceptance(this.project.id, user.id, accept)).subscribe(
+          () => {
+            this.getProject(this.project.id, user.id);
+          }
+        );
+      }
+    );
+  }
+
+  onManageClick(): void {
+    this.manageUserMode = !this.manageUserMode;
+  }
+
+  onAssignUser(assigned: boolean): void {
+    if (assigned) {
+      if (!this.userId) {
+        return;
+      }
+
+      this.getProject(this.project.id, this.userId);
     }
+  }
+
+  private getProject(projectId: number, userId: number): void {
+    this.projectService.getProject(projectId, userId).subscribe(
+      project => {
+        this.project = project;
+        this.isManager = this.hasAccepted = this.project.manager.id == userId;
+
+        const assignedUser = this.project.assignedUsers.find(u => u.userId === userId);
+        if (assignedUser) {
+          this.hasAccepted = assignedUser.hasAccepted;
+        }
+      }, error => {
+        this.router.navigate(['/dashboard/project']).finally();
+      }, () => {
+        this.isLoading = false;
+      }
+    );
   }
 }

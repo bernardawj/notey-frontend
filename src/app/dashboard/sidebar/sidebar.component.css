@@ -44,12 +44,15 @@
   background-color: #ff6f6f;
 }
 
-#sidebar__navigation-links > ul > li {
-  margin-bottom: 10px;
+#sidebar__navigation-links > ul > li > a {
+  display: block;
+  padding: 10px 10px;
+  color: rgba(0, 0, 0, 0.87);
+  font-weight: 500;
+  width: 100%;
 }
 
-#sidebar__navigation-links > ul > li > a {
-  color: rgba(0, 0, 0, 0.87);
-  font-size: 14px;
-  font-weight: 500;
+.navigation-link--active {
+  background-color: #ff6f6f;
+  color: #f6f6f6 !important;
 }

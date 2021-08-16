@@ -9,18 +9,30 @@
         <tr>
           <th>Name</th>
           <th>Description</th>
+          <th>Type</th>
+          <th>Completed?</th>
           <th>Start At</th>
           <th>End At</th>
-          <th>Name</th>
+          <th>Taken By</th>
         </tr>
       </thead>
       <tbody>
         <tr *ngFor="let task of tasks">
           <td>{{ task.name }}</td>
           <td>{{ task.description }}</td>
-          <td></td>
-          <td></td>
-          <td></td>
+          <td>
+            <label [ngClass]="determineTaskTypeTag(task.type)">{{ task.type | renameTaskType }}</label></td>
+          <td>{{ task.isCompleted }}</td>
+          <td>{{ task.startAt | date: 'short' }}</td>
+          <td>{{ task.endAt | date: 'short' }}</td>
+          <td>
+            <span *ngIf="task.user">
+              {{ task.user.firstName }} {{ task.user.lastName }}
+            </span>
+            <span *ngIf="!task.user">
+              None
+            </span>
+          </td>
         </tr>
       </tbody>
     </table>

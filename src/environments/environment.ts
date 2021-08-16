@@ -8,32 +8,33 @@ export const environment = {
   production: false,
   endpoints: {
     auth: {
-      login: `${INITIAL_URI}/v1/auth/login`,
-      register: `${INITIAL_URI}/v1/auth/register`
+      login: `${ INITIAL_URI }/v1/auth/login`,
+      register: `${ INITIAL_URI }/v1/auth/register`
     },
     user: {
-      getUserDetails: `${INITIAL_URI}/v1/user`,
-      updateProjectAcceptance: `${INITIAL_URI}/v1/user/project/acceptance`
+      getUserDetails: `${ INITIAL_URI }/v1/user`
     },
     project: {
       getAllManagedProjects: `${ INITIAL_URI }/v1/project/managed`,
       getAllAssignedProjects: `${ INITIAL_URI }/v1/project/assigned`,
+      assignUserToProject: `${ INITIAL_URI }/v1/project/assign`,
       getProject: `${ INITIAL_URI }/v1/project`,
       createProject: `${ INITIAL_URI }/v1/project`,
-      updateProject: `${ INITIAL_URI }/v1/project`
+      updateProject: `${ INITIAL_URI }/v1/project`,
+      updateProjectAcceptance: `${ INITIAL_URI }/v1/project/acceptance`
     },
     task: {
-      getTask: `${INITIAL_URI}/v1/task/`,
-      createTask: `${INITIAL_URI}/v1/task`,
-      updateTask: `${INITIAL_URI}/v1/task`,
-      deleteTask: `${INITIAL_URI}/v1/task`,
-      getAllUserTasks: `${INITIAL_URI}/v1/task/user/`,
-      assignTaskToUser: `${INITIAL_URI}/v1/task/assign`,
-      markTaskAsCompleted: `${INITIAL_URI}/v1/task/mark-completion`
+      getTask: `${ INITIAL_URI }/v1/task`,
+      createTask: `${ INITIAL_URI }/v1/task`,
+      updateTask: `${ INITIAL_URI }/v1/task`,
+      deleteTask: `${ INITIAL_URI }/v1/task`,
+      getAllUserTasks: `${ INITIAL_URI }/v1/task/user`,
+      assignTaskToUser: `${ INITIAL_URI }/v1/task/assign`,
+      markTaskAsCompleted: `${ INITIAL_URI }/v1/task/mark-completion`
     },
     notification: {
-      getAllUserNotifications: `${INITIAL_URI}/v1/notification`,
-      clearAllUserNotifications: `${INITIAL_URI}/v1/notification`
+      getAllUserNotifications: `${ INITIAL_URI }/v1/notification`,
+      clearAllUserNotifications: `${ INITIAL_URI }/v1/notification`
     }
   }
 };
