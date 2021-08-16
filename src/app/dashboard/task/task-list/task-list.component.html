@@ -1,0 +1,33 @@
+<div id="task">
+  <h3 class="clearfix">
+    Project Tasks
+    <a [routerLink]="['/dashboard/task/create']" class="button button--primary pull-right no-margin" *ngIf="isManaged">New Task</a>
+  </h3>
+  <div class="table">
+    <table *ngIf="!isLoading && tasks!.length > 0">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Description</th>
+          <th>Start At</th>
+          <th>End At</th>
+          <th>Name</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let task of tasks">
+          <td>{{ task.name }}</td>
+          <td>{{ task.description }}</td>
+          <td></td>
+          <td></td>
+          <td></td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="svg__wrapper" *ngIf="!isLoading && tasks!.length === 0">
+      <img src="../../../../assets/svg/to-do-list.svg" alt="empty-tasks" />
+      <span class="svg-wrapper__text">No tasks found.</span>
+    </div>
+    <div class="load" *ngIf="isLoading"></div>
+  </div>
+</div>

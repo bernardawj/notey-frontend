@@ -132,6 +132,7 @@ form > .form-group:nth-last-child(1) {
   width: 100%;
   padding: 10px 15px;
   border: 0;
+  font-size: 14px;
   box-shadow: 0 3px 5px 0 rgba(0, 0, 0, 0.1);
 }
 
@@ -174,6 +175,8 @@ form > .form-group:nth-last-child(1) {
   margin-right: 5px;
   margin-bottom: 10px;
   font-weight: 500;
+  font-size: 14px;
+  line-height: 1.25em;
   box-shadow: 0 3px 5px 0 rgba(0, 0, 0, 0.1);
 }
 
@@ -343,6 +346,7 @@ th, td {
   -ms-flex-wrap: wrap;
   margin-left: -5px;
   margin-right: -5px;
+  margin-bottom: 20px;
 }
 
 .col-lg-1, .col-lg-2, .col-lg-3, .col-lg-4,
@@ -512,7 +516,7 @@ th, td {
 }
 
 .svg__wrapper > object,
-.svg__wrapper > object > img {
+.svg__wrapper img {
   max-width: 100px;
   margin-bottom: 10px;
 }

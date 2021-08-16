@@ -7,6 +7,7 @@ import { ProjectListComponent } from './project/project-list/project-list.compon
 import { ProjectCreateComponent } from './project/project-create/project-create.component';
 import { ProjectDetailsComponent } from './project/project-details/project-details.component';
 import { ProjectEditComponent } from './project/project-edit/project-edit.component';
+import { TaskComponent } from './task/task.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/dashboard/home', pathMatch: 'full' },
@@ -21,6 +22,10 @@ const routes: Routes = [
       { path: 'details/:id', component: ProjectDetailsComponent },
       { path: 'edit/:id', component: ProjectEditComponent }
     ]
+  },
+  {
+    path: 'task',
+    component: TaskComponent
   }
 ];
 

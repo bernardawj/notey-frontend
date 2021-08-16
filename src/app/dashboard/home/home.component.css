@@ -1,4 +1,4 @@
 .svg__wrapper > object,
-.svg__wrapper > object > img {
+.svg__wrapper img {
   max-width: 70px;
 }

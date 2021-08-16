@@ -22,6 +22,15 @@ export const environment = {
       createProject: `${ INITIAL_URI }/v1/project`,
       updateProject: `${ INITIAL_URI }/v1/project`
     },
+    task: {
+      getTask: `${INITIAL_URI}/v1/task/`,
+      createTask: `${INITIAL_URI}/v1/task`,
+      updateTask: `${INITIAL_URI}/v1/task`,
+      deleteTask: `${INITIAL_URI}/v1/task`,
+      getAllUserTasks: `${INITIAL_URI}/v1/task/user/`,
+      assignTaskToUser: `${INITIAL_URI}/v1/task/assign`,
+      markTaskAsCompleted: `${INITIAL_URI}/v1/task/mark-completion`
+    },
     notification: {
       getAllUserNotifications: `${INITIAL_URI}/v1/notification`,
       clearAllUserNotifications: `${INITIAL_URI}/v1/notification`

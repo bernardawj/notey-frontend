@@ -16,6 +16,8 @@ import { ProjectDetailsComponent } from './project/project-details/project-detai
 import { ProjectEditComponent } from './project/project-edit/project-edit.component';
 import { AuthInterceptor } from '../auth/auth.interceptor';
 import { NotificationComponent } from './notification/notification.component';
+import { TaskComponent } from './task/task.component';
+import { TaskListComponent } from './task/task-list/task-list.component';
 
 @NgModule({
   declarations: [
@@ -30,7 +32,9 @@ import { NotificationComponent } from './notification/notification.component';
     ProjectCreateComponent,
     ProjectDetailsComponent,
     ProjectEditComponent,
-    NotificationComponent
+    NotificationComponent,
+    TaskComponent,
+    TaskListComponent
   ],
   imports: [
     SharedModule,
