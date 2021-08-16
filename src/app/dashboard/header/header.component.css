@@ -13,6 +13,10 @@
   margin: auto 0;
 }
 
+#header__logo > a {
+  color: #F6F6F6;
+}
+
 #header__user {
   margin-left: auto;
   text-align: right;

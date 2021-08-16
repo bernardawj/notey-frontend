@@ -32,7 +32,7 @@
   color: #bababa;
 }
 
-.svg-wrapper,
+.svg__wrapper,
 .alert__wrapper {
   padding: 20px;
 }
@@ -41,6 +41,7 @@
   margin-bottom: 0;
 }
 
-.svg-wrapper > object, .svg-wrapper > object > img {
+.svg__wrapper > object,
+.svg__wrapper > object > img {
   max-width: 50px;
 }

@@ -4,7 +4,7 @@
       {{ success }}
     </div>
   </div>
-  <div id="notification__items" *ngIf="notifications.length > 0; else emptyNotification">
+  <div id="notification__items" *ngIf="!isLoading && notifications.length > 0; else emptyNotification">
     <ul>
       <li *ngFor="let notification of notifications" class="notification__item">
         <div class="notification__item-content">
@@ -20,11 +20,12 @@
     </ul>
   </div>
   <ng-template #emptyNotification>
-    <div class="svg-wrapper">
+    <div class="svg__wrapper">
       <object type="image/svg+xml" data="../../../assets/svg/bell.svg">
         <img src="../../../assets/svg/bell.svg" alt="empty-notification">
       </object>
       <span class="svg-wrapper__text">No notifications found.</span>
     </div>
   </ng-template>
+  <div class="load" *ngIf="isLoading"></div>
 </div>

@@ -37,7 +37,7 @@ export class ProjectDetailsComponent implements OnInit {
           this.projectService.getProject(+param['id'], user.id).subscribe(
             project => {
               this.project = project;
-              this.isManager = this.project.manager.id == user.id;
+              this.isManager = this.hasAccepted = this.project.manager.id == user.id;
 
               const assignedUser = this.project.assignedUsers.find(u => u.userId === user.id);
               if (assignedUser) {

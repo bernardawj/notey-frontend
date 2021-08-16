@@ -507,12 +507,12 @@ th, td {
   SVG
 *******************************/
 
-.svg-wrapper {
+.svg__wrapper {
   text-align: center;
 }
 
-.svg-wrapper > object,
-.svg-wrapper > object > img {
+.svg__wrapper > object,
+.svg__wrapper > object > img {
   max-width: 100px;
   margin-bottom: 10px;
 }

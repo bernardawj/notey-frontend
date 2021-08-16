@@ -12,6 +12,7 @@ import { Notification } from './notification.model';
 export class NotificationComponent implements OnInit {
 
   notifications: Notification[];
+  isLoading: boolean;
   error: string;
   success: string;
 
@@ -22,6 +23,7 @@ export class NotificationComponent implements OnInit {
   constructor(private authService: AuthService, private notificationService: NotificationService) {
     this.notifications = [];
     this.notificationNumberEmitter = new EventEmitter<number>();
+    this.isLoading = true;
     this.expandNotification = false;
     this.error = this.success = '';
   }
@@ -59,6 +61,7 @@ export class NotificationComponent implements OnInit {
       notifications => {
         this.notifications = notifications;
         this.notificationNumberEmitter.emit(this.notifications.length);
+        this.isLoading = false;
       }, error => {
         this.error = error.error.message;
       });
