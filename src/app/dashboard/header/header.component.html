@@ -1,11 +1,26 @@
 <header id="header">
   <div id="header__logo">Notey</div>
   <div id="header__user">
-    <div id="header__user-profile-image">
-      <div class="user__initials image-rounded">
-        <span>{{ user?.firstName + ' ' + user?.lastName | nameInitials }}</span>
-      </div>
-      <div class="user__details">Hi, {{ user?.firstName }}!</div>
-    </div>
+    <ul>
+      <li>
+        <div id="header__user-notifications">
+          <div class="header__icon">
+            <mat-icon (click)="onToggleNotification()">notifications</mat-icon>
+            <div class="header__user-notification-number">
+              <span (click)="onToggleNotification()">{{ notificationCount }}</span>
+            </div>
+          </div>
+          <app-notification [expandNotification]="expandNotification" (notificationNumberEmitter)="onUpdateNotificationCount($event)"></app-notification>
+        </div>
+      </li>
+      <li>
+        <div id="header__user-profile-image">
+          <div class="user__initials image-rounded">
+            <span>{{ user?.firstName + ' ' + user?.lastName | nameInitials }}</span>
+          </div>
+          <div class="user__details">Hi, {{ user?.firstName }}!</div>
+        </div>
+      </li>
+    </ul>
   </div>
 </header>

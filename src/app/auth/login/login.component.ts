@@ -1,4 +1,4 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { AuthService } from '../auth.service';
 import { Router } from '@angular/router';
@@ -12,9 +12,10 @@ export class LoginComponent implements OnInit {
 
   loginForm!: FormGroup;
   error: string;
+  info: string;
 
   constructor(private authService: AuthService, private formBuilder: FormBuilder, private router: Router) {
-    this.error = '';
+    this.error = this.info = '';
   }
 
   ngOnInit(): void {
@@ -25,15 +26,21 @@ export class LoginComponent implements OnInit {
   }
 
   onLogin(): void {
+    // Reset messages
+    this.info = 'Processing..';
+    this.error = '';
+
     const email = this.loginForm.get('email')?.value;
     const password = this.loginForm.get('password')?.value;
 
     this.authService.login(email, password).subscribe(
       response => {
         response.password = password;
+        localStorage.setItem('user', JSON.stringify(response));
         this.authService.user.next(response);
         this.router.navigate(['/dashboard']).finally();
       }, error => {
+        this.info = '';
         this.error = error.error.message;
       }
     );

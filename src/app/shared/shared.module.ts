@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { HttpClientModule } from '@angular/common/http';
 import { ReactiveFormsModule } from '@angular/forms';
+import { MatIconModule } from '@angular/material/icon';
 
 import { NameInitialsPipe } from './name-initials.pipe';
 
@@ -14,11 +15,13 @@ import { NameInitialsPipe } from './name-initials.pipe';
     CommonModule,
     RouterModule,
     HttpClientModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    MatIconModule
   ],
   exports: [
     CommonModule,
     ReactiveFormsModule,
+    MatIconModule,
     NameInitialsPipe
   ]
 })

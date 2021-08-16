@@ -22,9 +22,20 @@ export class AuthService {
     });
   }
 
-  register(user: User): Observable<User> {
-    return this.httpClient.post<User>(environment.endpoints.auth.register, user);
+  autoLogin(): void {
+    const userData = JSON.parse(<string>localStorage.getItem('user'));
+
+    if (!userData) {
+      return;
+    }
+
+    const user = new User(userData.id, userData.email, userData.password, userData.firstName, userData.lastName);
+    this.user.next(user);
   }
+
+  // register(user: User): Observable<User> {
+  //   return this.httpClient.post<User>(environment.endpoints.auth.register, user);
+  // }
 
   logout(): void {
     if (this.user) {

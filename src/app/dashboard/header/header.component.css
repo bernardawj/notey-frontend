@@ -3,19 +3,18 @@
   background-color: #ff6f6f;
   color: #F9F8F0;
   box-shadow: 0 3px 5px 0 rgba(0, 0, 0, 0.1);
+  padding: 0 20px;
 }
 
 #header__logo {
   flex-basis: 100px;
   font-size: 24px;
   font-weight: 600;
-  text-align: center;
   margin: auto 0;
 }
 
 #header__user {
   margin-left: auto;
-  flex-basis: 200px;
   text-align: right;
 }
 
@@ -23,6 +22,7 @@
   position: relative;
   height: 60px;
   padding: 10px;
+  text-align: left;
 }
 
 #header__user-profile-image > .user__initials {
@@ -33,4 +33,64 @@
 
 #header__user-profile-image > img {
   background-color: #F7F7F7;
+}
+
+#header__user > ul > li {
+  display: inline-block;
+  margin-right: 10px;
+  height: 60px;
+  vertical-align: bottom;
+}
+
+#header__user > ul > li:nth-last-child(1) {
+  margin-right: 0;
+}
+
+#header__user-notifications {
+  display: flex;
+  height: 100%;
+  position: relative;
+}
+
+.header__icon {
+  margin: auto;
+  position: relative;
+}
+
+.header__icon > mat-icon {
+  display: block;
+  height: 30px;
+  width: 30px;
+  font-size: 30px;
+}
+
+.header__user-notification-number {
+  position: absolute;
+  height: 16px;
+  width: 16px;
+  font-size: 12px;
+  background-color: #7f0000;
+  left: 0;
+  bottom: 0;
+  text-align: center;
+  border-radius: 50%;
+}
+
+.header__user-notification-number > span {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  -webkit-transform: translate(-50%, -50%);
+  -moz-transform: translate(-50%, -50%);
+  -o-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+}
+
+.header__icon > mat-icon,
+.header__user-notification-number > span {
+  cursor: pointer;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
 }

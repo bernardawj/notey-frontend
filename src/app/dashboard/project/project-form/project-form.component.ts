@@ -6,6 +6,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from '../../../auth/auth.service';
 import { take } from 'rxjs/operators';
 import { CreateProject } from '../../../model/project/create-project.model';
+import { UpdateProject } from '../../../model/project/update-project.model';
 
 @Component({
   selector: 'app-project-form',
@@ -74,12 +75,7 @@ export class ProjectFormComponent implements OnInit {
       }
 
       if (this.isEdit && this.project) {
-        // Update details and call update project endpoint
-        this.project.name = name;
-        this.project.description = description;
-        this.project.startAt = startAt;
-        this.project.endAt = endAt;
-        this.projectService.updateProject(this.project).subscribe(
+        this.projectService.updateProject(new UpdateProject(this.project?.id, name, description, startAt, endAt, user.id)).subscribe(
           response => this.router.navigate(['/dashboard/project/details', response.id]),
           error => {
             console.log(error);

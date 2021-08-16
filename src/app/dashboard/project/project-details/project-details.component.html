@@ -17,11 +17,11 @@
       </div>
       <div class="card-group">
         <label>Project Start Date</label>
-        <p [ngClass]="isLoading ? 'load' : ''">{{ project?.startAt }}</p>
+        <p [ngClass]="isLoading ? 'load' : ''">{{ project?.startAt | date: 'medium' }}</p>
       </div>
       <div class="card-group">
         <label>Project End Date</label>
-        <p [ngClass]="isLoading ? 'load' : ''">{{ project?.endAt }}</p>
+        <p [ngClass]="isLoading ? 'load' : ''">{{ project?.endAt | date: 'medium' }}</p>
       </div>
       <div class="card-group">
         <a [routerLink]="['../../list']" class="button button--secondary">Back</a>

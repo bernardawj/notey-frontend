@@ -1,0 +1,30 @@
+<div id="notification" *ngIf="expandNotification">
+  <div class="alert__wrapper" *ngIf="success">
+    <div class="alert alert--success">
+      {{ success }}
+    </div>
+  </div>
+  <div id="notification__items" *ngIf="notifications.length > 0; else emptyNotification">
+    <ul>
+      <li *ngFor="let notification of notifications" class="notification__item">
+        <div class="notification__item-content">
+          {{ notification.message }}
+        </div>
+        <div class="notification__item-footer">
+          <span class="notification__item-date">{{ notification.createdAt | date: 'short' }}</span>
+        </div>
+      </li>
+      <li>
+        <button class="button button--danger button--width-full no-margin-bottom" (click)="onClearAll()">Clear All Notifications</button>
+      </li>
+    </ul>
+  </div>
+  <ng-template #emptyNotification>
+    <div class="svg-wrapper">
+      <object type="image/svg+xml" data="../../../assets/svg/bell.svg">
+        <img src="../../../assets/svg/bell.svg" alt="empty-notification">
+      </object>
+      <span class="svg-wrapper__text">No notifications found.</span>
+    </div>
+  </ng-template>
+</div>

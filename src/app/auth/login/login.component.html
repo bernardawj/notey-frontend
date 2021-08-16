@@ -1,20 +1,21 @@
 <div *ngIf="error" class="alert alert--danger">
   {{ error }}
 </div>
+<div *ngIf="info" class="alert alert--info">
+  {{ info }}
+</div>
 <form [formGroup]="loginForm" (ngSubmit)="onLogin()">
   <div class="form-group">
     <label for="email">Email</label>
-    <input type="email" id="email" formControlName="email" class="form-control" />
+    <input type="email" id="email" formControlName="email" class="form-control"/>
   </div>
   <div class="form-group">
     <label for="password">Password</label>
-    <input type="password" id="password" formControlName="password" class="form-control" />
+    <input type="password" id="password" formControlName="password" class="form-control"/>
   </div>
   <div class="form-group">
-    <button type="submit" class="button button--primary button--width-full margin">Login</button>
-    <span id="form-group__register-link" class="form-group__auth-link">Don't have an account? <a
-      [routerLink]="['../register']">Sign Up</a></span>
-    <span id="form-group__forgot-password-link" class="form-group__auth-link">Forgot Your Password? <a
-      [routerLink]="['../forgot-password']">Reset</a></span>
+    <button type="submit" class="button button--primary button--width-full margin" [disabled]="loginForm.invalid">
+      Login
+    </button>
   </div>
 </form>

@@ -21,6 +21,10 @@ export const environment = {
       getProject: `${ INITIAL_URI }/v1/project`,
       createProject: `${ INITIAL_URI }/v1/project`,
       updateProject: `${ INITIAL_URI }/v1/project`
+    },
+    notification: {
+      getAllUserNotifications: `${INITIAL_URI}/v1/notification`,
+      clearAllUserNotifications: `${INITIAL_URI}/v1/notification`
     }
   }
 };

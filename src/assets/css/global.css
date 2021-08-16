@@ -190,8 +190,8 @@ form > .form-group:nth-last-child(1) {
 }
 
 .button--success {
-  background-color: #6fff6f;
-  border-color: #6fff6f;
+  background-color: #429942;
+  border-color: #429942;
   color: #f6f6f6;
 }
 
@@ -425,7 +425,7 @@ th, td {
 }
 
 .alert--success {
-  background-color: #6fff6f;
+  background-color: #429942;
   color: #f6f6f6;
 }
 

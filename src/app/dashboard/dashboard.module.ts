@@ -15,6 +15,7 @@ import { ProjectCreateComponent } from './project/project-create/project-create.
 import { ProjectDetailsComponent } from './project/project-details/project-details.component';
 import { ProjectEditComponent } from './project/project-edit/project-edit.component';
 import { AuthInterceptor } from '../auth/auth.interceptor';
+import { NotificationComponent } from './notification/notification.component';
 
 @NgModule({
   declarations: [
@@ -28,7 +29,8 @@ import { AuthInterceptor } from '../auth/auth.interceptor';
     ProjectFormComponent,
     ProjectCreateComponent,
     ProjectDetailsComponent,
-    ProjectEditComponent
+    ProjectEditComponent,
+    NotificationComponent
   ],
   imports: [
     SharedModule,
