@@ -1,7 +1,7 @@
 <div class="row">
   <div class="col-lg-8">
-    <h3>Project Details</h3>
     <div class="card">
+      <h3>Project Details</h3>
       <div *ngIf="!hasAccepted" class="alert alert--info">
         {{ project?.manager?.firstName }} {{ project?.manager?.lastName }} has assigned you this project.
         <button (click)="onUpdateAcceptance(true)" class="button button--primary no-margin-bottom">Accept</button>
@@ -30,8 +30,8 @@
     </div>
   </div>
   <div class="col-lg-4">
-    <h3>Assigned Users</h3>
     <div class="card">
+      <h3>Assigned Users</h3>
       <div class="card-group project__user">
         <div class="project__user-label">Project Manager</div>
         <div class="project__user-details" [ngClass]="isLoading ? 'load' : ''">

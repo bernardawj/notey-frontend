@@ -1,10 +1,10 @@
 <div id="task__list">
-  <h3 class="clearfix">
-    {{ loadProjectTasks ? 'Project Tasks' : 'Task List' }}
-    <a [routerLink]="['/dashboard/task/create']" class="button button--primary pull-right no-margin"
-       *ngIf="isManaged || !loadProjectTasks">New Task</a>
-  </h3>
   <div class="card">
+    <h3 class="clearfix">
+      {{ loadProjectTasks ? 'Project Tasks' : 'Task List' }}
+      <a [routerLink]="['/dashboard/task/create']" class="button button--primary pull-right no-margin"
+         *ngIf="isManaged || !loadProjectTasks">New Task</a>
+    </h3>
     <app-filter [data]="taskList" [dataType]="'TaskList'" (filterEmitter)="filterTasks($event)"></app-filter>
     <div class="table" *ngIf="!isLoading && taskListCopy?.tasks!.length > 0">
       <table>

@@ -1,9 +1,9 @@
 <div class="project__list">
-  <h3 class="clearfix">
-    {{ isManaged ? 'Managed' : 'Assigned' }} Projects
-    <a [routerLink]="['../create']" class="button button--primary pull-right no-margin" *ngIf="isManaged">New Project</a>
-  </h3>
   <div class="card">
+    <h3 class="clearfix">
+      {{ isManaged ? 'Managed' : 'Assigned' }} Projects
+      <a [routerLink]="['../create']" class="button button--primary pull-right no-margin" *ngIf="isManaged">New Project</a>
+    </h3>
     <app-filter [data]="projectList" [dataType]="'ProjectList'" (filterEmitter)="filterProjects($event)"></app-filter>
     <div class="table" *ngIf="!isLoading && projectListCopy?.projects!.length > 0">
       <table>

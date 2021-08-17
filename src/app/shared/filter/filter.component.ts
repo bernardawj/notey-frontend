@@ -9,6 +9,8 @@ import { TaskList } from '../../dashboard/task/task-list.model';
 })
 export class FilterComponent implements OnInit {
 
+  toggled: boolean;
+
   @Input() data: any;
 
   @Input() dataType: string | undefined;
@@ -16,6 +18,7 @@ export class FilterComponent implements OnInit {
   @Output() filterEmitter: EventEmitter<any>
 
   constructor() {
+    this.toggled = false;
     this.filterEmitter = new EventEmitter<any>();
   }
 

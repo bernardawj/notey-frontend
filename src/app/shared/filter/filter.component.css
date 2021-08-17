@@ -1,4 +1,41 @@
 #filter {
   margin-bottom: 20px;
-  border-bottom: 1px solid #e8e8e8;
+  background-color: #ff6f6f;
+}
+
+.filter__header {
+  cursor: pointer;
+  border-bottom: 1px solid #f6f6f6;
+}
+
+.filter__header > h3 {
+  color: #f6f6f6;
+  margin-bottom: 0;
+}
+
+.filter__body > .row:nth-last-child(1) {
+  margin-bottom: 0;
+}
+
+.filter__header,
+.filter__body {
+  padding: 10px 15px;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+h3 {
+  font-size: 16px;
+}
+
+h3 > mat-icon {
+  font-size: inherit;
+  height: 1em;
+  width: 1em;
+}
+
+#filter .form-group > label {
+  color: #f6f6f6;
 }

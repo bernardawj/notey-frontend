@@ -9,6 +9,7 @@ import { ProjectDetailsComponent } from './project/project-details/project-detai
 import { ProjectEditComponent } from './project/project-edit/project-edit.component';
 import { TaskComponent } from './task/task.component';
 import { TaskListItemComponent } from './task/task-list-item/task-list-item.component';
+import { CreditsComponent } from './credits/credits.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/dashboard/home', pathMatch: 'full' },
@@ -31,6 +32,10 @@ const routes: Routes = [
       { path: '', redirectTo: '/dashboard/task/list', pathMatch: 'full' },
       { path: 'list', component: TaskListItemComponent }
     ]
+  },
+  {
+    path: 'credits',
+    component: CreditsComponent
   }
 ];
 

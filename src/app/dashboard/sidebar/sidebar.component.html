@@ -7,11 +7,21 @@
   </div>
   <div id="sidebar__navigation" class="sidebar__sections">
     <label>Management</label>
-    <div id="sidebar__navigation-links">
+    <div class="sidebar__navigation-links">
       <ul>
         <li><a routerLinkActive="navigation-link--active" [routerLink]="['/dashboard/home']">Dashboard</a></li>
         <li><a routerLinkActive="navigation-link--active" [routerLink]="['/dashboard/project']">Project</a></li>
         <li><a routerLinkActive="navigation-link--active" [routerLink]="['/dashboard/task']">Task</a></li>
+      </ul>
+    </div>
+  </div>
+  <div id="sidebar__copyright" class="sidebar__sections">
+    <label>Copyright &copy; | bernardawj</label>
+    <div class="sidebar__navigation-links">
+      <ul>
+        <li><a href="https://www.github.com/bernardawj" target="_blank">My Github</a></li>
+        <li><a href="https://www.linkedin.com/in/bernardawj" target="_blank">My LinkedIn</a></li>
+        <li><a routerLinkActive="navigation-link--active" [routerLink]="['/dashboard/credits']">Credits</a></li>
       </ul>
     </div>
   </div>

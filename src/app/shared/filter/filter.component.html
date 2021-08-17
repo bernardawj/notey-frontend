@@ -1,10 +1,17 @@
 <div id="filter">
-  <h3>Filter</h3>
-  <div class="row">
-    <div class="col-lg-3">
-      <div class="form-group">
-        <label>Search</label>
-        <input type="text" class="form-control" (input)="onFilter(search.value)" #search />
+  <div class="filter__header" (click)="toggled = !toggled">
+    <h3 class="clearfix">
+      Filter
+      <mat-icon class="pull-right">{{ toggled ? 'expand_less' : 'expand_more' }}</mat-icon>
+    </h3>
+  </div>
+  <div class="filter__body" *ngIf="toggled">
+    <div class="row">
+      <div class="col-lg-3">
+        <div class="form-group">
+          <label for="search">Search</label>
+          <input type="text" id="search" class="form-control" (input)="onFilter(search.value)" #search />
+        </div>
       </div>
     </div>
   </div>

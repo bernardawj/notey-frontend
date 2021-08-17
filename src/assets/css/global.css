@@ -213,11 +213,13 @@ form > .form-group:nth-last-child(1) {
   Card
 *******************************/
 
+
 .card {
   display: block;
   background-color: #F6F6F6;
   padding: 15px;
   border-top: 2px solid #ff6f6f;
+  height: 100%;
 }
 
 .card-rounded {
