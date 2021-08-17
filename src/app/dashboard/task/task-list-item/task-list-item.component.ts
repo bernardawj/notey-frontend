@@ -7,6 +7,9 @@ import { TaskList } from '../task-list.model';
 import { ActivatedRoute } from '@angular/router';
 import { GetProjectTasks } from '../../../model/task/get-project-tasks.model';
 import { GetUserTasks } from '../../../model/task/get-user-tasks.model';
+import { Project } from '../../project/project.model';
+import { Task } from '../task.model';
+import { ProjectList } from '../../project/project-list.model';
 
 @Component({
   selector: 'app-task-list-item',
@@ -23,13 +26,14 @@ export class TaskListItemComponent implements OnInit {
   @Input() isManaged: boolean;
 
   taskList: TaskList | null;
+  taskListCopy: TaskList | null;
 
   constructor(private authService: AuthService, private taskService: TaskService, private activatedRoute: ActivatedRoute) {
     this.loadProjectTasks = false;
     this.isManaged = false;
     this.isLoading = true;
     this.error = '';
-    this.taskList = null;
+    this.taskList = this.taskListCopy = null;
   }
 
   ngOnInit(): void {
@@ -71,6 +75,7 @@ export class TaskListItemComponent implements OnInit {
   }
 
   getPage(pageNo: number): void {
+    this.isLoading = true;
     if (this.loadProjectTasks) {
       this.getProjectTasks(pageNo);
     } else {
@@ -78,11 +83,17 @@ export class TaskListItemComponent implements OnInit {
     }
   }
 
+  filterTasks(filteredTasks: Task[]): void {
+    console.log(filteredTasks)
+    this.taskListCopy!.tasks = filteredTasks;
+  }
+
   private getProjectTasks(pageNo: number): void {
     const projectId = this.activatedRoute.snapshot.params['id'];
     this.taskService.getAllProjectTasks(new GetProjectTasks(projectId, pageNo, 5)).subscribe(
       taskList => {
         this.taskList = taskList;
+        this.taskListCopy = Object.assign(new TaskList(this.taskList.tasks, this.taskList.pagination), this.taskList);
         this.isLoading = false;
       }
     )
@@ -97,8 +108,8 @@ export class TaskListItemComponent implements OnInit {
 
         this.taskService.getAllUserTasks(new GetUserTasks(user.id, pageNo, 5)).subscribe(
           taskList => {
-            console.log(taskList)
             this.taskList = taskList;
+            this.taskListCopy = Object.assign(new TaskList(this.taskList.tasks, this.taskList.pagination), this.taskList);
             this.isLoading = false;
           },
           error => {

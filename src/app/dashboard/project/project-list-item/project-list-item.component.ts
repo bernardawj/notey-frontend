@@ -6,6 +6,7 @@ import { take } from 'rxjs/operators';
 import { ProjectList } from '../project-list.model';
 import { GetManagedProjects } from '../../../model/project/get-managed-projects.model';
 import { GetAssignedProjects } from '../../../model/project/get-assigned-projects.model';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-project-list-item',
@@ -15,6 +16,7 @@ import { GetAssignedProjects } from '../../../model/project/get-assigned-project
 export class ProjectListItemComponent implements OnInit {
 
   projectList: ProjectList | null;
+  projectListCopy: ProjectList | null;
   error: string;
 
   isLoading: boolean;
@@ -23,8 +25,8 @@ export class ProjectListItemComponent implements OnInit {
   isManaged: boolean;
 
   constructor(private authService: AuthService, private projectService: ProjectService) {
-    this.projectList = null;
-    this.error = "";
+    this.projectList = this.projectListCopy = null;
+    this.error = '';
     this.isLoading = true;
     this.isManaged = true;
   }
@@ -49,41 +51,33 @@ export class ProjectListItemComponent implements OnInit {
     this.getProject(pageNo);
   }
 
+  filterProjects(filteredProjects: Project[]): void {
+    this.projectListCopy!.projects = filteredProjects;
+  }
+
   private getProject(pageNo: number): void {
     this.authService.user.pipe(take(1)).subscribe(user => {
       if (!user) {
         return;
       }
 
+      let callingService: Observable<ProjectList>;
       if (this.isManaged) {
-        this.getManagedProjects(user.id, pageNo);
+        callingService = this.projectService.getAllManagedProjects(new GetManagedProjects(user.id, pageNo, 10));
       } else {
-        this.getAssignedProjects(user.id, pageNo);
+        callingService = this.projectService.getAllAssignedProjects(new GetAssignedProjects(user.id, pageNo, 10));
       }
+
+      callingService.subscribe(
+        projectList => {
+          this.projectList = projectList;
+          this.projectListCopy = Object.assign(new ProjectList(this.projectList.projects, this.projectList.pagination), this.projectList);
+          this.isLoading = false;
+        }, error => {
+          this.error = error;
+          this.isLoading = false;
+        }
+      );
     });
-  }
-
-  private getManagedProjects(userId: number, pageNo: number): void {
-    this.projectService.getAllManagedProjects(new GetManagedProjects(userId, pageNo, 10)).subscribe(
-      projectList => {
-        this.projectList = projectList;
-        this.isLoading = false;
-      }, error => {
-        this.error = error;
-        this.isLoading = false;
-      }
-    );
-  }
-
-  private getAssignedProjects(userId: number, pageNo: number): void {
-    this.projectService.getAllAssignedProjects(new GetAssignedProjects(userId, pageNo, 10)).subscribe(
-      projectList => {
-        this.projectList = projectList;
-        this.isLoading = false;
-      }, error => {
-        this.error = error;
-        this.isLoading = false;
-      }
-    );
   }
 }

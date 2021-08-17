@@ -5,10 +5,12 @@ import { HttpClientModule } from '@angular/common/http';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatIconModule } from '@angular/material/icon';
 
+import { FilterComponent } from './filter/filter.component';
 import { NameInitialsPipe } from './name-initials.pipe';
 
 @NgModule({
   declarations: [
+    FilterComponent,
     NameInitialsPipe
   ],
   imports: [
@@ -22,6 +24,7 @@ import { NameInitialsPipe } from './name-initials.pipe';
     CommonModule,
     ReactiveFormsModule,
     MatIconModule,
+    FilterComponent,
     NameInitialsPipe
   ]
 })

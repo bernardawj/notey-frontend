@@ -4,50 +4,53 @@
     <a [routerLink]="['/dashboard/task/create']" class="button button--primary pull-right no-margin"
        *ngIf="isManaged || !loadProjectTasks">New Task</a>
   </h3>
-  <div class="table">
-    <table *ngIf="!isLoading && taskList?.tasks!.length > 0">
-      <thead>
-      <tr>
-        <th>Name</th>
-        <th>Description</th>
-        <th>Type</th>
-        <th>Start At</th>
-        <th>End At</th>
-        <th>Completed?</th>
-        <th>Taken By</th>
-      </tr>
-      </thead>
-      <tbody>
-      <tr *ngFor="let task of taskList?.tasks">
-        <td>{{ task.name }}</td>
-        <td>{{ task.description }}</td>
-        <td>
-          <label [ngClass]="determineTaskTypeTag(task.type)">{{ task.type | renameTaskType }}</label></td>
-        <td>{{ task.startAt | date: 'short' }}</td>
-        <td>{{ task.endAt | date: 'short' }}</td>
-        <td>{{ task.completed ? 'Yes' : 'No' }}</td>
-        <td>
+  <div class="card">
+    <app-filter [data]="taskList" [dataType]="'TaskList'" (filterEmitter)="filterTasks($event)"></app-filter>
+    <div class="table" *ngIf="!isLoading && taskListCopy?.tasks!.length > 0">
+      <table>
+        <thead>
+        <tr>
+          <th>Name</th>
+          <th>Description</th>
+          <th>Type</th>
+          <th>Start At</th>
+          <th>End At</th>
+          <th>Completed?</th>
+          <th>Taken By</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let task of taskListCopy?.tasks">
+          <td>{{ task.name }}</td>
+          <td>{{ task.description }}</td>
+          <td>
+            <label [ngClass]="determineTaskTypeTag(task.type)">{{ task.type | renameTaskType }}</label></td>
+          <td>{{ task.startAt | date: 'short' }}</td>
+          <td>{{ task.endAt | date: 'short' }}</td>
+          <td>{{ task.completed ? 'Yes' : 'No' }}</td>
+          <td>
             <span *ngIf="task.user">
               {{ task.user.firstName }} {{ task.user.lastName }}
             </span>
-          <span *ngIf="!task.user">
+            <span *ngIf="!task.user">
               None
             </span>
-        </td>
-      </tr>
-      </tbody>
-    </table>
-    <div class="pagination">
-      <ul>
-        <li *ngFor="let page of calculatePages()"
-            [ngClass]="this.taskList?.pagination?.currentPage === page ? 'pagination--active' : ''">
-          <a (click)="getPage(page)">
-            <span>{{ page }}</span>
-          </a>
-        </li>
-      </ul>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+      <div class="pagination">
+        <ul>
+          <li *ngFor="let page of calculatePages()"
+              [ngClass]="this.taskListCopy?.pagination?.currentPage === page ? 'pagination--active' : ''">
+            <a (click)="getPage(page)">
+              <span>{{ page }}</span>
+            </a>
+          </li>
+        </ul>
+      </div>
     </div>
-    <div class="svg__wrapper" *ngIf="!isLoading && taskList?.tasks!.length === 0">
+    <div class="svg__wrapper" *ngIf="!isLoading && taskListCopy?.tasks!.length === 0">
       <img src="../../../../assets/svg/to-do-list.svg" alt="empty-tasks"/>
       <span class="svg-wrapper__text">No tasks found.</span>
     </div>

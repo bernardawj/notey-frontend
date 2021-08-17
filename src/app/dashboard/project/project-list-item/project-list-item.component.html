@@ -3,36 +3,39 @@
     {{ isManaged ? 'Managed' : 'Assigned' }} Projects
     <a [routerLink]="['../create']" class="button button--primary pull-right no-margin" *ngIf="isManaged">New Project</a>
   </h3>
-  <div class="table">
-    <table *ngIf="!isLoading && projectList?.projects!.length > 0">
-      <thead>
-      <tr>
-        <th>Name</th>
-        <th>Description</th>
-        <th>Start At</th>
-        <th>End At</th>
-      </tr>
-      </thead>
-      <tbody>
-      <tr *ngFor="let project of projectList?.projects">
-        <td><a [routerLink]="['/dashboard/project/details', project.id]">{{ project.name }}</a></td>
-        <td>{{ project.description }}</td>
-        <td>{{ project.startAt | date: 'medium' }}</td>
-        <td>{{ project.endAt | date: 'medium' }}</td>
-      </tr>
-      </tbody>
-    </table>
-    <div class="pagination">
-      <ul>
-        <li *ngFor="let page of calculatePages()"
-            [ngClass]="this.projectList?.pagination?.currentPage === page ? 'pagination--active' : ''">
-          <a (click)="getPage(page)">
-            <span>{{ page }}</span>
-          </a>
-        </li>
-      </ul>
+  <div class="card">
+    <app-filter [data]="projectList" [dataType]="'ProjectList'" (filterEmitter)="filterProjects($event)"></app-filter>
+    <div class="table" *ngIf="!isLoading && projectListCopy?.projects!.length > 0">
+      <table>
+        <thead>
+        <tr>
+          <th>Name</th>
+          <th>Description</th>
+          <th>Start At</th>
+          <th>End At</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let project of projectListCopy?.projects">
+          <td><a [routerLink]="['/dashboard/project/details', project.id]">{{ project.name }}</a></td>
+          <td>{{ project.description }}</td>
+          <td>{{ project.startAt | date: 'medium' }}</td>
+          <td>{{ project.endAt | date: 'medium' }}</td>
+        </tr>
+        </tbody>
+      </table>
+      <div class="pagination">
+        <ul>
+          <li *ngFor="let page of calculatePages()"
+              [ngClass]="this.projectList?.pagination?.currentPage === page ? 'pagination--active' : ''">
+            <a (click)="getPage(page)">
+              <span>{{ page }}</span>
+            </a>
+          </li>
+        </ul>
+      </div>
     </div>
-    <div class="svg__wrapper" *ngIf="!isLoading && projectList?.projects!.length === 0">
+    <div class="svg__wrapper" *ngIf="!isLoading && projectListCopy?.projects!.length === 0">
       <img src="../../../../assets/svg/folder.svg" alt="empty-project" />
       <span class="svg-wrapper__text">No projects found.</span>
     </div>
