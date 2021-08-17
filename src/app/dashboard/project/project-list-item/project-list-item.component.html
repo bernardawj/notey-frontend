@@ -4,7 +4,7 @@
     <a [routerLink]="['../create']" class="button button--primary pull-right no-margin" *ngIf="isManaged">New Project</a>
   </h3>
   <div class="table">
-    <table *ngIf="!isLoading && projects.length > 0">
+    <table *ngIf="!isLoading && projectList?.projects!.length > 0">
       <thead>
       <tr>
         <th>Name</th>
@@ -14,7 +14,7 @@
       </tr>
       </thead>
       <tbody>
-      <tr *ngFor="let project of projects">
+      <tr *ngFor="let project of projectList?.projects">
         <td><a [routerLink]="['/dashboard/project/details', project.id]">{{ project.name }}</a></td>
         <td>{{ project.description }}</td>
         <td>{{ project.startAt | date: 'medium' }}</td>
@@ -22,7 +22,17 @@
       </tr>
       </tbody>
     </table>
-    <div class="svg__wrapper" *ngIf="!isLoading && projects.length === 0">
+    <div class="pagination">
+      <ul>
+        <li *ngFor="let page of calculatePages()"
+            [ngClass]="this.projectList?.pagination?.currentPage === page ? 'pagination--active' : ''">
+          <a (click)="getPage(page)">
+            <span>{{ page }}</span>
+          </a>
+        </li>
+      </ul>
+    </div>
+    <div class="svg__wrapper" *ngIf="!isLoading && projectList?.projects!.length === 0">
       <img src="../../../../assets/svg/folder.svg" alt="empty-project" />
       <span class="svg-wrapper__text">No projects found.</span>
     </div>
