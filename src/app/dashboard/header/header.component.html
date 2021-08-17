@@ -1,4 +1,4 @@
-<header id="header">
+<header id="header" xmlns="http://www.w3.org/1999/html">
   <div id="header__logo">
     <a [routerLink]="['/dashboard']">Notey</a>
   </div>
@@ -16,11 +16,19 @@
         </div>
       </li>
       <li>
-        <div id="header__user-profile-image">
+        <div id="header__user-profile-image" (click)="expandDropdown = !expandDropdown">
           <div class="user__initials image-rounded">
             <span>{{ user?.firstName + ' ' + user?.lastName | nameInitials }}</span>
           </div>
-          <div class="user__details">Hi, {{ user?.firstName }}!</div>
+          <div id="user__details">
+            <span id="user-details__welcome">Hi, {{ user?.firstName }}!</span>
+            <mat-icon>expand_more</mat-icon>
+          </div>
+          <div *ngIf="expandDropdown" class="dropdown">
+            <ul>
+              <li><a (click)="onLogout()">Logout</a></li>
+            </ul>
+          </div>
         </div>
       </li>
     </ul>

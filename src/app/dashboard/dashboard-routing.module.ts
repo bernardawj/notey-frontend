@@ -8,7 +8,7 @@ import { ProjectCreateComponent } from './project/project-create/project-create.
 import { ProjectDetailsComponent } from './project/project-details/project-details.component';
 import { ProjectEditComponent } from './project/project-edit/project-edit.component';
 import { TaskComponent } from './task/task.component';
-import { TaskListComponent } from './task/task-list/task-list.component';
+import { TaskListItemComponent } from './task/task-list-item/task-list-item.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/dashboard/home', pathMatch: 'full' },
@@ -29,7 +29,7 @@ const routes: Routes = [
     component: TaskComponent,
     children: [
       { path: '', redirectTo: '/dashboard/task/list', pathMatch: 'full' },
-      { path: 'list', component: TaskListComponent }
+      { path: 'list', component: TaskListItemComponent }
     ]
   }
 ];

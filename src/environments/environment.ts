@@ -29,6 +29,7 @@ export const environment = {
       updateTask: `${ INITIAL_URI }/v1/task`,
       deleteTask: `${ INITIAL_URI }/v1/task`,
       getAllUserTasks: `${ INITIAL_URI }/v1/task/user`,
+      getAllProjectTasks: `${ INITIAL_URI }/v1/task/project`,
       assignTaskToUser: `${ INITIAL_URI }/v1/task/assign`,
       markTaskAsCompleted: `${ INITIAL_URI }/v1/task/mark-completion`
     },

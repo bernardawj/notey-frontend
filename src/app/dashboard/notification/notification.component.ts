@@ -3,11 +3,29 @@ import { AuthService } from '../../auth/auth.service';
 import { NotificationService } from './notification.service';
 import { take } from 'rxjs/operators';
 import { Notification } from './notification.model';
+import { animate, state, style, transition, trigger } from '@angular/animations';
 
 @Component({
   selector: 'app-notification',
   templateUrl: './notification.component.html',
-  styleUrls: ['./notification.component.css']
+  styleUrls: ['./notification.component.css'],
+  animations: [
+    trigger('openClose', [
+      state('open', style({
+        opacity: '1'
+      })),
+      state('close', style({
+        opacity: '0',
+        display: 'none'
+      })),
+      transition('open => close', [
+        animate('0.5s')
+      ]),
+      transition('close => open', [
+        animate('0.5s')
+      ])
+    ])
+  ]
 })
 export class NotificationComponent implements OnInit {
 

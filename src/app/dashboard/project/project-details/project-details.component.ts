@@ -14,7 +14,7 @@ import { take } from 'rxjs/operators';
 })
 export class ProjectDetailsComponent implements OnInit {
 
-  project!: Project;
+  project: Project | undefined;
   isManager: boolean;
   isLoading: boolean;
   hasAccepted: boolean;
@@ -48,12 +48,16 @@ export class ProjectDetailsComponent implements OnInit {
   onUpdateAcceptance(accept: boolean): void {
     this.authService.user.pipe(take(1)).subscribe(
       user => {
-        if (!user) {
+        if (!user || !this.project) {
           return;
         }
 
         this.projectService.updateProjectAcceptance(new ProjectAcceptance(this.project.id, user.id, accept)).subscribe(
           () => {
+            if (!this.project) {
+              return;
+            }
+
             this.getProject(this.project.id, user.id);
           }
         );
@@ -67,7 +71,7 @@ export class ProjectDetailsComponent implements OnInit {
 
   onAssignUser(assigned: boolean): void {
     if (assigned) {
-      if (!this.userId) {
+      if (!this.project || !this.userId) {
         return;
       }
 
@@ -85,7 +89,7 @@ export class ProjectDetailsComponent implements OnInit {
         if (assignedUser) {
           this.hasAccepted = assignedUser.hasAccepted;
         }
-      }, error => {
+      }, () => {
         this.router.navigate(['/dashboard/project']).finally();
       }, () => {
         this.isLoading = false;

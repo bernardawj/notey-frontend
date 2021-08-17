@@ -1,4 +1,4 @@
-<div id="notification" *ngIf="expandNotification">
+<div id="notification" *ngIf="expandNotification" [@openClose]="expandNotification ? 'open' : 'close'">
   <div class="alert__wrapper" *ngIf="success">
     <div class="alert alert--success">
       {{ success }}

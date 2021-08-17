@@ -16,14 +16,13 @@ export class AssignUserComponent implements OnInit {
   success: string;
   error: string;
 
-  @Input() project: Project | null;
+  @Input() project: Project | undefined;
   @Input() manageUser: boolean;
 
   @Output() assignEvent: EventEmitter<boolean>;
 
   constructor(private userService: UserService, private projectService: ProjectService, private formBuilder: FormBuilder) {
     this.success = this.error = '';
-    this.project = null;
     this.manageUser = false;
     this.assignEvent = new EventEmitter<boolean>();
   }

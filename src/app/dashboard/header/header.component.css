@@ -20,6 +20,7 @@
 #header__user {
   margin-left: auto;
   text-align: right;
+  position: relative;
 }
 
 #header__user-profile-image {
@@ -91,10 +92,38 @@
 }
 
 .header__icon > mat-icon,
-.header__user-notification-number > span {
+.header__user-notification-number {
   cursor: pointer;
   -webkit-user-select: none;
   -moz-user-select: none;
   -ms-user-select: none;
   user-select: none;
+}
+
+#header__user-profile-image,
+#user__details {
+  cursor: pointer;
+}
+
+#user__details {
+  display: flex;
+  padding-left: 50px;
+  height: 100%;
+}
+
+#user-details__welcome {
+  flex-grow: 1;
+  padding-right: 10px;
+}
+
+#user__details > mat-icon {
+  flex-basis: 14px;
+  height: 14px;
+  width: 14px;
+  font-size: 14px;
+}
+
+#user-details__welcome,
+#user__details > mat-icon {
+  margin: auto;
 }

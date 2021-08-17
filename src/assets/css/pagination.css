@@ -1,0 +1,46 @@
+.pagination {
+  margin: 20px auto 0 auto;
+  text-align: center;
+  display: inline-block;
+}
+
+.pagination > ul > li {
+  position: relative;
+  height: 30px;
+  width: 30px;
+  display: inline-block;
+  border: 1px solid #e8e8e8;
+  margin: auto;
+  float: left;
+}
+
+.pagination > ul > li > a {
+  display: block;
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  -webkit-transition: all 0.3s ease-in-out;
+  -moz-transition: all 0.3s ease-in-out;
+  -o-transition: all 0.3s ease-in-out;
+  transition: all 0.3s ease-in-out;
+}
+
+li.pagination--active > a,
+.pagination > ul > li > a:hover {
+  background-color: #ff6f6f;
+  color: #f6f6f6;
+}
+
+.pagination > ul > li > a > span {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  -webkit-transform: translate(-50%, -50%);
+  -moz-transform: translate(-50%, -50%);
+  -o-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+  font-size: 12px;
+  line-height: 1;
+}
