@@ -1,0 +1,43 @@
+.alert {
+  position: absolute;
+  top: 80px;
+  right: 20px;
+  width: 300px;
+  z-index: 10;
+  padding: 15px 20px;
+  display: block;
+  background-color: transparent;
+  border-color: transparent;
+  box-shadow: 0 3px 5px 0 rgba(0, 0, 0, 0.1);
+  text-align: center;
+  line-height: 1.25em;
+  font-size: 14px;
+}
+
+.alert--info {
+  background-color: #6f6fff;
+  color: #f6f6f6;
+}
+
+.alert--danger {
+  background-color: #7f0000;
+  color: #f6f6f6;
+}
+
+.alert--success {
+  background-color: #429942;
+  color: #f6f6f6;
+}
+
+.alert--fade {
+  animation: alertFadeOut 1s linear 0s 1 forwards;
+}
+
+@keyframes alertFadeOut {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}

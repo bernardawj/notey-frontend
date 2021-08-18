@@ -7,6 +7,9 @@ import { AuthService } from '../../../auth/auth.service';
 import { take } from 'rxjs/operators';
 import { CreateProject } from '../../../model/project/create-project.model';
 import { UpdateProject } from '../../../model/project/update-project.model';
+import { AlertService } from '../../../shared/alert/alert.service';
+import { Alert } from '../../../shared/alert/alert.model';
+import { AlertType } from '../../../shared/alert/alert-type.enum';
 
 @Component({
   selector: 'app-project-form',
@@ -24,8 +27,8 @@ export class ProjectFormComponent implements OnInit {
   isEdit: boolean;
   isLoading: boolean;
 
-  constructor(private projectService: ProjectService, private authService: AuthService, private formBuilder: FormBuilder,
-              private activatedRoute: ActivatedRoute, private router: Router) {
+  constructor(private projectService: ProjectService, private authService: AuthService, private alertService: AlertService,
+              private formBuilder: FormBuilder, private activatedRoute: ActivatedRoute, private router: Router) {
     this.error = '';
     this.isEdit = false;
     this.isLoading = true;
@@ -76,18 +79,23 @@ export class ProjectFormComponent implements OnInit {
 
       if (this.isEdit && this.project) {
         this.projectService.updateProject(new UpdateProject(this.project?.id, name, description, startAt, endAt, user.id)).subscribe(
-          response => this.router.navigate(['/dashboard/project/details', response.id]),
+          project => {
+            this.alertService.alertEmitter.emit(new Alert(`Successfully updated Project (${project.name}).`, AlertType.SUCCESS));
+            this.router.navigate(['/dashboard/project/details', project.id]).finally();
+          },
           error => {
-            console.log(error);
-            this.error = error.error.message;
+            this.alertService.alertEmitter.emit(new Alert(error.error.message, AlertType.DANGER));
           }
         );
       } else {
         // Call create project endpoint with entered details
         this.projectService.createProject(new CreateProject(name, description, startAt, endAt, user.id)).subscribe(
-          response => this.router.navigate(['/dashboard/project']),
+          project => {
+            this.alertService.alertEmitter.emit(new Alert(`Successfully created Project (${project.name}).`, AlertType.SUCCESS));
+            this.router.navigate(['/dashboard/project']).finally();
+          },
           error => {
-            this.error = error.message;
+            this.alertService.alertEmitter.emit(new Alert(error.error.message, AlertType.DANGER));
           }
         );
       }

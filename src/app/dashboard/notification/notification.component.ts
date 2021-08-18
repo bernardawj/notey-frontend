@@ -4,6 +4,9 @@ import { NotificationService } from './notification.service';
 import { take } from 'rxjs/operators';
 import { Notification } from './notification.model';
 import { animate, state, style, transition, trigger } from '@angular/animations';
+import { AlertService } from '../../shared/alert/alert.service';
+import { Alert } from '../../shared/alert/alert.model';
+import { AlertType } from '../../shared/alert/alert-type.enum';
 
 @Component({
   selector: 'app-notification',
@@ -31,19 +34,16 @@ export class NotificationComponent implements OnInit {
 
   notifications: Notification[];
   isLoading: boolean;
-  error: string;
-  success: string;
 
   @Input() expandNotification: boolean;
 
   @Output() notificationNumberEmitter: EventEmitter<number>;
 
-  constructor(private authService: AuthService, private notificationService: NotificationService) {
+  constructor(private authService: AuthService, private alertService: AlertService, private notificationService: NotificationService) {
     this.notifications = [];
     this.notificationNumberEmitter = new EventEmitter<number>();
     this.isLoading = true;
     this.expandNotification = false;
-    this.error = this.success = '';
   }
 
   ngOnInit(): void {
@@ -66,10 +66,9 @@ export class NotificationComponent implements OnInit {
       this.notificationService.clearAllUserNotifications(user.id).subscribe(
         () => {
           this.getAllUserNotifications(user.id);
-          this.success = 'All notifications are cleared.';
-          this.hideAlert();
+          this.alertService.alertEmitter.emit(new Alert(`All notifications are cleared.`, AlertType.SUCCESS));
         }, error => {
-          this.error = error.error.message;
+          this.alertService.alertEmitter.emit(new Alert(error.error.message, AlertType.DANGER));
         });
     });
   }
@@ -81,7 +80,7 @@ export class NotificationComponent implements OnInit {
         this.notificationNumberEmitter.emit(this.notifications.length);
         this.isLoading = false;
       }, error => {
-        this.error = error.error.message;
+        this.alertService.alertEmitter.emit(new Alert(error.error.message, AlertType.DANGER));
       });
   }
 
@@ -89,11 +88,5 @@ export class NotificationComponent implements OnInit {
     setInterval(() => {
       this.getAllUserNotifications(userId);
     }, 10000);
-  }
-
-  private hideAlert(): void {
-    setTimeout(() => {
-      this.success = '';
-    }, 3000)
   }
 }

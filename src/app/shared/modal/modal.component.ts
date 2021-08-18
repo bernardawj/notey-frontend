@@ -27,6 +27,7 @@ export class ModalComponent implements OnInit {
     this.expandModal = false;
     this.id = 0;
     this.name = '';
+    this.assignmentForm = this.formBuilder.group({});
   }
 
   ngOnInit(): void {
@@ -75,6 +76,10 @@ export class ModalComponent implements OnInit {
     }
   }
 
+  isDeleteOrUpdate(): boolean {
+    return this.action === ModalAction.DELETE || this.action === ModalAction.UPDATE;
+  }
+
   isAssignTask(): boolean {
     return this.action === ModalAction.ASSIGN && this.type === ModalType.TASK;
   }
@@ -84,8 +89,6 @@ export class ModalComponent implements OnInit {
   }
 
   private buildForm(): void {
-    this.assignmentForm = this.formBuilder.group({});
-
     if (this.action === ModalAction.ASSIGN) {
       this.assignmentForm.addControl('user', new FormControl('', [Validators.required]))
     }

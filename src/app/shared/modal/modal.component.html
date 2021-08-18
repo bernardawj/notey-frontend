@@ -5,10 +5,9 @@
         Confirmation
       </div>
       <div class="modal__body">
-        <span [ngClass]="actionColorClass()">{{ action }}: {{ name }}</span>
+        <span [ngClass]="actionColorClass()">{{ action }}: {{ data.name }}</span>
         <br/><br/>
-        <span *ngIf="action! === 'DELETE' || action! === 'UPDATE'">Are you sure you want to {{ action | lowercase }}
-          it?</span>
+        <span *ngIf="isDeleteOrUpdate()">Are you sure you want to {{ action | lowercase }} it?</span>
         <div class="form-group" *ngIf="isAssignTask()">
           <label for="user">User</label>
           <select id="user" formControlName="user" class="form-control">

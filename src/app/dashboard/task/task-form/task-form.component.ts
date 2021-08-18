@@ -4,6 +4,9 @@ import { Task } from '../task.model';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TaskService } from '../task.service';
 import { CreateTask } from '../../../model/task/create-task.model';
+import { Alert } from '../../../shared/alert/alert.model';
+import { AlertType } from '../../../shared/alert/alert-type.enum';
+import { AlertService } from '../../../shared/alert/alert.service';
 
 @Component({
   selector: 'app-task-form',
@@ -19,7 +22,8 @@ export class TaskFormComponent implements OnInit {
   task: Task | null;
   projectId: number | null;
 
-  constructor(private taskService: TaskService, private formBuilder: FormBuilder, private router: Router, private activatedRoute: ActivatedRoute) {
+  constructor(private taskService: TaskService, private alertService: AlertService, private formBuilder: FormBuilder,
+              private router: Router, private activatedRoute: ActivatedRoute) {
     this.error = '';
     this.isEdit = false;
     this.task = null;
@@ -51,10 +55,11 @@ export class TaskFormComponent implements OnInit {
       }
 
       this.taskService.createTask(new CreateTask(name, description, type, startAt, endAt, this.projectId)).subscribe(
-        () => {
-          this.router.navigate(['/dashboard/project/details', this.projectId]).finally();
+        task => {
+          this.alertService.alertEmitter.emit(new Alert(`Successfully created Task (${task.name})`, AlertType.SUCCESS));
+          this.router.navigate(['/dashboard/project/details', task.project.id]).finally();
         }, error => {
-          this.error = error.error.message;
+          this.alertService.alertEmitter.emit(new Alert(error.error.message, AlertType.DANGER));
         }
       )
     } else {

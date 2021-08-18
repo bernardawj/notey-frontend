@@ -4,6 +4,9 @@ import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms'
 import { ProjectService } from '../project.service';
 import { Project } from '../project.model';
 import { AssignProject } from '../../../model/project/assign-project.model';
+import { AlertService } from '../../../shared/alert/alert.service';
+import { Alert } from '../../../shared/alert/alert.model';
+import { AlertType } from '../../../shared/alert/alert-type.enum';
 
 @Component({
   selector: 'app-assign-user',
@@ -13,16 +16,13 @@ import { AssignProject } from '../../../model/project/assign-project.model';
 export class AssignUserComponent implements OnInit {
 
   assignForm!: FormGroup;
-  success: string;
-  error: string;
 
   @Input() project: Project | undefined;
   @Input() manageUser: boolean;
 
   @Output() assignEvent: EventEmitter<boolean>;
 
-  constructor(private userService: UserService, private projectService: ProjectService, private formBuilder: FormBuilder) {
-    this.success = this.error = '';
+  constructor(private userService: UserService, private projectService: ProjectService, private alertService: AlertService, private formBuilder: FormBuilder) {
     this.manageUser = false;
     this.assignEvent = new EventEmitter<boolean>();
   }
@@ -34,8 +34,6 @@ export class AssignUserComponent implements OnInit {
   }
 
   onAssign(): void {
-    this.error = this.success = '';
-
     if (!this.project) {
       return;
     }
@@ -44,10 +42,10 @@ export class AssignUserComponent implements OnInit {
 
     this.projectService.assignProject(new AssignProject(this.project.id, email)).subscribe(
       () => {
-        this.success = `Successfully invited ${ email }.`;
+        this.alertService.alertEmitter.emit(new Alert(`Successfully invited ${ email }.`, AlertType.SUCCESS));
         this.assignEvent.emit(true);
       }, error => {
-        this.error = error.error.message;
+        this.alertService.alertEmitter.emit(new Alert(error.error.message, AlertType.DANGER));
     });
   }
 }

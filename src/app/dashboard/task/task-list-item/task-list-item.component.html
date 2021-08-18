@@ -32,10 +32,20 @@
               <label>Duration</label>
               <p>{{ task.startAt | date: 'dd MMM yyyy, hh:mm aa' }} - {{ task.endAt | date: 'dd MMM yyyy, hh:mm aa' }}</p>
             </div>
+            <div class="table-group" *ngIf="!loadProjectTasks">
+              <label>Project</label>
+              <p><a [routerLink]="['/dashboard/project/details', task.project.id]">{{ task.project.name }}</a></p>
+            </div>
           </td>
           <td>
             <label [ngClass]="determineTaskTypeTag(task.type)">{{ task.type | renameTaskType }}</label></td>
-          <td>{{ task.completed ? 'Yes' : 'No' }}</td>
+          <td class="task__completion">
+            <span>{{ task.completed ? 'Yes' : 'No' }}</span>
+            <div *ngIf="isManaged || task.user">
+              <button class="button button--success button--width-full" *ngIf="!task.completed && task.user && isUser(task.user.id)">Mark As Completed</button>
+              <button class="button button--danger button--width-full" *ngIf="task.completed">Mark As Incomplete</button>
+            </div>
+          </td>
           <td>
             <span *ngIf="task.user">
               {{ task.user.firstName }} {{ task.user.lastName }}
@@ -44,7 +54,7 @@
               None
             </span>
           </td>
-          <td *ngIf="isManaged">
+          <td *ngIf="isManaged" class="task__action">
             <a [routerLink]="['/dashboard/task/edit', task.id]" class="button button--primary button--width-full" *ngIf="isManaged">Update</a>
             <button class="button button--success button--width-full" *ngIf="!task.user && isManaged" (click)="assignTaskModal(task)">Assign Task</button>
             <button class="button button--danger button--width-full" *ngIf="task.user && isManaged" (click)="removeTaskAssignment(task.id, task.user.id)">Remove Task Assignment</button>

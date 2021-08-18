@@ -1,9 +1,4 @@
 <div id="notification" *ngIf="expandNotification" [@openClose]="expandNotification ? 'open' : 'close'">
-  <div class="alert__wrapper" *ngIf="success">
-    <div class="alert alert--success">
-      {{ success }}
-    </div>
-  </div>
   <div id="notification__items" *ngIf="!isLoading && notifications.length > 0; else emptyNotification">
     <ul>
       <li *ngFor="let notification of notifications" class="notification__item">

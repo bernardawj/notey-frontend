@@ -8,11 +8,13 @@ import { MatIconModule } from '@angular/material/icon';
 import { FilterComponent } from './filter/filter.component';
 import { NameInitialsPipe } from './name-initials.pipe';
 import { ModalComponent } from './modal/modal.component';
+import { AlertComponent } from './alert/alert.component';
 
 @NgModule({
   declarations: [
     FilterComponent,
     ModalComponent,
+    AlertComponent,
     NameInitialsPipe
   ],
   imports: [
@@ -28,6 +30,7 @@ import { ModalComponent } from './modal/modal.component';
     MatIconModule,
     FilterComponent,
     ModalComponent,
+    AlertComponent,
     NameInitialsPipe
   ]
 })

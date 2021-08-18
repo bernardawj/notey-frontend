@@ -1,7 +1,17 @@
+td {
+  vertical-align: top;
+}
+
 td > .button {
   margin-bottom: 5px;
 }
 
-tr > td:nth-last-child(1) {
+.task__completion,
+.task__action {
   width: 300px;
+}
+
+.task__completion > span {
+  display: inline-block;
+  margin-bottom: 5px;
 }

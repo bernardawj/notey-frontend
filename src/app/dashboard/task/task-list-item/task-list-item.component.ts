@@ -26,6 +26,8 @@ export class TaskListItemComponent implements OnInit {
 
   @Input() loadProjectTasks: boolean;
 
+  @Input() hasAccepted: boolean;
+
   @Input() isManaged: boolean;
 
   @Input() projectId: number | undefined;
@@ -33,12 +35,16 @@ export class TaskListItemComponent implements OnInit {
   taskList: TaskList | null;
   taskListCopy: TaskList | null;
 
+  currentUserId: number | null;
+
   constructor(private authService: AuthService, private taskService: TaskService, private modalService: ModalService, private activatedRoute: ActivatedRoute) {
     this.loadProjectTasks = false;
     this.isManaged = false;
     this.isLoading = true;
     this.error = '';
     this.taskList = this.taskListCopy = null;
+    this.currentUserId = null;
+    this.hasAccepted = false;
   }
 
   ngOnInit(): void {
@@ -46,9 +52,14 @@ export class TaskListItemComponent implements OnInit {
       this.getProjectTasks(1);
       this.deleteTaskListener();
       this.assignTaskListener();
+      this.getCurrentUserId();
     } else {
       this.getUserTasks(1);
     }
+  }
+
+  isUser(userId: number): boolean {
+    return userId === this.currentUserId && this.hasAccepted;
   }
 
   assignTaskModal(task: Task): void {
@@ -204,6 +215,18 @@ export class TaskListItemComponent implements OnInit {
             this.isLoading = false;
           }
         )
+      }
+    )
+  }
+
+  private getCurrentUserId(): void {
+    this.authService.user.subscribe(
+      user => {
+        if (!user) {
+          return;
+        }
+
+        this.currentUserId = user.id;
       }
     )
   }

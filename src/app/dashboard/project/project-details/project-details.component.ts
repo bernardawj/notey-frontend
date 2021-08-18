@@ -6,6 +6,7 @@ import { UserService } from '../../../shared/user/user.service';
 import { ProjectAcceptance } from '../../../shared/model/project-acceptance.model';
 import { AuthService } from '../../../auth/auth.service';
 import { take } from 'rxjs/operators';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-project-details',
@@ -22,7 +23,7 @@ export class ProjectDetailsComponent implements OnInit {
   userId: number | null;
 
   constructor(private projectService: ProjectService, private userService: UserService, private authService: AuthService,
-              private router: Router, private activatedRoute: ActivatedRoute) {
+              private router: Router, private activatedRoute: ActivatedRoute, private location: Location) {
     this.isManager = false;
     this.isLoading = true;
     this.hasAccepted = true;
@@ -77,6 +78,10 @@ export class ProjectDetailsComponent implements OnInit {
 
       this.getProject(this.project.id, this.userId);
     }
+  }
+
+  onBack(): void {
+    this.location.back();
   }
 
   private getProject(projectId: number, userId: number): void {

@@ -19,8 +19,8 @@
         <tr *ngFor="let project of projectListCopy?.projects">
           <td><a [routerLink]="['/dashboard/project/details', project.id]">{{ project.name }}</a></td>
           <td>{{ project.description }}</td>
-          <td>{{ project.startAt | date: 'medium' }}</td>
-          <td>{{ project.endAt | date: 'medium' }}</td>
+          <td>{{ project.startAt | date: 'dd MMM yyyy, hh:mm aa' }}</td>
+          <td>{{ project.endAt | date: 'dd MMM yyyy, hh:mm aa' }}</td>
         </tr>
         </tbody>
       </table>
