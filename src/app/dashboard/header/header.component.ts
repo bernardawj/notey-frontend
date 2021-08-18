@@ -40,7 +40,7 @@ export class HeaderComponent implements OnInit {
   onLogout(): void {
     this.authService.user.next(undefined);
     localStorage.removeItem('user');
-    this.alertService.alertEmitter.emit(new Alert('Successfully logged out from your account', AlertType.SUCCESS));
+    this.alertService.alertSubject.next(new Alert('Successfully logged out from your account', AlertType.SUCCESS));
     this.router.navigate(['/auth']).finally();
   }
 }

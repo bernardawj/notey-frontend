@@ -12,6 +12,7 @@ import { ProjectAcceptance } from '../../shared/model/project-acceptance.model';
 import { ProjectList } from './project-list.model';
 import { GetManagedProjects } from '../../model/project/get-managed-projects.model';
 import { GetAssignedProjects } from '../../model/project/get-assigned-projects.model';
+import { RemoveProjectAssignment } from '../../model/project/remove-project-assignment.model';
 
 @Injectable({
   providedIn: 'root'
@@ -43,6 +44,10 @@ export class ProjectService {
 
   assignProject(assignProject: AssignProject): Observable<any> {
     return this.httpClient.post(environment.endpoints.project.assignUserToProject, assignProject);
+  }
+
+  removeUserFromProject(removeProjectAssignment: RemoveProjectAssignment): Observable<any> {
+    return this.httpClient.post(environment.endpoints.project.removeUserFromProject, removeProjectAssignment);
   }
 
   updateProjectAcceptance(projectAcceptance: ProjectAcceptance): Observable<any> {

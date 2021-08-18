@@ -66,9 +66,9 @@ export class NotificationComponent implements OnInit {
       this.notificationService.clearAllUserNotifications(user.id).subscribe(
         () => {
           this.getAllUserNotifications(user.id);
-          this.alertService.alertEmitter.emit(new Alert(`All notifications are cleared.`, AlertType.SUCCESS));
+          this.alertService.alertSubject.next(new Alert(`All notifications are cleared.`, AlertType.SUCCESS));
         }, error => {
-          this.alertService.alertEmitter.emit(new Alert(error.error.message, AlertType.DANGER));
+          this.alertService.alertSubject.next(new Alert(error.error.message, AlertType.DANGER));
         });
     });
   }
@@ -80,7 +80,7 @@ export class NotificationComponent implements OnInit {
         this.notificationNumberEmitter.emit(this.notifications.length);
         this.isLoading = false;
       }, error => {
-        this.alertService.alertEmitter.emit(new Alert(error.error.message, AlertType.DANGER));
+        this.alertService.alertSubject.next(new Alert(error.error.message, AlertType.DANGER));
       });
   }
 

@@ -80,22 +80,22 @@ export class ProjectFormComponent implements OnInit {
       if (this.isEdit && this.project) {
         this.projectService.updateProject(new UpdateProject(this.project?.id, name, description, startAt, endAt, user.id)).subscribe(
           project => {
-            this.alertService.alertEmitter.emit(new Alert(`Successfully updated Project (${project.name}).`, AlertType.SUCCESS));
+            this.alertService.alertSubject.next(new Alert(`Successfully updated Project (${project.name}).`, AlertType.SUCCESS));
             this.router.navigate(['/dashboard/project/details', project.id]).finally();
           },
           error => {
-            this.alertService.alertEmitter.emit(new Alert(error.error.message, AlertType.DANGER));
+            this.alertService.alertSubject.next(new Alert(error.error.message, AlertType.DANGER));
           }
         );
       } else {
         // Call create project endpoint with entered details
         this.projectService.createProject(new CreateProject(name, description, startAt, endAt, user.id)).subscribe(
           project => {
-            this.alertService.alertEmitter.emit(new Alert(`Successfully created Project (${project.name}).`, AlertType.SUCCESS));
+            this.alertService.alertSubject.next(new Alert(`Successfully created Project (${project.name}).`, AlertType.SUCCESS));
             this.router.navigate(['/dashboard/project']).finally();
           },
           error => {
-            this.alertService.alertEmitter.emit(new Alert(error.error.message, AlertType.DANGER));
+            this.alertService.alertSubject.next(new Alert(error.error.message, AlertType.DANGER));
           }
         );
       }

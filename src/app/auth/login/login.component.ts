@@ -28,7 +28,7 @@ export class LoginComponent implements OnInit {
 
   onLogin(): void {
     // Reset messages
-    this.alertService.alertEmitter.emit(new Alert(`Processing login credentials..`, AlertType.INFO));
+    this.alertService.alertSubject.next(new Alert(`Processing login credentials..`, AlertType.INFO));
 
     const email = this.loginForm.get('email')?.value;
     const password = this.loginForm.get('password')?.value;
@@ -38,10 +38,10 @@ export class LoginComponent implements OnInit {
         response.password = password;
         localStorage.setItem('user', JSON.stringify(response));
         this.authService.user.next(response);
-        this.alertService.alertEmitter.emit(new Alert(`Successfully authenticated your account.`, AlertType.SUCCESS));
+        this.alertService.alertSubject.next(new Alert(`Successfully authenticated your account.`, AlertType.SUCCESS));
         this.router.navigate(['/dashboard']).finally();
       }, error => {
-        this.alertService.alertEmitter.emit(new Alert(error.error.message, AlertType.DANGER));
+        this.alertService.alertSubject.next(new Alert(error.error.message, AlertType.DANGER));
       }
     );
   }

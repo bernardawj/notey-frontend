@@ -7,6 +7,9 @@ import { ProjectList } from '../project-list.model';
 import { GetManagedProjects } from '../../../model/project/get-managed-projects.model';
 import { GetAssignedProjects } from '../../../model/project/get-assigned-projects.model';
 import { Observable } from 'rxjs';
+import { AlertService } from '../../../shared/alert/alert.service';
+import { Alert } from '../../../shared/alert/alert.model';
+import { AlertType } from '../../../shared/alert/alert-type.enum';
 
 @Component({
   selector: 'app-project-list-item',
@@ -24,7 +27,7 @@ export class ProjectListItemComponent implements OnInit {
   @Input()
   isManaged: boolean;
 
-  constructor(private authService: AuthService, private projectService: ProjectService) {
+  constructor(private authService: AuthService, private projectService: ProjectService, private alertService: AlertService) {
     this.projectList = this.projectListCopy = null;
     this.error = '';
     this.isLoading = true;
@@ -48,6 +51,8 @@ export class ProjectListItemComponent implements OnInit {
   }
 
   getPage(pageNo: number): void {
+    this.alertService.alertSubject.next(
+      new Alert(`Viewing page ${ pageNo } of ${ this.projectList?.pagination.totalPages } of ${ this.isManaged ? 'managed' : 'assigned' } projects.`, AlertType.INFO));
     this.getProject(pageNo);
   }
 
@@ -63,9 +68,9 @@ export class ProjectListItemComponent implements OnInit {
 
       let callingService: Observable<ProjectList>;
       if (this.isManaged) {
-        callingService = this.projectService.getAllManagedProjects(new GetManagedProjects(user.id, pageNo, 10));
+        callingService = this.projectService.getAllManagedProjects(new GetManagedProjects(user.id, pageNo, 5));
       } else {
-        callingService = this.projectService.getAllAssignedProjects(new GetAssignedProjects(user.id, pageNo, 10));
+        callingService = this.projectService.getAllAssignedProjects(new GetAssignedProjects(user.id, pageNo, 5));
       }
 
       callingService.subscribe(

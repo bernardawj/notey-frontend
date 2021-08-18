@@ -7,6 +7,10 @@ import { CreateTask } from '../../../model/task/create-task.model';
 import { Alert } from '../../../shared/alert/alert.model';
 import { AlertType } from '../../../shared/alert/alert-type.enum';
 import { AlertService } from '../../../shared/alert/alert.service';
+import { UpdateTask } from '../../../model/task/update-task.model';
+import { GetTask } from '../../../model/task/get-task.model';
+import { AuthService } from '../../../auth/auth.service';
+import { take } from 'rxjs/operators';
 
 @Component({
   selector: 'app-task-form',
@@ -22,8 +26,8 @@ export class TaskFormComponent implements OnInit {
   task: Task | null;
   projectId: number | null;
 
-  constructor(private taskService: TaskService, private alertService: AlertService, private formBuilder: FormBuilder,
-              private router: Router, private activatedRoute: ActivatedRoute) {
+  constructor(private taskService: TaskService, private alertService: AlertService, private authService: AuthService,
+              private formBuilder: FormBuilder, private router: Router, private activatedRoute: ActivatedRoute) {
     this.error = '';
     this.isEdit = false;
     this.task = null;
@@ -38,6 +42,10 @@ export class TaskFormComponent implements OnInit {
       startAt: new FormControl(null, [Validators.required]),
       endAt: new FormControl(null, [Validators.required])
     });
+
+    if (this.isEdit) {
+      this.getTaskDetails();
+    }
 
     this.projectId = this.activatedRoute.snapshot.queryParams['projectId'];
   }
@@ -56,14 +64,51 @@ export class TaskFormComponent implements OnInit {
 
       this.taskService.createTask(new CreateTask(name, description, type, startAt, endAt, this.projectId)).subscribe(
         task => {
-          this.alertService.alertEmitter.emit(new Alert(`Successfully created Task (${task.name})`, AlertType.SUCCESS));
+          this.alertService.alertSubject.next(new Alert(`Successfully created Task (${task.name})`, AlertType.SUCCESS));
           this.router.navigate(['/dashboard/project/details', task.project.id]).finally();
         }, error => {
-          this.alertService.alertEmitter.emit(new Alert(error.error.message, AlertType.DANGER));
+          this.alertService.alertSubject.next(new Alert(error.error.message, AlertType.DANGER));
         }
       )
     } else {
+      if (!this.task) {
+        return;
+      }
+
+      // this.taskService.updateTask(new UpdateTask())
       return;
     }
+  }
+
+  private getTaskDetails(): void {
+    this.activatedRoute.params.subscribe(
+      param => {
+        this.authService.user.pipe(take(1)).subscribe(
+          user => {
+            // Check if user is in a valid state
+            if (!user) {
+              return;
+            }
+
+            // Get task based on task identifier
+            this.taskService.getTask(new GetTask(+param['id'], user.id)).subscribe(
+              task => {
+                // Populate form controls
+                this.task = task;
+                this.form.get('name')?.setValue(this.task.name);
+                this.form.get('description')?.setValue(this.task.description);
+                this.form.get('type')?.setValue(this.task.type);
+                this.form.get('startAt')?.setValue(this.task.startAt);
+                this.form.get('endAt')?.setValue(this.task.endAt);
+
+                this.alertService.alertSubject.next(new Alert('Successfully retrieved task details.', AlertType.SUCCESS));
+              }, error => {
+                this.alertService.alertSubject.next(new Alert(error.error.message, AlertType.DANGER));
+              }
+            )
+          }
+        )
+      }
+    )
   }
 }

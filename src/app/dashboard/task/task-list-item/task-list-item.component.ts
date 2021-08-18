@@ -87,10 +87,10 @@ export class TaskListItemComponent implements OnInit {
                 }
 
                 // Get current page
-                this.alertService.alertEmitter.emit(new Alert(`Successfully assigned task to user.`, AlertType.SUCCESS));
+                this.alertService.alertSubject.next(new Alert(`Successfully assigned task to user.`, AlertType.SUCCESS));
                 this.getProjectTasks(this.taskList.pagination.totalPages);
               }, error => {
-                this.alertService.alertEmitter.emit(new Alert(error.error.message, AlertType.DANGER));
+                this.alertService.alertSubject.next(new Alert(error.error.message, AlertType.DANGER));
               }
             );
           }
@@ -116,10 +116,10 @@ export class TaskListItemComponent implements OnInit {
               return;
             }
 
-            this.alertService.alertEmitter.emit(new Alert(`Successfully removed task assignment from user.`, AlertType.SUCCESS));
+            this.alertService.alertSubject.next(new Alert(`Successfully removed task assignment from user.`, AlertType.SUCCESS));
             this.getProjectTasks(this.taskList.pagination.totalPages);
           }, error => {
-            this.alertService.alertEmitter.emit(new Alert(error.error.message, AlertType.DANGER));
+            this.alertService.alertSubject.next(new Alert(error.error.message, AlertType.DANGER));
           }
         )
       }
@@ -145,10 +145,10 @@ export class TaskListItemComponent implements OnInit {
                   return;
                 }
 
-                this.alertService.alertEmitter.emit(new Alert(`Successfully deleted task.`, AlertType.SUCCESS));
+                this.alertService.alertSubject.next(new Alert(`Successfully deleted task.`, AlertType.SUCCESS));
                 this.getProjectTasks(this.taskList.pagination.currentPage);
               }, error => {
-                this.alertService.alertEmitter.emit(new Alert(error.error.message, AlertType.DANGER));
+                this.alertService.alertSubject.next(new Alert(error.error.message, AlertType.DANGER));
               }
             )
           }
@@ -167,6 +167,14 @@ export class TaskListItemComponent implements OnInit {
     }
   }
 
+  determineCompletionTag(complete: boolean): string {
+    if (complete) {
+      return 'label-tag label-tag--success';
+    } else {
+      return 'label-tag label-tag--danger';
+    }
+  }
+
   calculatePages(): number[] {
     if (!this.taskList) {
       return [];
@@ -180,7 +188,8 @@ export class TaskListItemComponent implements OnInit {
   }
 
   getPage(pageNo: number): void {
-    this.isLoading = true;
+    this.alertService.alertSubject.next(
+      new Alert(`Viewing page ${ pageNo } of ${ this.taskList?.pagination.totalPages } of ${ this.loadProjectTasks ? 'project\'s' : 'assigned' } tasks.`, AlertType.INFO));
     if (this.loadProjectTasks) {
       this.getProjectTasks(pageNo);
     } else {

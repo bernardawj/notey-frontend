@@ -16,14 +16,18 @@ export class AlertComponent implements OnInit {
   fadeAlertTimeout: any;
   hideAlertTimeout: any;
 
-  constructor(private alertService: AlertService, private elementRef: ElementRef) {
+  constructor(private alertService: AlertService) {
     this.alert = null;
     this.alertClass = '';
   }
 
   ngOnInit(): void {
-    this.alertService.alertEmitter.subscribe(
+    this.alertService.alertSubject.subscribe(
       alert => {
+        if (!alert) {
+          return;
+        }
+
         if (this.fadeAlertTimeout) {
           clearTimeout(this.fadeAlertTimeout);
           this.fadeAlertTimeout = null;
@@ -45,7 +49,31 @@ export class AlertComponent implements OnInit {
           this.alert = null;
         }, 6000);
       }
-    )
+    );
+    // this.alertService.alertEmitter.subscribe(
+    //   alert => {
+    //     if (this.fadeAlertTimeout) {
+    //       clearTimeout(this.fadeAlertTimeout);
+    //       this.fadeAlertTimeout = null;
+    //     }
+    //
+    //     if (this.hideAlertTimeout) {
+    //       clearTimeout(this.hideAlertTimeout);
+    //       this.hideAlertTimeout = null;
+    //     }
+    //
+    //     this.alert = alert;
+    //     this.setAlertClass(this.alert.type);
+    //
+    //     this.fadeAlertTimeout = setTimeout(() => {
+    //       this.alertClass += ' alert--fade';
+    //     }, 5000);
+    //
+    //     this.hideAlertTimeout = setTimeout(() => {
+    //       this.alert = null;
+    //     }, 6000);
+    //   }
+    // )
   }
 
   setAlertClass(alertType: AlertType): void {

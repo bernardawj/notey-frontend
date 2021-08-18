@@ -185,6 +185,7 @@ form > .form-group:nth-last-child(1) {
   font-size: 1rem;
   line-height: 1.25em;
   box-shadow: 0 3px 5px 0 rgba(0, 0, 0, 0.1);
+  outline: 0;
 }
 
 .button--primary {
@@ -432,36 +433,6 @@ div > .row:nth-last-child(1) {
 }
 
 /******************************
-  Alert
-*******************************/
-
-/*.alert {*/
-/*  padding: 10px 20px;*/
-/*  margin-bottom: 20px;*/
-/*  background-color: transparent;*/
-/*  border-color: transparent;*/
-/*  box-shadow: 0 3px 5px 0 rgba(0, 0, 0, 0.1);*/
-/*  text-align: center;*/
-/*  line-height: 1.25em;*/
-/*  font-size: 14px;*/
-/*}*/
-
-/*.alert--info {*/
-/*  background-color: #6f6fff;*/
-/*  color: #f6f6f6;*/
-/*}*/
-
-/*.alert--danger {*/
-/*  background-color: #7f0000;*/
-/*  color: #f6f6f6;*/
-/*}*/
-
-/*.alert--success {*/
-/*  background-color: #429942;*/
-/*  color: #f6f6f6;*/
-/*}*/
-
-/******************************
   Color
 *******************************/
 
@@ -474,10 +445,11 @@ div > .row:nth-last-child(1) {
 *******************************/
 
 .label-tag {
+  display: inline-block;
   background-color: transparent;
   border: 1px solid transparent;
   color: #f6f6f6;
-  padding: 3px;
+  padding: 5px;
   box-shadow: 0 3px 5px 0 rgba(0, 0, 0, 0.1);
 }
 
@@ -490,6 +462,12 @@ div > .row:nth-last-child(1) {
 .label-tag--danger {
   background-color: #7f0000;
   border-color: #7f0000;
+  color: #f6f6f6;
+}
+
+.label-tag--success {
+  background-color: #429942;
+  border-color: #429942;
   color: #f6f6f6;
 }
 

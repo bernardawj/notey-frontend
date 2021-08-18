@@ -21,9 +21,14 @@
   -moz-transform: translateY(-50%);
   -o-transform: translateY(-50%);
   transform: translateY(-50%);
+  width: calc(100% - 50px);
 }
 
 .project__user-name > span {
   color: #bababa;
+}
+
+.manage-mode {
+  font-weight: 600;
 }
 

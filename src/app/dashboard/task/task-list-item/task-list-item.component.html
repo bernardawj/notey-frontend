@@ -40,19 +40,15 @@
           <td>
             <label [ngClass]="determineTaskTypeTag(task.type)">{{ task.type | renameTaskType }}</label></td>
           <td class="task__completion">
-            <span>{{ task.completed ? 'Yes' : 'No' }}</span>
+            <label [ngClass]="determineCompletionTag(task.completed)">{{ task.completed ? 'Yes' : 'No' }}</label>
             <div *ngIf="isManaged || task.user">
               <button class="button button--success button--width-full" *ngIf="!task.completed && task.user && isUser(task.user.id)">Mark As Completed</button>
               <button class="button button--danger button--width-full" *ngIf="task.completed">Mark As Incomplete</button>
             </div>
           </td>
           <td>
-            <span *ngIf="task.user">
-              {{ task.user.firstName }} {{ task.user.lastName }}
-            </span>
-            <span *ngIf="!task.user">
-              None
-            </span>
+            <label *ngIf="task.user" class="label-tag label-tag--success">{{ task.user.firstName }} {{ task.user.lastName }}</label>
+            <label *ngIf="!task.user" class="label-tag label-tag--danger">None</label>
           </td>
           <td *ngIf="isManaged" class="task__action">
             <a [routerLink]="['/dashboard/task/edit', task.id]" class="button button--primary button--width-full" *ngIf="isManaged">Update</a>

@@ -47,21 +47,27 @@
       <div class="card-group project__user">
         <div class="project__user-label clearfix">
           Project Members
-          <a href="javascript:;" class="pull-right" (click)="onManageClick()"
+          <a class="pull-right manage-mode" (click)="onManageClick()"
              *ngIf="isManager">{{ manageUserMode ? 'Cancel' : 'Manage' }}</a>
         </div>
         <app-assign-user [manageUser]="manageUserMode" [project]="project"
                          (assignEvent)="onAssignUser($event)"></app-assign-user>
-        <div class="project__user-details" [ngClass]="isLoading ? 'load' : ''"
-             *ngFor="let user of project?.assignedUsers">
-          <div class="user__initials image-rounded" *ngIf="!isLoading">
-            <span>{{ user.firstName + ' ' + user.lastName | nameInitials }}</span>
-          </div>
-          <div class="project__user-name" *ngIf="!isLoading">
-            {{ user.firstName + ' ' + user.lastName }}
-            <span *ngIf="user.userId === userId">(You)</span> <span *ngIf="!user.hasAccepted">(Pending)</span>
+        <div *ngIf="project && project.assignedUsers && project.assignedUsers.length > 0; else noMembers">
+          <div class="project__user-details" [ngClass]="isLoading ? 'load' : ''"
+               *ngFor="let user of project?.assignedUsers">
+            <div class="user__initials image-rounded" *ngIf="!isLoading">
+              <span>{{ user.firstName + ' ' + user.lastName | nameInitials }}</span>
+            </div>
+            <div class="project__user-name clearfix" *ngIf="!isLoading">
+              {{ user.firstName + ' ' + user.lastName }}
+              <span *ngIf="user.userId === userId">(You)</span> <span *ngIf="!user.hasAccepted">(Pending)</span>
+              <a *ngIf="isManager && manageUserMode" (click)="onRemoveUserAssignment(user)" class="pull-right manage-mode">Remove</a>
+            </div>
           </div>
         </div>
+        <ng-template #noMembers>
+          <p>No members found.</p>
+        </ng-template>
       </div>
     </div>
   </div>

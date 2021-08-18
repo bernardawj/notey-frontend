@@ -39,3 +39,15 @@ h3 > mat-icon {
 #filter .form-group > label {
   color: #f6f6f6;
 }
+
+form > .row {
+  margin-bottom: 0;
+}
+
+form > .row:nth-last-child(1) {
+  margin-bottom: 0;
+}
+
+form .button {
+  margin-bottom: 0;
+}
