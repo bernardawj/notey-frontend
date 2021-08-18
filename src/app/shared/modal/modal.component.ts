@@ -68,6 +68,7 @@ export class ModalComponent implements OnInit {
       this.modalService.taskConfirmationEmitter.emit(this.id);
     } else {
       const userId = this.assignmentForm.get('user')?.value;
+      const name = this.assignmentForm.get('name')?.value;
       this.modalService.taskAssignmentEmitter.emit(new AssignTask(this.getTaskData().id, userId, 0, true));
     }
 
@@ -90,7 +91,7 @@ export class ModalComponent implements OnInit {
 
   private buildForm(): void {
     if (this.action === ModalAction.ASSIGN) {
-      this.assignmentForm.addControl('user', new FormControl('', [Validators.required]))
+      this.assignmentForm.addControl('user', new FormControl('', [Validators.required]));
     }
   }
 }

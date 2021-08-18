@@ -2,6 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { User } from '../../shared/user/user.model';
 import { AuthService } from '../../auth/auth.service';
 import { Router } from '@angular/router';
+import { Alert } from '../../shared/alert/alert.model';
+import { AlertType } from '../../shared/alert/alert-type.enum';
+import { AlertService } from '../../shared/alert/alert.service';
 
 @Component({
   selector: 'app-header',
@@ -15,7 +18,7 @@ export class HeaderComponent implements OnInit {
   expandNotification: boolean;
   expandDropdown: boolean;
 
-  constructor(private authService: AuthService, private router: Router) {
+  constructor(private authService: AuthService, private alertService: AlertService, private router: Router) {
     this.notificationCount = 0;
     this.expandNotification = this.expandDropdown = false;
   }
@@ -37,6 +40,7 @@ export class HeaderComponent implements OnInit {
   onLogout(): void {
     this.authService.user.next(undefined);
     localStorage.removeItem('user');
+    this.alertService.alertEmitter.emit(new Alert('Successfully logged out from your account', AlertType.SUCCESS));
     this.router.navigate(['/auth']).finally();
   }
 }

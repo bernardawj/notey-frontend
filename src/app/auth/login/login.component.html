@@ -1,9 +1,3 @@
-<div *ngIf="error" class="alert alert--danger">
-  {{ error }}
-</div>
-<div *ngIf="info" class="alert alert--info">
-  {{ info }}
-</div>
 <form [formGroup]="loginForm" (ngSubmit)="onLogin()">
   <div class="form-group">
     <label for="email">Email</label>

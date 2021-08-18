@@ -2,6 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { AuthService } from '../auth.service';
 import { Router } from '@angular/router';
+import { Alert } from '../../shared/alert/alert.model';
+import { AlertType } from '../../shared/alert/alert-type.enum';
+import { AlertService } from '../../shared/alert/alert.service';
 
 @Component({
   selector: 'app-login',
@@ -11,11 +14,9 @@ import { Router } from '@angular/router';
 export class LoginComponent implements OnInit {
 
   loginForm!: FormGroup;
-  error: string;
-  info: string;
 
-  constructor(private authService: AuthService, private formBuilder: FormBuilder, private router: Router) {
-    this.error = this.info = '';
+  constructor(private authService: AuthService, private alertService: AlertService, private formBuilder: FormBuilder,
+              private router: Router) {
   }
 
   ngOnInit(): void {
@@ -27,8 +28,7 @@ export class LoginComponent implements OnInit {
 
   onLogin(): void {
     // Reset messages
-    this.info = 'Processing..';
-    this.error = '';
+    this.alertService.alertEmitter.emit(new Alert(`Processing login credentials..`, AlertType.INFO));
 
     const email = this.loginForm.get('email')?.value;
     const password = this.loginForm.get('password')?.value;
@@ -38,10 +38,10 @@ export class LoginComponent implements OnInit {
         response.password = password;
         localStorage.setItem('user', JSON.stringify(response));
         this.authService.user.next(response);
+        this.alertService.alertEmitter.emit(new Alert(`Successfully authenticated your account.`, AlertType.SUCCESS));
         this.router.navigate(['/dashboard']).finally();
       }, error => {
-        this.info = '';
-        this.error = error.error.message;
+        this.alertService.alertEmitter.emit(new Alert(error.error.message, AlertType.DANGER));
       }
     );
   }

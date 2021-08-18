@@ -13,6 +13,9 @@ import { ModalService } from '../../../shared/modal/modal.service';
 import { Modal } from '../../../shared/modal/modal.model';
 import { ModalType } from '../../../shared/modal/modal-type.enum';
 import { ModalAction } from '../../../shared/modal/modal-action.enum';
+import { Alert } from '../../../shared/alert/alert.model';
+import { AlertType } from '../../../shared/alert/alert-type.enum';
+import { AlertService } from '../../../shared/alert/alert.service';
 
 @Component({
   selector: 'app-task-list-item',
@@ -37,7 +40,8 @@ export class TaskListItemComponent implements OnInit {
 
   currentUserId: number | null;
 
-  constructor(private authService: AuthService, private taskService: TaskService, private modalService: ModalService, private activatedRoute: ActivatedRoute) {
+  constructor(private authService: AuthService, private taskService: TaskService, private modalService: ModalService,
+              private alertService: AlertService, private activatedRoute: ActivatedRoute) {
     this.loadProjectTasks = false;
     this.isManaged = false;
     this.isLoading = true;
@@ -83,9 +87,10 @@ export class TaskListItemComponent implements OnInit {
                 }
 
                 // Get current page
+                this.alertService.alertEmitter.emit(new Alert(`Successfully assigned task to user.`, AlertType.SUCCESS));
                 this.getProjectTasks(this.taskList.pagination.totalPages);
               }, error => {
-                this.error = error.error.message;
+                this.alertService.alertEmitter.emit(new Alert(error.error.message, AlertType.DANGER));
               }
             );
           }
@@ -111,9 +116,10 @@ export class TaskListItemComponent implements OnInit {
               return;
             }
 
+            this.alertService.alertEmitter.emit(new Alert(`Successfully removed task assignment from user.`, AlertType.SUCCESS));
             this.getProjectTasks(this.taskList.pagination.totalPages);
           }, error => {
-            this.error = error.error.message;
+            this.alertService.alertEmitter.emit(new Alert(error.error.message, AlertType.DANGER));
           }
         )
       }
@@ -135,13 +141,14 @@ export class TaskListItemComponent implements OnInit {
 
             this.taskService.deleteTask(taskId, user.id).subscribe(
               () => {
-                // TODO: prompt alert message
                 if (!this.taskList || !this.taskList.pagination) {
                   return;
                 }
+
+                this.alertService.alertEmitter.emit(new Alert(`Successfully deleted task.`, AlertType.SUCCESS));
                 this.getProjectTasks(this.taskList.pagination.currentPage);
               }, error => {
-                this.error = error.error.message;
+                this.alertService.alertEmitter.emit(new Alert(error.error.message, AlertType.DANGER));
               }
             )
           }
