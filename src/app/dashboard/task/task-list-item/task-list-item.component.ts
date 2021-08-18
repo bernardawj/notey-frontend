@@ -25,6 +25,8 @@ export class TaskListItemComponent implements OnInit {
 
   @Input() isManaged: boolean;
 
+  @Input() projectId: number | undefined;
+
   taskList: TaskList | null;
   taskListCopy: TaskList | null;
 

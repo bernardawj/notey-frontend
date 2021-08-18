@@ -6,6 +6,7 @@ import { environment } from '../../../environments/environment';
 import { TaskList } from './task-list.model';
 import { GetProjectTasks } from '../../model/task/get-project-tasks.model';
 import { GetUserTasks } from '../../model/task/get-user-tasks.model';
+import { CreateTask } from '../../model/task/create-task.model';
 
 @Injectable({
   providedIn: 'root'
@@ -22,5 +23,9 @@ export class TaskService {
   getAllProjectTasks(getProjectTasks: GetProjectTasks): Observable<TaskList> {
     return this.httpClient.get<TaskList>(
       `${ environment.endpoints.task.getAllProjectTasks }/${ getProjectTasks.projectId }/${ getProjectTasks.pageNo }/${ getProjectTasks.pageSize }`);
+  }
+
+  createTask(createTask: CreateTask): Observable<Task> {
+    return this.httpClient.post<Task>(environment.endpoints.task.createTask, createTask);
   }
 }

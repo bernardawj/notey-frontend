@@ -1,10 +1,52 @@
 <section id="auth-section">
-  <div id="auth-section__image-wrapper"></div>
-  <div id="auth-section__form-wrapper">
-    <div id="auth-section__form-title-wrapper">
-      <h1 id="auth-section__form-title">Notey</h1>
-      <span id="auth-section__form-subtitle">A simple project management app.</span>
+  <div id="auth-section__disclaimer">
+    <h2>Notey</h2>
+    <ul>
+      <li>
+        <h3>Description</h3>
+        <p>
+          Notey is a simple project management app that is developed in Angular and Java which allow users to create and
+          delegate project tasks to other users in their projects.
+          <br/><br/>
+          The purpose of this project is to showcase and apply what I have learned throughout my software engineering
+          journey.
+        </p>
+      </li>
+      <li>
+        <h3>Notes</h3>
+        <p>Registration is disabled. Please use the accounts below to access instead.</p>
+        <ul>
+          <li>Username: ben@email.com<br/>Password: ben123</li>
+          <li>Username: emerald@email.com<br/>Password: emerald123</li>
+          <li>Username: daniel@email.com<br/>Password: daniel123</li>
+          <li>Username: carly@email.com<br/>Password: carly123</li>
+        </ul>
+      </li>
+      <li>
+        <h3>Copyright and Links</h3>
+        <ul id="auth-section__social-media">
+          <li>
+            <a href="https://www.linkedin.com/in/bernardawj" target="_blank">
+              <img src="../../assets/svg/linkedin.svg" alt="linkedin-logo"/>
+            </a>
+          </li>
+          <li>
+            <a href="https://www.github.com/bernardawj" target="_blank">
+              <img src="../../assets/svg/github.svg" alt="github-logo"/>
+            </a>
+          </li>
+        </ul>
+        <p>Copyright &copy; 2021 | bernardawj</p>
+      </li>
+    </ul>
+  </div>
+  <div id="auth-section__image-wrapper">
+    <div id="auth-section__form-wrapper">
+      <div id="auth-section__form-title-wrapper">
+        <h1 id="auth-section__form-title">Notey</h1>
+        <span id="auth-section__form-subtitle">A simple project management app.</span>
+      </div>
+      <router-outlet></router-outlet>
     </div>
-    <router-outlet></router-outlet>
   </div>
 </section>

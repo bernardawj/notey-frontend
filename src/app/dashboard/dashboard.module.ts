@@ -22,6 +22,8 @@ import { TaskListItemComponent } from './task/task-list-item/task-list-item.comp
 import { AssignUserComponent } from './project/assign-user/assign-user.component';
 import { RenameTaskTypePipe } from './task/rename-task-type.pipe';
 import { CreditsComponent } from './credits/credits.component';
+import { TaskCreateComponent } from './task/task-create/task-create.component';
+import { TaskFormComponent } from './task/task-form/task-form.component';
 
 @NgModule({
   declarations: [
@@ -42,7 +44,9 @@ import { CreditsComponent } from './credits/credits.component';
     TaskListItemComponent,
     AssignUserComponent,
     CreditsComponent,
-    RenameTaskTypePipe
+    RenameTaskTypePipe,
+    TaskCreateComponent,
+    TaskFormComponent
   ],
   imports: [
     SharedModule,
