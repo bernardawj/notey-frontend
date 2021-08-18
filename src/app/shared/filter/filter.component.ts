@@ -1,6 +1,8 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { ProjectList } from '../../dashboard/project/project-list.model';
-import { TaskList } from '../../dashboard/task/task-list.model';
+import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
+import { AlertService } from '../alert/alert.service';
+import { Alert } from '../alert/alert.model';
+import { AlertType } from '../alert/alert-type.enum';
 
 @Component({
   selector: 'app-filter',
@@ -10,29 +12,25 @@ import { TaskList } from '../../dashboard/task/task-list.model';
 export class FilterComponent implements OnInit {
 
   toggled: boolean;
+  filterForm!: FormGroup;
+  currentFilter: string;
 
-  @Input() data: any;
+  @Output() filterEmitter: EventEmitter<string>;
 
-  @Input() dataType: string | undefined;
-
-  @Output() filterEmitter: EventEmitter<any>
-
-  constructor() {
+  constructor(private alertService: AlertService, private formBuilder: FormBuilder) {
     this.toggled = false;
-    this.filterEmitter = new EventEmitter<any>();
+    this.filterEmitter = new EventEmitter<string>();
+    this.currentFilter = '';
   }
 
   ngOnInit(): void {
+    this.filterForm = this.formBuilder.group({
+      search: new FormControl('')
+    });
   }
 
-  onFilter(search: string): any {
-    let filteredData;
-    if (this.dataType === 'ProjectList') {
-      filteredData = (<ProjectList>(this.data)).projects.filter(project => project.name.toLowerCase().includes(search.toLowerCase()));
-    } else if (this.dataType === 'TaskList') {
-      filteredData = (<TaskList>(this.data)).tasks.filter(task => task.name.toLowerCase().includes(search.toLowerCase()));
-    }
-
-    this.filterEmitter!.emit(filteredData);
+  onFilter(): void {
+    this.currentFilter = this.filterForm.get('search')?.value;
+    this.filterEmitter.next(this.currentFilter);
   }
 }

@@ -24,8 +24,7 @@ export class TaskService {
   }
 
   getAllProjectTasks(getProjectTasks: GetProjectTasks): Observable<TaskList> {
-    return this.httpClient.get<TaskList>(
-      `${ environment.endpoints.task.getAllProjectTasks }/${ getProjectTasks.projectId }/${ getProjectTasks.pageNo }/${ getProjectTasks.pageSize }`);
+    return this.httpClient.post<TaskList>(environment.endpoints.task.getAllProjectTasks, getProjectTasks);
   }
 
   getTask(getTask: GetTask): Observable<Task> {

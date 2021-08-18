@@ -73,7 +73,7 @@ export class ModalComponent implements OnInit {
     if (this.type === ModalType.ASSIGNED_USER) {
       // Actions for user assignment
       if (this.action === ModalAction.REMOVE) {
-        this.modalService.removeProjectAssignmentEmitter.emit(new RemoveProjectAssignment(-1, this.id, -1));
+        this.modalService.removeProjectAssignmentSubject.next(new RemoveProjectAssignment(-1, this.id, -1));
       }
     } else if (this.type === ModalType.TASK) {
       // Actions for tasks

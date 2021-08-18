@@ -6,7 +6,6 @@ import { UserService } from '../../../shared/user/user.service';
 import { ProjectAcceptance } from '../../../shared/model/project-acceptance.model';
 import { AuthService } from '../../../auth/auth.service';
 import { take } from 'rxjs/operators';
-import { Location } from '@angular/common';
 import { ModalService } from '../../../shared/modal/modal.service';
 import { Modal } from '../../../shared/modal/modal.model';
 import { ModalType } from '../../../shared/modal/modal-type.enum';
@@ -32,7 +31,7 @@ export class ProjectDetailsComponent implements OnInit {
 
   constructor(private projectService: ProjectService, private userService: UserService, private authService: AuthService,
               private modalService: ModalService, private alertService: AlertService, private router: Router,
-              private activatedRoute: ActivatedRoute, private location: Location) {
+              private activatedRoute: ActivatedRoute) {
     this.isManager = false;
     this.isLoading = true;
     this.hasAccepted = true;
@@ -49,7 +48,7 @@ export class ProjectDetailsComponent implements OnInit {
           }
 
           this.userId = user.id;
-          this.getProject(+param['id'], this.userId);
+          this.getProject(+param['id'], this.userId, true);
         });
       }
     )
@@ -69,7 +68,7 @@ export class ProjectDetailsComponent implements OnInit {
             }
 
             this.alertService.alertSubject.next(new Alert(`Successfully ${ accept ? 'accepted' : 'rejected' } the project invitation.`, AlertType.SUCCESS));
-            this.getProject(this.project.id, user.id);
+            this.getProject(this.project.id, user.id, false);
           }
         );
       }
@@ -86,7 +85,7 @@ export class ProjectDetailsComponent implements OnInit {
         return;
       }
 
-      this.getProject(this.project.id, this.userId);
+      this.getProject(this.project.id, this.userId, false);
     }
   }
 
@@ -95,8 +94,12 @@ export class ProjectDetailsComponent implements OnInit {
   }
 
   onRemoveUserAssignmentConfirmed(projectId: number, managerId: number): void {
-    this.modalService.removeProjectAssignmentEmitter.subscribe(
+    this.modalService.removeProjectAssignmentSubject.subscribe(
       removeProjectAssignment => {
+        if (!removeProjectAssignment) {
+          return;
+        }
+
         // Update remove project values
         removeProjectAssignment.projectId = projectId;
         removeProjectAssignment.managerId = managerId;
@@ -105,7 +108,7 @@ export class ProjectDetailsComponent implements OnInit {
         this.projectService.removeUserFromProject(removeProjectAssignment).subscribe(
           () => {
             // Re-init the project details
-            // this.getProject(projectId, managerId);
+            this.getProject(projectId, managerId, false);
             this.alertService.alertSubject.next(new Alert('Successfully removed user from project.', AlertType.SUCCESS));
           }, error => {
             this.alertService.alertSubject.next(new Alert(error.error.message, AlertType.DANGER));
@@ -115,11 +118,7 @@ export class ProjectDetailsComponent implements OnInit {
     )
   }
 
-  onBack(): void {
-    this.location.back();
-  }
-
-  private getProject(projectId: number, userId: number): void {
+  private getProject(projectId: number, userId: number, firstLoad: boolean): void {
     this.projectService.getProject(projectId, userId).subscribe(
       project => {
         this.isLoading = false;
@@ -132,7 +131,9 @@ export class ProjectDetailsComponent implements OnInit {
         }
 
         // Init subscription for removing user assignment
-        this.onRemoveUserAssignmentConfirmed(this.project.id, this.project.manager.id);
+        if (firstLoad) {
+          this.onRemoveUserAssignmentConfirmed(this.project.id, this.project.manager.id);
+        }
       }, error => {
         this.isLoading = false;
         this.alertService.alertSubject.next(new Alert(error.error.message, AlertType.DANGER));

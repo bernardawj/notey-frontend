@@ -16,6 +16,8 @@ import { ModalAction } from '../../../shared/modal/modal-action.enum';
 import { Alert } from '../../../shared/alert/alert.model';
 import { AlertType } from '../../../shared/alert/alert-type.enum';
 import { AlertService } from '../../../shared/alert/alert.service';
+import { Filter } from '../../../shared/model/filter.model';
+import { InputPage } from '../../../shared/model/input-page.model';
 
 @Component({
   selector: 'app-task-list-item',
@@ -53,7 +55,7 @@ export class TaskListItemComponent implements OnInit {
 
   ngOnInit(): void {
     if (this.loadProjectTasks) {
-      this.getProjectTasks(1);
+      this.getProjectTasks(1, '');
       this.deleteTaskListener();
       this.assignTaskListener();
       this.getCurrentUserId();
@@ -88,7 +90,7 @@ export class TaskListItemComponent implements OnInit {
 
                 // Get current page
                 this.alertService.alertSubject.next(new Alert(`Successfully assigned task to user.`, AlertType.SUCCESS));
-                this.getProjectTasks(this.taskList.pagination.totalPages);
+                this.getProjectTasks(this.taskList.pagination.totalPages, '');
               }, error => {
                 this.alertService.alertSubject.next(new Alert(error.error.message, AlertType.DANGER));
               }
@@ -117,7 +119,7 @@ export class TaskListItemComponent implements OnInit {
             }
 
             this.alertService.alertSubject.next(new Alert(`Successfully removed task assignment from user.`, AlertType.SUCCESS));
-            this.getProjectTasks(this.taskList.pagination.totalPages);
+            this.getProjectTasks(this.taskList.pagination.totalPages, '');
           }, error => {
             this.alertService.alertSubject.next(new Alert(error.error.message, AlertType.DANGER));
           }
@@ -146,7 +148,7 @@ export class TaskListItemComponent implements OnInit {
                 }
 
                 this.alertService.alertSubject.next(new Alert(`Successfully deleted task.`, AlertType.SUCCESS));
-                this.getProjectTasks(this.taskList.pagination.currentPage);
+                this.getProjectTasks(this.taskList.pagination.currentPage, '');
               }, error => {
                 this.alertService.alertSubject.next(new Alert(error.error.message, AlertType.DANGER));
               }
@@ -191,20 +193,24 @@ export class TaskListItemComponent implements OnInit {
     this.alertService.alertSubject.next(
       new Alert(`Viewing page ${ pageNo } of ${ this.taskList?.pagination.totalPages } of ${ this.loadProjectTasks ? 'project\'s' : 'assigned' } tasks.`, AlertType.INFO));
     if (this.loadProjectTasks) {
-      this.getProjectTasks(pageNo);
+      this.getProjectTasks(pageNo, '');
     } else {
       this.getUserTasks(pageNo);
     }
   }
 
-  filterTasks(filteredTasks: Task[]): void {
-    console.log(filteredTasks)
-    this.taskListCopy!.tasks = filteredTasks;
+  filterTasks(searchString: string): void {
+    if (this.loadProjectTasks) {
+      this.getProjectTasks(1, searchString);
+    }
   }
 
-  private getProjectTasks(pageNo: number): void {
+  private getProjectTasks(pageNo: number, searchString: string): void {
     const projectId = this.activatedRoute.snapshot.params['id'];
-    this.taskService.getAllProjectTasks(new GetProjectTasks(projectId, pageNo, 5)).subscribe(
+    const filter = new Filter(searchString);
+    const inputPage = new InputPage(pageNo, 5);
+
+    this.taskService.getAllProjectTasks(new GetProjectTasks(projectId, filter, inputPage)).subscribe(
       taskList => {
         this.taskList = taskList;
         this.taskListCopy = Object.assign(new TaskList(this.taskList.tasks, this.taskList.pagination), this.taskList);

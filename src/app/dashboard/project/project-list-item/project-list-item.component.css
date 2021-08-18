@@ -1,3 +1,11 @@
 .project__list {
   margin-bottom: 50px;
 }
+
+.project__action {
+  width: 300px;
+}
+
+td > .button {
+  margin-bottom: 5px;
+}

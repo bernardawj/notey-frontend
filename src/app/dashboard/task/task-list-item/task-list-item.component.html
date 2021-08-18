@@ -5,7 +5,7 @@
       <a [routerLink]="['/dashboard/task/create']" [queryParams]="{ projectId: projectId }" class="button button--primary pull-right no-margin"
          *ngIf="isManaged">New Task</a>
     </h3>
-    <app-filter [data]="taskList" [dataType]="'TaskList'" (filterEmitter)="filterTasks($event)"></app-filter>
+    <app-filter (filterEmitter)="filterTasks($event)"></app-filter>
     <div class="table" *ngIf="!isLoading && taskListCopy?.tasks!.length > 0">
       <table>
         <thead>

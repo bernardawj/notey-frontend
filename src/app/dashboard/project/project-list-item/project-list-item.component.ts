@@ -1,5 +1,4 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { Project } from '../project.model';
 import { ProjectService } from '../project.service';
 import { AuthService } from '../../../auth/auth.service';
 import { take } from 'rxjs/operators';
@@ -10,6 +9,8 @@ import { Observable } from 'rxjs';
 import { AlertService } from '../../../shared/alert/alert.service';
 import { Alert } from '../../../shared/alert/alert.model';
 import { AlertType } from '../../../shared/alert/alert-type.enum';
+import { Filter } from '../../../shared/model/filter.model';
+import { InputPage } from '../../../shared/model/input-page.model';
 
 @Component({
   selector: 'app-project-list-item',
@@ -35,14 +36,17 @@ export class ProjectListItemComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.getProject(1);
+    // Initialize project list
+    this.getProject(1, '');
   }
 
   calculatePages(): number[] {
+    // Check if project list is empty
     if (!this.projectList) {
       return [];
     }
 
+    // Populate project list pages
     let pages = [];
     for (let i = 1; i <= this.projectList.pagination.totalPages; i++) {
       pages.push(i);
@@ -50,27 +54,36 @@ export class ProjectListItemComponent implements OnInit {
     return pages;
   }
 
+  onToggleDeleteModal(): void {
+
+  }
+
   getPage(pageNo: number): void {
     this.alertService.alertSubject.next(
       new Alert(`Viewing page ${ pageNo } of ${ this.projectList?.pagination.totalPages } of ${ this.isManaged ? 'managed' : 'assigned' } projects.`, AlertType.INFO));
-    this.getProject(pageNo);
+    this.getProject(pageNo, '');
   }
 
-  filterProjects(filteredProjects: Project[]): void {
-    this.projectListCopy!.projects = filteredProjects;
+  filterProjects(searchString: string): void {
+    // this.projectListCopy!.projects = filteredProjects;
+    this.getProject(1, searchString);
   }
 
-  private getProject(pageNo: number): void {
+  private getProject(pageNo: number, searchString: string): void {
     this.authService.user.pipe(take(1)).subscribe(user => {
       if (!user) {
         return;
       }
 
+      // List settings
+      const filter = new Filter(searchString);
+      const inputPage = new InputPage(pageNo, 5);
+
       let callingService: Observable<ProjectList>;
       if (this.isManaged) {
-        callingService = this.projectService.getAllManagedProjects(new GetManagedProjects(user.id, pageNo, 5));
+        callingService = this.projectService.getAllManagedProjects(new GetManagedProjects(user.id, filter, inputPage));
       } else {
-        callingService = this.projectService.getAllAssignedProjects(new GetAssignedProjects(user.id, pageNo, 5));
+        callingService = this.projectService.getAllAssignedProjects(new GetAssignedProjects(user.id, filter, inputPage));
       }
 
       callingService.subscribe(

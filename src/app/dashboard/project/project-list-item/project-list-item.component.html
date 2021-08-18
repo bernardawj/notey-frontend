@@ -4,23 +4,35 @@
       {{ isManaged ? 'Managed' : 'Assigned' }} Projects
       <a [routerLink]="['../create']" class="button button--primary pull-right no-margin" *ngIf="isManaged">New Project</a>
     </h3>
-    <app-filter [data]="projectList" [dataType]="'ProjectList'" (filterEmitter)="filterProjects($event)"></app-filter>
+    <app-filter (filterEmitter)="filterProjects($event)"></app-filter>
     <div class="table" *ngIf="!isLoading && projectListCopy?.projects!.length > 0">
       <table>
         <thead>
         <tr>
-          <th>Name</th>
-          <th>Description</th>
-          <th>Start At</th>
-          <th>End At</th>
+          <th>Project</th>
+          <th *ngIf="isManaged" class="project__action">Actions</th>
         </tr>
         </thead>
         <tbody>
         <tr *ngFor="let project of projectListCopy?.projects">
-          <td><a [routerLink]="['/dashboard/project/details', project.id]">{{ project.name }}</a></td>
-          <td>{{ project.description }}</td>
-          <td>{{ project.startAt | date: 'dd MMM yyyy, hh:mm aa' }}</td>
-          <td>{{ project.endAt | date: 'dd MMM yyyy, hh:mm aa' }}</td>
+          <td>
+            <div class="table-group">
+              <label>Name</label>
+              <p><a [routerLink]="['/dashboard/project/details', project.id]">{{ project.name }}</a></p>
+            </div>
+            <div class="table-group">
+              <label>Description</label>
+              <p>{{ project.description }}</p>
+            </div>
+            <div class="table-group">
+              <label>Duration</label>
+              <p>{{ project.startAt | date: 'dd MMM yyyy, hh:mm aa' }} - {{ project.endAt | date: 'dd MMM yyyy, hh:mm aa' }}</p>
+            </div>
+          </td>
+          <td *ngIf="isManaged">
+            <a [routerLink]="['/dashboard/project/edit', project.id]" class="button button--primary button--width-full">Edit Project</a>
+            <button (click)="onToggleDeleteModal()" class="button button--danger button--width-full">Delete Project</button>
+          </td>
         </tr>
         </tbody>
       </table>

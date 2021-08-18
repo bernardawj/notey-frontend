@@ -43,9 +43,16 @@ export class AssignUserComponent implements OnInit {
     this.projectService.assignProject(new AssignProject(this.project.id, email)).subscribe(
       () => {
         this.alertService.alertSubject.next(new Alert(`Successfully invited ${ email }.`, AlertType.SUCCESS));
+        this.resetForm();
         this.assignEvent.emit(true);
       }, error => {
         this.alertService.alertSubject.next(new Alert(error.error.message, AlertType.DANGER));
+    });
+  }
+
+  private resetForm(): void {
+    this.assignForm.reset({
+      email: null
     });
   }
 }

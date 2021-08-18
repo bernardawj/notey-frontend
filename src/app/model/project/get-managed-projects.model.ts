@@ -1,5 +1,10 @@
-export class GetManagedProjects {
+import { BaseList } from '../../shared/model/base-list.model';
+import { Filter } from '../../shared/model/filter.model';
+import { InputPage } from '../../shared/model/input-page.model';
 
-  constructor(public managerId: number, public pageNo: number, public pageSize: number) {
+export class GetManagedProjects extends BaseList {
+
+  constructor(public managerId: number, public filter: Filter, public inputPage: InputPage) {
+    super(filter, inputPage);
   }
 }
