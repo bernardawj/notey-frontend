@@ -7,6 +7,7 @@ import { TaskList } from './task-list.model';
 import { GetProjectTasks } from '../../model/task/get-project-tasks.model';
 import { GetUserTasks } from '../../model/task/get-user-tasks.model';
 import { CreateTask } from '../../model/task/create-task.model';
+import { AssignTask } from '../../model/task/assign-task.model';
 
 @Injectable({
   providedIn: 'root'
@@ -27,5 +28,13 @@ export class TaskService {
 
   createTask(createTask: CreateTask): Observable<Task> {
     return this.httpClient.post<Task>(environment.endpoints.task.createTask, createTask);
+  }
+
+  updateTaskAssignment(assignTask: AssignTask): Observable<any> {
+    return this.httpClient.post(environment.endpoints.task.assignTaskToUser, assignTask);
+  }
+
+  deleteTask(taskId: number, managerId: number): Observable<any> {
+    return this.httpClient.delete(`${ environment.endpoints.task.deleteTask }/${ taskId }/${ managerId }`);
   }
 }

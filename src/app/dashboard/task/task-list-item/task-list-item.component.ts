@@ -7,9 +7,12 @@ import { TaskList } from '../task-list.model';
 import { ActivatedRoute } from '@angular/router';
 import { GetProjectTasks } from '../../../model/task/get-project-tasks.model';
 import { GetUserTasks } from '../../../model/task/get-user-tasks.model';
-import { Project } from '../../project/project.model';
 import { Task } from '../task.model';
-import { ProjectList } from '../../project/project-list.model';
+import { AssignTask } from '../../../model/task/assign-task.model';
+import { ModalService } from '../../../shared/modal/modal.service';
+import { Modal } from '../../../shared/modal/modal.model';
+import { ModalType } from '../../../shared/modal/modal-type.enum';
+import { ModalAction } from '../../../shared/modal/modal-action.enum';
 
 @Component({
   selector: 'app-task-list-item',
@@ -30,7 +33,7 @@ export class TaskListItemComponent implements OnInit {
   taskList: TaskList | null;
   taskListCopy: TaskList | null;
 
-  constructor(private authService: AuthService, private taskService: TaskService, private activatedRoute: ActivatedRoute) {
+  constructor(private authService: AuthService, private taskService: TaskService, private modalService: ModalService, private activatedRoute: ActivatedRoute) {
     this.loadProjectTasks = false;
     this.isManaged = false;
     this.isLoading = true;
@@ -41,9 +44,99 @@ export class TaskListItemComponent implements OnInit {
   ngOnInit(): void {
     if (this.loadProjectTasks) {
       this.getProjectTasks(1);
+      this.deleteTaskListener();
+      this.assignTaskListener();
     } else {
       this.getUserTasks(1);
     }
+  }
+
+  assignTaskModal(task: Task): void {
+    this.modalService.expandEmitter.emit(new Modal(task, ModalType.TASK, ModalAction.ASSIGN, true));
+  }
+
+  assignTaskListener(): void {
+    this.modalService.taskAssignmentEmitter.subscribe(
+      assignTask => {
+        this.authService.user.pipe(take(1)).subscribe(
+          user => {
+            if (!user) {
+              return;
+            }
+
+            assignTask.managerId = user.id;
+            this.taskService.updateTaskAssignment(assignTask).subscribe(
+              () => {
+                if (!this.taskList || !this.taskList.pagination) {
+                  return;
+                }
+
+                // Get current page
+                this.getProjectTasks(this.taskList.pagination.totalPages);
+              }, error => {
+                this.error = error.error.message;
+              }
+            );
+          }
+        )
+      }
+    );
+  }
+
+  removeTaskAssignment(taskId: number, taskUserId: number): void {
+    if (!this.isManaged) {
+      return;
+    }
+
+    this.authService.user.pipe(take(1)).subscribe(
+      user => {
+        if (!user) {
+          return;
+        }
+
+        this.taskService.updateTaskAssignment(new AssignTask(taskId, taskUserId, user.id, false)).subscribe(
+          () => {
+            if (!this.taskList || !this.taskList.pagination) {
+              return;
+            }
+
+            this.getProjectTasks(this.taskList.pagination.totalPages);
+          }, error => {
+            this.error = error.error.message;
+          }
+        )
+      }
+    );
+  }
+
+  deleteTaskModal(task: Task): void {
+    this.modalService.expandEmitter.emit(new Modal(task, ModalType.TASK, ModalAction.DELETE, true));
+  }
+
+  deleteTaskListener(): void {
+    this.modalService.taskConfirmationEmitter.subscribe(
+      taskId => {
+        this.authService.user.pipe(take(1)).subscribe(
+          user => {
+            if (!user) {
+              return;
+            }
+
+            this.taskService.deleteTask(taskId, user.id).subscribe(
+              () => {
+                // TODO: prompt alert message
+                if (!this.taskList || !this.taskList.pagination) {
+                  return;
+                }
+                this.getProjectTasks(this.taskList.pagination.currentPage);
+              }, error => {
+                this.error = error.error.message;
+              }
+            )
+          }
+        );
+      }
+    )
   }
 
   determineTaskTypeTag(type: TaskType): string {
@@ -66,14 +159,6 @@ export class TaskListItemComponent implements OnInit {
       pages.push(i);
     }
     return pages;
-  }
-
-  taskSize(): number {
-    if (this.taskList?.tasks) {
-      return this.taskList.tasks.length;
-    } else {
-      return 0;
-    }
   }
 
   getPage(pageNo: number): void {

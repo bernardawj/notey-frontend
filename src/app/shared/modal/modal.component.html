@@ -1,0 +1,28 @@
+<div class="modal" *ngIf="expandModal">
+  <form [formGroup]="assignmentForm" (ngSubmit)="onConfirm()">
+    <div class="modal__content">
+      <div class="modal__header">
+        Confirmation
+      </div>
+      <div class="modal__body">
+        <span [ngClass]="actionColorClass()">{{ action }}: {{ name }}</span>
+        <br/><br/>
+        <span *ngIf="action! === 'DELETE' || action! === 'UPDATE'">Are you sure you want to {{ action | lowercase }}
+          it?</span>
+        <div class="form-group" *ngIf="isAssignTask()">
+          <label for="user">User</label>
+          <select id="user" formControlName="user" class="form-control">
+            <option value="" disabled selected="selected">-- Select User --</option>
+            <option *ngFor="let user of getTaskData().project.assignedUsers"
+                    [value]="user.userId">{{ user.firstName }}</option>
+          </select>
+          <span class="form-validation" *ngIf="assignmentForm.get('user')?.invalid && assignmentForm.get('user')?.touched">Please select a user.</span>
+        </div>
+      </div>
+      <div class="modal__footer">
+        <button class="button button--secondary" (click)="expandModal = !expandModal">Cancel</button>
+        <button type="submit" class="button button--primary" [disabled]="assignmentForm.invalid">Confirm</button>
+      </div>
+    </div>
+  </form>
+</div>

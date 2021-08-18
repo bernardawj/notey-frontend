@@ -10,23 +10,31 @@
       <table>
         <thead>
         <tr>
-          <th>Name</th>
-          <th>Description</th>
+          <th>Task</th>
           <th>Type</th>
-          <th>Start At</th>
-          <th>End At</th>
           <th>Completed?</th>
-          <th>Taken By</th>
+          <th>Assigned To</th>
+          <th *ngIf="isManaged">Action</th>
         </tr>
         </thead>
         <tbody>
         <tr *ngFor="let task of taskListCopy?.tasks">
-          <td>{{ task.name }}</td>
-          <td>{{ task.description }}</td>
+          <td>
+            <div class="table-group">
+              <label>Name</label>
+              <p>{{ task.name }}</p>
+            </div>
+            <div class="table-group">
+              <label>Description</label>
+              <p>{{ task.description }}</p>
+            </div>
+            <div class="table-group">
+              <label>Duration</label>
+              <p>{{ task.startAt | date: 'dd MMM yyyy, hh:mm aa' }} - {{ task.endAt | date: 'dd MMM yyyy, hh:mm aa' }}</p>
+            </div>
+          </td>
           <td>
             <label [ngClass]="determineTaskTypeTag(task.type)">{{ task.type | renameTaskType }}</label></td>
-          <td>{{ task.startAt | date: 'short' }}</td>
-          <td>{{ task.endAt | date: 'short' }}</td>
           <td>{{ task.completed ? 'Yes' : 'No' }}</td>
           <td>
             <span *ngIf="task.user">
@@ -35,6 +43,12 @@
             <span *ngIf="!task.user">
               None
             </span>
+          </td>
+          <td *ngIf="isManaged">
+            <a [routerLink]="['/dashboard/task/edit', task.id]" class="button button--primary button--width-full" *ngIf="isManaged">Update</a>
+            <button class="button button--success button--width-full" *ngIf="!task.user && isManaged" (click)="assignTaskModal(task)">Assign Task</button>
+            <button class="button button--danger button--width-full" *ngIf="task.user && isManaged" (click)="removeTaskAssignment(task.id, task.user.id)">Remove Task Assignment</button>
+            <button class="button button--danger button--width-full" *ngIf="isManaged" (click)="deleteTaskModal(task)">Delete Task</button>
           </td>
         </tr>
         </tbody>

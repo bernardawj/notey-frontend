@@ -46,7 +46,11 @@ export class TaskFormComponent implements OnInit {
     const endAt = this.form.get('endAt')?.value;
 
     if (!this.isEdit) {
-      this.taskService.createTask(new CreateTask(name, description, type, startAt, endAt, this.projectId!)).subscribe(
+      if (!this.projectId) {
+        return;
+      }
+
+      this.taskService.createTask(new CreateTask(name, description, type, startAt, endAt, this.projectId)).subscribe(
         () => {
           this.router.navigate(['/dashboard/project/details', this.projectId]).finally();
         }, error => {
