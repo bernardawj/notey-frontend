@@ -5,7 +5,7 @@
       <a [routerLink]="['../create']" class="button button--primary pull-right no-margin" *ngIf="isManaged">New Project</a>
     </h3>
     <app-filter (filterEmitter)="filterProjects($event)"></app-filter>
-    <div class="table" *ngIf="!isLoading && projectListCopy?.projects!.length > 0">
+    <div class="table" *ngIf="!isLoading && projectList?.projects!.length > 0">
       <table>
         <thead>
         <tr>
@@ -14,7 +14,7 @@
         </tr>
         </thead>
         <tbody>
-        <tr *ngFor="let project of projectListCopy?.projects">
+        <tr *ngFor="let project of projectList?.projects">
           <td>
             <div class="table-group">
               <label>Name</label>
@@ -31,7 +31,7 @@
           </td>
           <td *ngIf="isManaged">
             <a [routerLink]="['/dashboard/project/edit', project.id]" class="button button--primary button--width-full">Edit Project</a>
-            <button (click)="onToggleDeleteModal()" class="button button--danger button--width-full">Delete Project</button>
+            <button (click)="onToggleDeleteModal(project)" class="button button--danger button--width-full">Delete Project</button>
           </td>
         </tr>
         </tbody>
@@ -47,7 +47,7 @@
         </ul>
       </div>
     </div>
-    <div class="svg__wrapper" *ngIf="!isLoading && projectListCopy?.projects!.length === 0">
+    <div class="svg__wrapper" *ngIf="!isLoading && projectList?.projects!.length === 0">
       <img src="../../../../assets/svg/folder.svg" alt="empty-project" />
       <span class="svg-wrapper__text">No projects found.</span>
     </div>

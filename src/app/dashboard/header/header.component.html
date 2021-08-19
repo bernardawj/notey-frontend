@@ -8,8 +8,8 @@
         <div id="header__user-notifications">
           <div class="header__icon">
             <mat-icon (click)="onToggleNotification()">notifications</mat-icon>
-            <div class="header__user-notification-number">
-              <span (click)="onToggleNotification()">{{ notificationCount }}</span>
+            <div class="header__user-notification-number" (click)="onToggleNotification()">
+              <span>{{ notificationCount }}</span>
             </div>
           </div>
           <app-notification [expandNotification]="expandNotification" (notificationNumberEmitter)="onUpdateNotificationCount($event)"></app-notification>

@@ -70,19 +70,34 @@ export class ModalComponent implements OnInit {
   }
 
   onConfirm(): void {
-    if (this.type === ModalType.ASSIGNED_USER) {
-      // Actions for user assignment
-      if (this.action === ModalAction.REMOVE) {
-        this.modalService.removeProjectAssignmentSubject.next(new RemoveProjectAssignment(-1, this.id, -1));
-      }
-    } else if (this.type === ModalType.TASK) {
-      // Actions for tasks
-      if (this.action === ModalAction.DELETE || this.action === ModalAction.UPDATE) {
-        this.modalService.taskConfirmationEmitter.emit(this.id);
-      } else {
-        const userId = this.assignmentForm.get('user')?.value;
-        this.modalService.taskAssignmentEmitter.emit(new AssignTask(this.getTaskData().id, userId, 0, true));
-      }
+    console.log(this.type);
+    switch (this.type) {
+      case ModalType.PROJECT:
+        if (this.action === ModalAction.DELETE || this.action === ModalAction.UPDATE) {
+          console.log(this.id + 'from modal')
+          this.modalService.projectConfirmationSubject.next(this.id);
+        } else {
+          const userId = this.assignmentForm.get('user')?.value;
+          this.modalService.taskAssignmentEmitter.emit(new AssignTask(this.getTaskData().id, userId, 0, true));
+        }
+        break;
+      case
+      ModalType.TASK:
+        // Actions for tasks
+        if (this.action === ModalAction.DELETE || this.action === ModalAction.UPDATE) {
+          this.modalService.taskConfirmationEmitter.emit(this.id);
+        } else {
+          const userId = this.assignmentForm.get('user')?.value;
+          this.modalService.taskAssignmentEmitter.emit(new AssignTask(this.getTaskData().id, userId, 0, true));
+        }
+        break;
+      case
+      ModalType.ASSIGNED_USER:
+        // Actions for user assignment
+        if (this.action === ModalAction.REMOVE) {
+          this.modalService.removeProjectAssignmentSubject.next(new RemoveProjectAssignment(-1, this.id, -1));
+        }
+        break;
     }
 
     if (this.assignmentForm.valid) {

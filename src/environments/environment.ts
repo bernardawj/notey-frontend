@@ -8,8 +8,7 @@ export const environment = {
   production: false,
   endpoints: {
     auth: {
-      login: `${ INITIAL_URI }/v1/auth/login`,
-      register: `${ INITIAL_URI }/v1/auth/register`
+      login: `${ INITIAL_URI }/v1/auth/login`
     },
     user: {
       getUserDetails: `${ INITIAL_URI }/v1/user`
@@ -22,7 +21,8 @@ export const environment = {
       getProject: `${ INITIAL_URI }/v1/project`,
       createProject: `${ INITIAL_URI }/v1/project`,
       updateProject: `${ INITIAL_URI }/v1/project`,
-      updateProjectAcceptance: `${ INITIAL_URI }/v1/project/acceptance`
+      updateProjectAcceptance: `${ INITIAL_URI }/v1/project/acceptance`,
+      deleteProject: `${ INITIAL_URI }/v1/project`
     },
     task: {
       getTask: `${ INITIAL_URI }/v1/task`,

@@ -3,7 +3,6 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Project } from './project.model';
 import { environment } from '../../../environments/environment';
-import { retry } from 'rxjs/operators';
 import { CreateProject } from '../../model/project/create-project.model';
 import { UpdateProject } from '../../model/project/update-project.model';
 import { AssignProject } from '../../model/project/assign-project.model';
@@ -12,6 +11,7 @@ import { ProjectList } from './project-list.model';
 import { GetAssignedProjects } from '../../model/project/get-assigned-projects.model';
 import { RemoveProjectAssignment } from '../../model/project/remove-project-assignment.model';
 import { GetManagedProjects } from '../../model/project/get-managed-projects.model';
+import { DeleteProject } from '../../model/project/delete-project.model';
 
 @Injectable({
   providedIn: 'root'
@@ -51,5 +51,9 @@ export class ProjectService {
 
   updateProjectAcceptance(projectAcceptance: ProjectAcceptance): Observable<any> {
     return this.httpClient.post(environment.endpoints.project.updateProjectAcceptance, projectAcceptance);
+  }
+
+  deleteProject(deleteProject: DeleteProject): Observable<any> {
+    return this.httpClient.delete(`${ environment.endpoints.project.deleteProject }/${ deleteProject.projectId }/${ deleteProject.managerId }`);
   }
 }

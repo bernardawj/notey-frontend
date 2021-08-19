@@ -1,101 +1,145 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { ProjectService } from '../project.service';
 import { AuthService } from '../../../auth/auth.service';
 import { take } from 'rxjs/operators';
 import { ProjectList } from '../project-list.model';
 import { GetManagedProjects } from '../../../model/project/get-managed-projects.model';
 import { GetAssignedProjects } from '../../../model/project/get-assigned-projects.model';
-import { Observable } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { AlertService } from '../../../shared/alert/alert.service';
 import { Alert } from '../../../shared/alert/alert.model';
 import { AlertType } from '../../../shared/alert/alert-type.enum';
 import { Filter } from '../../../shared/model/filter.model';
 import { InputPage } from '../../../shared/model/input-page.model';
+import { ModalService } from '../../../shared/modal/modal.service';
+import { Modal } from '../../../shared/modal/modal.model';
+import { ModalAction } from '../../../shared/modal/modal-action.enum';
+import { ModalType } from '../../../shared/modal/modal-type.enum';
+import { Project } from '../project.model';
+import { DeleteProject } from '../../../model/project/delete-project.model';
 
 @Component({
   selector: 'app-project-list-item',
   templateUrl: './project-list-item.component.html',
   styleUrls: ['./project-list-item.component.css']
 })
-export class ProjectListItemComponent implements OnInit {
+export class ProjectListItemComponent implements OnInit, OnDestroy {
 
   projectList: ProjectList | null;
-  projectListCopy: ProjectList | null;
-  error: string;
-
   isLoading: boolean;
+  userId!: number;
+  projectConfirmationSub: Subscription | undefined;
 
   @Input()
   isManaged: boolean;
 
-  constructor(private authService: AuthService, private projectService: ProjectService, private alertService: AlertService) {
-    this.projectList = this.projectListCopy = null;
-    this.error = '';
+  constructor(private authService: AuthService, private projectService: ProjectService, private modalService: ModalService,
+              private alertService: AlertService) {
+    this.projectList = null;
     this.isLoading = true;
     this.isManaged = true;
   }
 
+  // Angular lifecycles
+
   ngOnInit(): void {
-    // Initialize project list
-    this.getProject(1, '');
-  }
-
-  calculatePages(): number[] {
-    // Check if project list is empty
-    if (!this.projectList) {
-      return [];
-    }
-
-    // Populate project list pages
-    let pages = [];
-    for (let i = 1; i <= this.projectList.pagination.totalPages; i++) {
-      pages.push(i);
-    }
-    return pages;
-  }
-
-  onToggleDeleteModal(): void {
-
-  }
-
-  getPage(pageNo: number): void {
-    this.alertService.alertSubject.next(
-      new Alert(`Viewing page ${ pageNo } of ${ this.projectList?.pagination.totalPages } of ${ this.isManaged ? 'managed' : 'assigned' } projects.`, AlertType.INFO));
-    this.getProject(pageNo, '');
-  }
-
-  filterProjects(searchString: string): void {
-    // this.projectListCopy!.projects = filteredProjects;
-    this.getProject(1, searchString);
-  }
-
-  private getProject(pageNo: number, searchString: string): void {
     this.authService.user.pipe(take(1)).subscribe(user => {
       if (!user) {
         return;
       }
 
-      // List settings
-      const filter = new Filter(searchString);
-      const inputPage = new InputPage(pageNo, 5);
+      // Update user ID
+      this.userId = user.id;
 
-      let callingService: Observable<ProjectList>;
-      if (this.isManaged) {
-        callingService = this.projectService.getAllManagedProjects(new GetManagedProjects(user.id, filter, inputPage));
-      } else {
-        callingService = this.projectService.getAllAssignedProjects(new GetAssignedProjects(user.id, filter, inputPage));
-      }
+      // Get project lists and init subscriptions
+      this.getProject(this.userId, 1, '');
+      this.initDeleteConfirmationSubscription(this.userId);
+    });
+  }
 
-      callingService.subscribe(
-        projectList => {
-          this.projectList = projectList;
-          this.projectListCopy = Object.assign(new ProjectList(this.projectList.projects, this.projectList.pagination), this.projectList);
-          this.isLoading = false;
-        }, error => {
-          this.error = error;
-          this.isLoading = false;
+  ngOnDestroy(): void {
+    if (this.projectConfirmationSub) {
+      this.projectConfirmationSub.unsubscribe();
+    }
+  }
+
+  // Modal toggling and subscriptions
+
+  onToggleDeleteModal(project: Project): void {
+    this.modalService.expandEmitter.emit(new Modal(project, ModalType.PROJECT, ModalAction.DELETE, true));
+  }
+
+  initDeleteConfirmationSubscription(userId: number): void {
+    // Only init for managed projects
+    if (this.isManaged) {
+      this.projectConfirmationSub = this.modalService.projectConfirmationSubject.subscribe(
+        projectId => {
+          if (projectId) {
+            // Delete project
+            this.projectService.deleteProject(new DeleteProject(projectId, userId)).subscribe(
+              () => {
+                this.getProject(userId, 1, '');
+                this.alertService.alertSubject.next(new Alert('Successfully deleted the project.', AlertType.SUCCESS));
+              }, error => {
+                this.alertService.alertSubject.next(new Alert(error.error.message, AlertType.DANGER));
+              }
+            );
+          }
         }
       );
-    });
+    }
+  }
+
+  // Paging and filtering
+
+  calculatePages(): number[] {
+    // Populate project list pages
+    if (this.projectList) {
+      let pages = [];
+
+      for (let i = 1; i <= this.projectList.pagination.totalPages; i++) {
+        pages.push(i);
+      }
+
+      return pages;
+    } else {
+      return [];
+    }
+  }
+
+  getPage(pageNo: number): void {
+    this.alertService.alertSubject.next(
+      new Alert(`Viewing page ${ pageNo } of ${ this.projectList?.pagination.totalPages } of ${ this.isManaged ? 'managed' : 'assigned' } projects.`, AlertType.INFO));
+    this.getProject(this.userId, pageNo, '');
+  }
+
+  filterProjects(searchString: string): void {
+    this.getProject(this.userId, 1, searchString);
+  }
+
+  // Private methods
+
+  private getProject(userId: number, pageNo: number, searchString: string): void {
+    // List settings
+    const filter = new Filter(searchString);
+    const inputPage = new InputPage(pageNo, 5);
+
+    // Call service to retrieve project lists
+    let callingService: Observable<ProjectList>;
+    if (this.isManaged) {
+      callingService = this.projectService.getAllManagedProjects(new GetManagedProjects(userId, filter, inputPage));
+    } else {
+      callingService = this.projectService.getAllAssignedProjects(new GetAssignedProjects(userId, filter, inputPage));
+    }
+
+    callingService.subscribe(
+      projectList => {
+        this.projectList = projectList;
+        this.isLoading = false;
+      }, error => {
+        this.alertService.alertSubject.next(new Alert(error.error.message, AlertType.DANGER));
+        this.isLoading = false;
+      }
+    );
   }
 }

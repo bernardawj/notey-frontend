@@ -92,7 +92,7 @@ export class ProjectFormComponent implements OnInit {
         this.projectService.createProject(new CreateProject(name, description, startAt, endAt, user.id)).subscribe(
           project => {
             this.alertService.alertSubject.next(new Alert(`Successfully created Project (${project.name}).`, AlertType.SUCCESS));
-            this.router.navigate(['/dashboard/project']).finally();
+            this.router.navigate(['/dashboard/project/details', project.id]).finally();
           },
           error => {
             this.alertService.alertSubject.next(new Alert(error.error.message, AlertType.DANGER));
