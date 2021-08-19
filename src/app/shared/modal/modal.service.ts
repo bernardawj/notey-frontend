@@ -9,18 +9,17 @@ import { BehaviorSubject, Subject } from 'rxjs';
 })
 export class ModalService {
 
-  @Output() expandEmitter: EventEmitter<Modal>;
-  @Output() taskConfirmationEmitter: EventEmitter<number>;
-  @Output() taskAssignmentEmitter: EventEmitter<AssignTask>;
-
+  expandSubject: Subject<Modal>;
+  taskConfirmationSubject: Subject<number>;
+  taskAssignmentSubject: Subject<AssignTask>;
   projectConfirmationSubject: Subject<number>;
-  removeProjectAssignmentSubject: BehaviorSubject<RemoveProjectAssignment | null>;
+  removeProjectAssignmentSubject: Subject<RemoveProjectAssignment>;
 
   constructor() {
-    this.expandEmitter = new EventEmitter<Modal>();
-    this.taskConfirmationEmitter = new EventEmitter<number>();
-    this.taskAssignmentEmitter = new EventEmitter<AssignTask>();
+    this.expandSubject = new Subject<Modal>();
+    this.taskConfirmationSubject = new Subject<number>();
+    this.taskAssignmentSubject = new Subject<AssignTask>();
     this.projectConfirmationSubject = new Subject<number>();
-    this.removeProjectAssignmentSubject = new BehaviorSubject<RemoveProjectAssignment | null>(null);
+    this.removeProjectAssignmentSubject = new Subject<RemoveProjectAssignment>();
   }
 }

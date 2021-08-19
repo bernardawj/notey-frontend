@@ -6,7 +6,7 @@
          *ngIf="isManaged">New Task</a>
     </h3>
     <app-filter (filterEmitter)="filterTasks($event)"></app-filter>
-    <div class="table" *ngIf="!isLoading && taskListCopy?.tasks!.length > 0">
+    <div class="table" *ngIf="!isLoading && taskList?.tasks!.length > 0">
       <table>
         <thead>
         <tr>
@@ -18,7 +18,7 @@
         </tr>
         </thead>
         <tbody>
-        <tr *ngFor="let task of taskListCopy?.tasks">
+        <tr *ngFor="let task of taskList?.tasks">
           <td>
             <div class="table-group">
               <label>Name</label>
@@ -52,9 +52,9 @@
           </td>
           <td *ngIf="isManaged" class="task__action">
             <a [routerLink]="['/dashboard/task/edit', task.id]" class="button button--primary button--width-full" *ngIf="isManaged">Update</a>
-            <button class="button button--success button--width-full" *ngIf="!task.user && isManaged" (click)="assignTaskModal(task)">Assign Task</button>
-            <button class="button button--danger button--width-full" *ngIf="task.user && isManaged" (click)="removeTaskAssignment(task.id, task.user.id)">Remove Task Assignment</button>
-            <button class="button button--danger button--width-full" *ngIf="isManaged" (click)="deleteTaskModal(task)">Delete Task</button>
+            <button class="button button--success button--width-full" *ngIf="!task.user && isManaged" (click)="onToggleAssignTaskModal(task, true)">Assign Task</button>
+            <button class="button button--danger button--width-full" *ngIf="task.user && isManaged" (click)="onToggleAssignTaskModal(task, false)">Remove Task Assignment</button>
+            <button class="button button--danger button--width-full" *ngIf="isManaged" (click)="onToggleDeleteTaskModal(task)">Delete Task</button>
           </td>
         </tr>
         </tbody>
@@ -62,7 +62,7 @@
       <div class="pagination">
         <ul>
           <li *ngFor="let page of calculatePages()"
-              [ngClass]="this.taskListCopy?.pagination?.currentPage === page ? 'pagination--active' : ''">
+              [ngClass]="this.taskList?.pagination?.currentPage === page ? 'pagination--active' : ''">
             <a (click)="getPage(page)">
               <span>{{ page }}</span>
             </a>
@@ -70,7 +70,7 @@
         </ul>
       </div>
     </div>
-    <div class="svg__wrapper" *ngIf="!isLoading && taskListCopy?.tasks!.length === 0">
+    <div class="svg__wrapper" *ngIf="!isLoading && taskList?.tasks!.length === 0">
       <img src="../../../../assets/svg/to-do-list.svg" alt="empty-tasks"/>
       <span class="svg-wrapper__text">No tasks found.</span>
     </div>

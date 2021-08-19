@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { TaskService } from '../task.service';
 import { AuthService } from '../../../auth/auth.service';
 import { take } from 'rxjs/operators';
@@ -18,146 +18,123 @@ import { AlertType } from '../../../shared/alert/alert-type.enum';
 import { AlertService } from '../../../shared/alert/alert.service';
 import { Filter } from '../../../shared/model/filter.model';
 import { InputPage } from '../../../shared/model/input-page.model';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-task-list-item',
   templateUrl: './task-list-item.component.html',
   styleUrls: ['./task-list-item.component.css']
 })
-export class TaskListItemComponent implements OnInit {
+export class TaskListItemComponent implements OnInit, OnDestroy {
 
+  userId?: number;
   isLoading: boolean;
-  error: string;
+  taskList: TaskList | null;
+  subscriptions: Subscription[];
 
   @Input() loadProjectTasks: boolean;
-
   @Input() hasAccepted: boolean;
-
   @Input() isManaged: boolean;
-
   @Input() projectId: number | undefined;
-
-  taskList: TaskList | null;
-  taskListCopy: TaskList | null;
-
-  currentUserId: number | null;
 
   constructor(private authService: AuthService, private taskService: TaskService, private modalService: ModalService,
               private alertService: AlertService, private activatedRoute: ActivatedRoute) {
     this.loadProjectTasks = false;
     this.isManaged = false;
     this.isLoading = true;
-    this.error = '';
-    this.taskList = this.taskListCopy = null;
-    this.currentUserId = null;
+    this.taskList = null;
     this.hasAccepted = false;
+    this.subscriptions = [];
   }
+
+  // Angular lifecycles
 
   ngOnInit(): void {
-    if (this.loadProjectTasks) {
-      this.getProjectTasks(1, '');
-      this.deleteTaskListener();
-      this.assignTaskListener();
-      this.getCurrentUserId();
-    } else {
-      this.getUserTasks(1);
-    }
-  }
+    const authSub: Subscription = this.authService.user.pipe(take(1)).subscribe(
+      user => {
+        if (user) {
+          this.userId = user.id;
 
-  isUser(userId: number): boolean {
-    return userId === this.currentUserId && this.hasAccepted;
-  }
-
-  assignTaskModal(task: Task): void {
-    this.modalService.expandEmitter.emit(new Modal(task, ModalType.TASK, ModalAction.ASSIGN, true));
-  }
-
-  assignTaskListener(): void {
-    this.modalService.taskAssignmentEmitter.subscribe(
-      assignTask => {
-        this.authService.user.pipe(take(1)).subscribe(
-          user => {
-            if (!user) {
-              return;
-            }
-
-            assignTask.managerId = user.id;
-            this.taskService.updateTaskAssignment(assignTask).subscribe(
-              () => {
-                if (!this.taskList || !this.taskList.pagination) {
-                  return;
-                }
-
-                // Get current page
-                this.alertService.alertSubject.next(new Alert(`Successfully assigned task to user.`, AlertType.SUCCESS));
-                this.getProjectTasks(this.taskList.pagination.totalPages, '');
-              }, error => {
-                this.alertService.alertSubject.next(new Alert(error.error.message, AlertType.DANGER));
-              }
-            );
+          if (this.loadProjectTasks) {
+            this.getProjectTasks(1, '');
+            this.loadAssignTaskSubscription(this.userId);
+            this.loadDeleteTaskSubscription(this.userId);
+            this.loadReloadTaskListSubscription();
+          } else {
+            this.getUserTasks(this.userId, 1);
           }
-        )
+        }
       }
     );
+
+    this.subscriptions.push(authSub);
   }
 
-  removeTaskAssignment(taskId: number, taskUserId: number): void {
-    if (!this.isManaged) {
-      return;
+  ngOnDestroy(): void {
+    this.subscriptions.forEach(subscription => {
+      subscription.unsubscribe();
+    });
+  }
+
+  // Toggle
+
+  onToggleAssignTaskModal(task: Task, assign: boolean): void {
+    if (assign) {
+      this.modalService.expandSubject.next(new Modal(task, ModalType.TASK, ModalAction.ASSIGN, true));
+    } else {
+      this.modalService.expandSubject.next(new Modal(task, ModalType.TASK, ModalAction.REMOVE, true));
     }
+  }
 
-    this.authService.user.pipe(take(1)).subscribe(
-      user => {
-        if (!user) {
-          return;
-        }
+  onToggleDeleteTaskModal(task: Task): void {
+    this.modalService.expandSubject.next(new Modal(task, ModalType.TASK, ModalAction.DELETE, true));
+  }
 
-        this.taskService.updateTaskAssignment(new AssignTask(taskId, taskUserId, user.id, false)).subscribe(
+  // Subscriptions
+
+  loadAssignTaskSubscription(userId: number): void {
+    const taskAssignmentSub: Subscription = this.modalService.taskAssignmentSubject.subscribe(
+      assignTask => {
+        assignTask.managerId = userId;
+        this.taskAssignment(assignTask);
+      }
+    );
+
+    this.subscriptions.push(taskAssignmentSub);
+  }
+
+  loadDeleteTaskSubscription(userId: number): void {
+    const confirmationSub: Subscription = this.modalService.taskConfirmationSubject.subscribe(
+      taskId => {
+        this.taskService.deleteTask(taskId, userId).subscribe(
           () => {
-            if (!this.taskList || !this.taskList.pagination) {
-              return;
+            if (this.taskList && this.taskList.pagination) {
+              this.alertService.alertSubject.next(new Alert(`Successfully deleted task.`, AlertType.SUCCESS));
+              this.getProjectTasks(this.taskList.pagination.currentPage, '');
             }
-
-            this.alertService.alertSubject.next(new Alert(`Successfully removed task assignment from user.`, AlertType.SUCCESS));
-            this.getProjectTasks(this.taskList.pagination.totalPages, '');
           }, error => {
             this.alertService.alertSubject.next(new Alert(error.error.message, AlertType.DANGER));
           }
-        )
-      }
-    );
-  }
-
-  deleteTaskModal(task: Task): void {
-    this.modalService.expandEmitter.emit(new Modal(task, ModalType.TASK, ModalAction.DELETE, true));
-  }
-
-  deleteTaskListener(): void {
-    this.modalService.taskConfirmationEmitter.subscribe(
-      taskId => {
-        this.authService.user.pipe(take(1)).subscribe(
-          user => {
-            if (!user) {
-              return;
-            }
-
-            this.taskService.deleteTask(taskId, user.id).subscribe(
-              () => {
-                if (!this.taskList || !this.taskList.pagination) {
-                  return;
-                }
-
-                this.alertService.alertSubject.next(new Alert(`Successfully deleted task.`, AlertType.SUCCESS));
-                this.getProjectTasks(this.taskList.pagination.currentPage, '');
-              }, error => {
-                this.alertService.alertSubject.next(new Alert(error.error.message, AlertType.DANGER));
-              }
-            )
-          }
         );
       }
-    )
+    );
+
+    this.subscriptions.push(confirmationSub);
   }
+
+  loadReloadTaskListSubscription(): void {
+    const reloadSub: Subscription = this.taskService.reloadTask.subscribe(
+      response => {
+        if (response) {
+          this.getProjectTasks(1, '');
+        }
+      }
+    );
+
+    this.subscriptions.push(reloadSub);
+  }
+
+  // Class setter methods
 
   determineTaskTypeTag(type: TaskType): string {
     if (type == TaskType.URGENT) {
@@ -177,25 +154,35 @@ export class TaskListItemComponent implements OnInit {
     }
   }
 
+  isUser(userId: number): boolean {
+    return userId === this.userId && this.hasAccepted;
+  }
+
+  // Filtering and paging
+
   calculatePages(): number[] {
-    if (!this.taskList) {
+    if (this.taskList) {
+      let pages = [];
+
+      for (let i = 1; i <= this.taskList.pagination.totalPages; i++) {
+        pages.push(i);
+      }
+
+      return pages;
+    } else {
       return [];
     }
-
-    let pages = [];
-    for (let i = 1; i <= this.taskList.pagination.totalPages; i++) {
-      pages.push(i);
-    }
-    return pages;
   }
 
   getPage(pageNo: number): void {
-    this.alertService.alertSubject.next(
-      new Alert(`Viewing page ${ pageNo } of ${ this.taskList?.pagination.totalPages } of ${ this.loadProjectTasks ? 'project\'s' : 'assigned' } tasks.`, AlertType.INFO));
-    if (this.loadProjectTasks) {
-      this.getProjectTasks(pageNo, '');
-    } else {
-      this.getUserTasks(pageNo);
+    if (this.userId) {
+      this.alertService.alertSubject.next(
+        new Alert(`Viewing page ${ pageNo } of ${ this.taskList?.pagination.totalPages } of ${ this.loadProjectTasks ? 'project\'s' : 'assigned' } tasks.`, AlertType.INFO));
+      if (this.loadProjectTasks) {
+        this.getProjectTasks(pageNo, '');
+      } else {
+        this.getUserTasks(this.userId, pageNo);
+      }
     }
   }
 
@@ -205,51 +192,57 @@ export class TaskListItemComponent implements OnInit {
     }
   }
 
+  // Private methods
+
   private getProjectTasks(pageNo: number, searchString: string): void {
     const projectId = this.activatedRoute.snapshot.params['id'];
     const filter = new Filter(searchString);
     const inputPage = new InputPage(pageNo, 5);
 
-    this.taskService.getAllProjectTasks(new GetProjectTasks(projectId, filter, inputPage)).subscribe(
+    const getProjectTasksSub: Subscription = this.taskService.getAllProjectTasks(new GetProjectTasks(projectId, filter, inputPage)).subscribe(
       taskList => {
         this.taskList = taskList;
-        this.taskListCopy = Object.assign(new TaskList(this.taskList.tasks, this.taskList.pagination), this.taskList);
         this.isLoading = false;
       }
-    )
+    );
+
+    this.subscriptions.push(getProjectTasksSub);
   }
 
-  private getUserTasks(pageNo: number): void {
-    this.authService.user.pipe(take(1)).subscribe(
-      user => {
-        if (!user) {
-          return;
-        }
+  private getUserTasks(userId: number, pageNo: number): void {
+    const getUserTasksSub: Subscription = this.taskService.getAllUserTasks(new GetUserTasks(userId, pageNo, 5)).subscribe(
+      taskList => {
+        this.taskList = taskList;
+        this.isLoading = false;
+      },
+      error => {
+        this.alertService.alertSubject.next(new Alert(error.error.message, AlertType.DANGER));
+        this.isLoading = false;
+      }
+    );
 
-        this.taskService.getAllUserTasks(new GetUserTasks(user.id, pageNo, 5)).subscribe(
-          taskList => {
-            this.taskList = taskList;
-            this.taskListCopy = Object.assign(new TaskList(this.taskList.tasks, this.taskList.pagination), this.taskList);
-            this.isLoading = false;
-          },
-          error => {
-            this.error = error.error.message;
-            this.isLoading = false;
+    this.subscriptions.push(getUserTasksSub);
+  }
+
+  private taskAssignment(assignTask: AssignTask): void {
+    const updateAssignmentSub: Subscription = this.taskService.updateTaskAssignment(assignTask).subscribe(
+      () => {
+        if (this.taskList && this.taskList.pagination) {
+          // Prompt specific alert message
+          if (assignTask.assign) {
+            this.alertService.alertSubject.next(new Alert(`Successfully assigned task to user.`, AlertType.SUCCESS));
+          } else {
+            this.alertService.alertSubject.next(new Alert(`Successfully removed task assignment from user.`, AlertType.SUCCESS));
           }
-        )
-      }
-    )
-  }
 
-  private getCurrentUserId(): void {
-    this.authService.user.subscribe(
-      user => {
-        if (!user) {
-          return;
+          // Reload project tasks
+          this.getProjectTasks(this.taskList.pagination.totalPages, '');
         }
-
-        this.currentUserId = user.id;
+      }, error => {
+        this.alertService.alertSubject.next(new Alert(error.error.message, AlertType.DANGER));
       }
-    )
+    );
+
+    this.subscriptions.push(updateAssignmentSub);
   }
 }

@@ -28,7 +28,8 @@ export class ProjectListItemComponent implements OnInit, OnDestroy {
   projectList: ProjectList | null;
   isLoading: boolean;
   userId!: number;
-  projectConfirmationSub: Subscription | undefined;
+
+  subscriptions: Subscription[];
 
   @Input()
   isManaged: boolean;
@@ -38,12 +39,13 @@ export class ProjectListItemComponent implements OnInit, OnDestroy {
     this.projectList = null;
     this.isLoading = true;
     this.isManaged = true;
+    this.subscriptions = [];
   }
 
   // Angular lifecycles
 
   ngOnInit(): void {
-    this.authService.user.pipe(take(1)).subscribe(user => {
+    const authSub: Subscription = this.authService.user.pipe(take(1)).subscribe(user => {
       if (!user) {
         return;
       }
@@ -55,28 +57,30 @@ export class ProjectListItemComponent implements OnInit, OnDestroy {
       this.getProject(this.userId, 1, '');
       this.initDeleteConfirmationSubscription(this.userId);
     });
+
+    this.subscriptions.push(authSub);
   }
 
   ngOnDestroy(): void {
-    if (this.projectConfirmationSub) {
-      this.projectConfirmationSub.unsubscribe();
-    }
+    this.subscriptions.forEach(subscription => {
+      subscription.unsubscribe();
+    });
   }
 
   // Modal toggling and subscriptions
 
   onToggleDeleteModal(project: Project): void {
-    this.modalService.expandEmitter.emit(new Modal(project, ModalType.PROJECT, ModalAction.DELETE, true));
+    this.modalService.expandSubject.next(new Modal(project, ModalType.PROJECT, ModalAction.DELETE, true));
   }
 
   initDeleteConfirmationSubscription(userId: number): void {
     // Only init for managed projects
     if (this.isManaged) {
-      this.projectConfirmationSub = this.modalService.projectConfirmationSubject.subscribe(
+      const confirmationSub: Subscription = this.modalService.projectConfirmationSubject.subscribe(
         projectId => {
           if (projectId) {
             // Delete project
-            this.projectService.deleteProject(new DeleteProject(projectId, userId)).subscribe(
+            const deleteProjectSub: Subscription = this.projectService.deleteProject(new DeleteProject(projectId, userId)).subscribe(
               () => {
                 this.getProject(userId, 1, '');
                 this.alertService.alertSubject.next(new Alert('Successfully deleted the project.', AlertType.SUCCESS));
@@ -84,9 +88,12 @@ export class ProjectListItemComponent implements OnInit, OnDestroy {
                 this.alertService.alertSubject.next(new Alert(error.error.message, AlertType.DANGER));
               }
             );
+
+            this.subscriptions.push(deleteProjectSub);
           }
-        }
-      );
+        });
+
+      this.subscriptions.push(confirmationSub);
     }
   }
 
@@ -132,7 +139,7 @@ export class ProjectListItemComponent implements OnInit, OnDestroy {
       callingService = this.projectService.getAllAssignedProjects(new GetAssignedProjects(userId, filter, inputPage));
     }
 
-    callingService.subscribe(
+    const projectSub: Subscription = callingService.subscribe(
       projectList => {
         this.projectList = projectList;
         this.isLoading = false;
@@ -141,5 +148,7 @@ export class ProjectListItemComponent implements OnInit, OnDestroy {
         this.isLoading = false;
       }
     );
+
+    this.subscriptions.push(projectSub);
   }
 }

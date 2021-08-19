@@ -1,27 +1,28 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { ProjectService } from '../project.service';
 import { Project } from '../project.model';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from '../../../auth/auth.service';
-import { take } from 'rxjs/operators';
 import { CreateProject } from '../../../model/project/create-project.model';
 import { UpdateProject } from '../../../model/project/update-project.model';
 import { AlertService } from '../../../shared/alert/alert.service';
 import { Alert } from '../../../shared/alert/alert.model';
 import { AlertType } from '../../../shared/alert/alert-type.enum';
+import { Observable, Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-project-form',
   templateUrl: './project-form.component.html',
   styleUrls: ['./project-form.component.css']
 })
-export class ProjectFormComponent implements OnInit {
+export class ProjectFormComponent implements OnInit, OnDestroy {
 
   form!: FormGroup;
-  error: string;
-
   project?: Project;
+  userId!: number;
+
+  subscriptions: Subscription[];
 
   @Input()
   isEdit: boolean;
@@ -29,76 +30,106 @@ export class ProjectFormComponent implements OnInit {
 
   constructor(private projectService: ProjectService, private authService: AuthService, private alertService: AlertService,
               private formBuilder: FormBuilder, private activatedRoute: ActivatedRoute, private router: Router) {
-    this.error = '';
     this.isEdit = false;
     this.isLoading = true;
+    this.subscriptions = [];
   }
 
+  // Angular lifecycles
+
   ngOnInit(): void {
-    this.form = this.formBuilder.group({
-      name: new FormControl(null, [Validators.required]),
-      description: new FormControl(null, [Validators.required]),
-      startAt: new FormControl(null, [Validators.required]),
-      endAt: new FormControl(null, [Validators.required])
-    });
+    // Initialize form data
+    this.initFormData(false);
 
-    this.activatedRoute.params.subscribe(param => {
-      this.authService.user.subscribe(user => {
-        if (param['id']) {
-          if (!user) {
-            return;
+    // Load project data
+    const authSub: Subscription = this.authService.user.subscribe(user => {
+      if (user) {
+        // Set user ID for easier usage
+        this.userId = user.id;
+
+        this.activatedRoute.params.subscribe(param => {
+          if (param['id']) {
+            this.loadProject(+param['id'], this.userId);
           }
-
-          this.projectService.getProject(+param['id'], user.id).subscribe(
-            project => {
-              this.project = project;
-              this.form.get('name')?.setValue(this.project.name);
-              this.form.get('description')?.setValue(this.project.description);
-              this.form.get('startAt')?.setValue(this.project.startAt);
-              this.form.get('endAt')?.setValue(this.project.endAt);
-            },
-            error => this.router.navigate(['/project']).finally(),
-            () => this.isLoading = false
-          );
-        }
-      });
+        });
+      }
     });
 
+    this.subscriptions.push(authSub);
+  }
+
+  ngOnDestroy(): void {
+    this.subscriptions.forEach(subscription => {
+      subscription.unsubscribe();
+    });
   }
 
   onSubmit(): void {
+    // Retrieve form data
     const name = this.form.get('name')?.value;
     const description = this.form.get('description')?.value;
     const startAt = this.form.get('startAt')?.value;
     const endAt = this.form.get('endAt')?.value;
 
-    this.authService.user.pipe(take(1)).subscribe(user => {
-      if (!user) {
-        return;
-      }
+    // Call service
+    this.callProjectService(name, description, startAt, endAt);
+  }
 
-      if (this.isEdit && this.project) {
-        this.projectService.updateProject(new UpdateProject(this.project?.id, name, description, startAt, endAt, user.id)).subscribe(
-          project => {
-            this.alertService.alertSubject.next(new Alert(`Successfully updated Project (${project.name}).`, AlertType.SUCCESS));
-            this.router.navigate(['/dashboard/project/details', project.id]).finally();
-          },
-          error => {
-            this.alertService.alertSubject.next(new Alert(error.error.message, AlertType.DANGER));
-          }
-        );
-      } else {
-        // Call create project endpoint with entered details
-        this.projectService.createProject(new CreateProject(name, description, startAt, endAt, user.id)).subscribe(
-          project => {
-            this.alertService.alertSubject.next(new Alert(`Successfully created Project (${project.name}).`, AlertType.SUCCESS));
-            this.router.navigate(['/dashboard/project/details', project.id]).finally();
-          },
-          error => {
-            this.alertService.alertSubject.next(new Alert(error.error.message, AlertType.DANGER));
-          }
-        );
+  // Private methods
+
+  private loadProject(projectId: number, userId: number): void {
+    const projectSub: Subscription = this.projectService.getProject(projectId, userId).subscribe(
+      project => {
+        this.project = project;
+        this.initFormData(true);
+        this.alertService.alertSubject.next(new Alert('Successfully retrieved project details.', AlertType.SUCCESS));
+      },
+      error => {
+        this.alertService.alertSubject.next(new Alert(error.error.message, AlertType.DANGER));
+        this.router.navigate(['/project']).finally();
       }
-    });
+    );
+
+    this.subscriptions.push(projectSub);
+  }
+
+  private initFormData(withValues: boolean): void {
+    if (withValues) {
+      if (this.project) {
+        this.form.get('name')?.setValue(this.project.name);
+        this.form.get('description')?.setValue(this.project.description);
+        this.form.get('startAt')?.setValue(this.project.startAt);
+        this.form.get('endAt')?.setValue(this.project.endAt);
+      }
+    } else {
+      this.form = this.formBuilder.group({
+        name: new FormControl(null, [Validators.required]),
+        description: new FormControl(null, [Validators.required]),
+        startAt: new FormControl(null, [Validators.required]),
+        endAt: new FormControl(null, [Validators.required])
+      });
+    }
+  }
+
+  private callProjectService(name: string, description: string, startAt: Date, endAt: Date): void {
+    let callingService: Observable<Project>;
+
+    if (this.isEdit && this.project) {
+      callingService = this.projectService.updateProject(new UpdateProject(this.project.id, name, description, startAt, endAt, this.userId))
+    } else {
+      callingService = this.projectService.createProject(new CreateProject(name, description, startAt, endAt, this.userId));
+    }
+
+    const projectSub: Subscription = callingService.subscribe(
+      project => {
+        this.alertService.alertSubject.next(new Alert(`Successfully ${ this.isEdit ? 'updated' : 'created' } Project (${ project.name }).`, AlertType.SUCCESS));
+        this.router.navigate(['/dashboard/project/details', project.id]).finally();
+      },
+      error => {
+        this.alertService.alertSubject.next(new Alert(error.error.message, AlertType.DANGER));
+      }
+    );
+
+    this.subscriptions.push(projectSub);
   }
 }

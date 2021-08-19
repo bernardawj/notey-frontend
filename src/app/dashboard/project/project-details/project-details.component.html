@@ -8,20 +8,18 @@
         <button (click)="onUpdateAcceptance(false)" class="button button--danger no-margin-bottom">Reject</button>
       </div>
       <div class="card-group">
-        <label>Project Name</label>
+        <label>Name</label>
         <p [ngClass]="isLoading ? 'load' : ''">{{ project?.name }}</p>
       </div>
       <div class="card-group">
-        <label>Project Description</label>
+        <label>Description</label>
         <p [ngClass]="isLoading ? 'load' : ''">{{ project?.description }}</p>
       </div>
       <div class="card-group">
-        <label>Project Start Date</label>
-        <p [ngClass]="isLoading ? 'load' : ''">{{ project?.startAt | date: 'dd MMM yyyy hh:mm aa' }}</p>
-      </div>
-      <div class="card-group">
-        <label>Project End Date</label>
-        <p [ngClass]="isLoading ? 'load' : ''">{{ project?.endAt | date: 'dd MMM yyyy, hh:mm aa' }}</p>
+        <label>Duration</label>
+        <p [ngClass]="isLoading ? 'load' : ''">
+          {{ project?.startAt | date: 'dd MMM yyyy hh:mm aa' }} - {{ project?.endAt | date: 'dd MMM yyyy, hh:mm aa' }}
+        </p>
       </div>
       <div class="card-group">
         <a [routerLink]="['../../list']" class="button button--secondary">Back</a>
@@ -61,7 +59,7 @@
             <div class="project__user-name clearfix" *ngIf="!isLoading">
               {{ user.firstName + ' ' + user.lastName }}
               <span *ngIf="user.userId === userId">(You)</span> <span *ngIf="!user.hasAccepted">(Pending)</span>
-              <a *ngIf="isManager && manageUserMode" (click)="onRemoveUserAssignment(user)" class="pull-right manage-mode">Remove</a>
+              <a *ngIf="isManager && manageUserMode" (click)="onToggleRemoveUserAssignmentModal(user)" class="pull-right manage-mode">Remove</a>
             </div>
           </div>
         </div>

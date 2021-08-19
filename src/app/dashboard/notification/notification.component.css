@@ -3,10 +3,12 @@
   top: 100%;
   right: 0;
   width: 400px;
+  max-height: 400px;
   background-color: #f6f6f6;
   color: rgba(0, 0, 0, 0.87);
   box-shadow: 0 3px 5px 0 rgba(0, 0, 0, 0.1);
   z-index: 5;
+  overflow-y: scroll;
 }
 
 #notification__items > ul > li {

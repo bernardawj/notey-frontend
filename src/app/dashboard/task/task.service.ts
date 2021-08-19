@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 import { Task } from './task.model';
 import { environment } from '../../../environments/environment';
 import { TaskList } from './task-list.model';
@@ -16,7 +16,10 @@ import { GetTask } from '../../model/task/get-task.model';
 })
 export class TaskService {
 
+  reloadTask: Subject<boolean>;
+
   constructor(private httpClient: HttpClient) {
+    this.reloadTask = new Subject<boolean>();
   }
 
   getAllUserTasks(getUserTasks: GetUserTasks): Observable<TaskList> {

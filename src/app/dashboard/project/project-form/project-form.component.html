@@ -1,8 +1,5 @@
 <h3>{{ isEdit ? 'Edit Project' : 'Create Project' }}</h3>
 <div class="card">
-  <div class="alert alert--danger" *ngIf="error">
-    {{ error }}
-  </div>
   <form [formGroup]="form" (ngSubmit)="onSubmit()">
     <div class="form-group">
       <label for="name">Project Name <span class="text--required">*</span></label>

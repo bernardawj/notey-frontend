@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ModalService } from './modal.service';
 import { Task } from '../../dashboard/task/task.model';
 import { Project } from '../../dashboard/project/project.model';
@@ -8,13 +8,14 @@ import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms'
 import { AssignTask } from '../../model/task/assign-task.model';
 import { AssignedUser } from '../model/assigned-user.model';
 import { RemoveProjectAssignment } from '../../model/project/remove-project-assignment.model';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-modal',
   templateUrl: 'modal.component.html',
   styleUrls: ['modal.component.css']
 })
-export class ModalComponent implements OnInit {
+export class ModalComponent implements OnInit, OnDestroy {
 
   expandModal: boolean;
   action: ModalAction | undefined;
@@ -25,15 +26,20 @@ export class ModalComponent implements OnInit {
 
   assignmentForm!: FormGroup;
 
+  subscriptions: Subscription[];
+
   constructor(private modalService: ModalService, private formBuilder: FormBuilder) {
     this.expandModal = false;
     this.id = 0;
     this.name = '';
     this.assignmentForm = this.formBuilder.group({});
+    this.subscriptions = [];
   }
 
+  // Angular lifecycles
+
   ngOnInit(): void {
-    this.modalService.expandEmitter.subscribe(modal => {
+    const expandSub: Subscription = this.modalService.expandSubject.subscribe(modal => {
       let data;
 
       if (modal.type === ModalType.TASK) {
@@ -59,6 +65,14 @@ export class ModalComponent implements OnInit {
         this.buildForm();
       }
     });
+
+    this.subscriptions.push(expandSub);
+  }
+
+  ngOnDestroy(): void {
+    this.subscriptions.forEach(subscription => {
+      subscription.unsubscribe();
+    });
   }
 
   actionColorClass(): string {
@@ -70,25 +84,26 @@ export class ModalComponent implements OnInit {
   }
 
   onConfirm(): void {
-    console.log(this.type);
     switch (this.type) {
       case ModalType.PROJECT:
+        // Actions for projects
         if (this.action === ModalAction.DELETE || this.action === ModalAction.UPDATE) {
-          console.log(this.id + 'from modal')
           this.modalService.projectConfirmationSubject.next(this.id);
         } else {
           const userId = this.assignmentForm.get('user')?.value;
-          this.modalService.taskAssignmentEmitter.emit(new AssignTask(this.getTaskData().id, userId, 0, true));
+          this.modalService.taskAssignmentSubject.next(new AssignTask(this.getTaskData().id, userId, 0, true));
         }
         break;
       case
       ModalType.TASK:
         // Actions for tasks
-        if (this.action === ModalAction.DELETE || this.action === ModalAction.UPDATE) {
-          this.modalService.taskConfirmationEmitter.emit(this.id);
-        } else {
+        if (this.action === ModalAction.ASSIGN) {
           const userId = this.assignmentForm.get('user')?.value;
-          this.modalService.taskAssignmentEmitter.emit(new AssignTask(this.getTaskData().id, userId, 0, true));
+          this.modalService.taskAssignmentSubject.next(new AssignTask(this.getTaskData().id, userId, 0, true));
+        } else if (this.action === ModalAction.REMOVE) {
+          this.modalService.taskAssignmentSubject.next(new AssignTask(this.getTaskData().id, this.getTaskData().user.id, 0, false));
+        } else if (this.action === ModalAction.DELETE || this.action === ModalAction.UPDATE) {
+          this.modalService.taskConfirmationSubject.next(this.id);
         }
         break;
       case
