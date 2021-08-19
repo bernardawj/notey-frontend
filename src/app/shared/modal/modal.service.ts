@@ -1,8 +1,9 @@
-import { EventEmitter, Injectable, Output } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { Modal } from './modal.model';
 import { AssignTask } from '../../model/task/assign-task.model';
 import { RemoveProjectAssignment } from '../../model/project/remove-project-assignment.model';
-import { BehaviorSubject, Subject } from 'rxjs';
+import { Subject } from 'rxjs';
+import { TaskCompletion } from '../../model/task/task-completion.model';
 
 @Injectable({
   providedIn: 'root'
@@ -10,6 +11,7 @@ import { BehaviorSubject, Subject } from 'rxjs';
 export class ModalService {
 
   expandSubject: Subject<Modal>;
+  taskCompletionSubject: Subject<TaskCompletion>;
   taskConfirmationSubject: Subject<number>;
   taskAssignmentSubject: Subject<AssignTask>;
   projectConfirmationSubject: Subject<number>;
@@ -17,6 +19,7 @@ export class ModalService {
 
   constructor() {
     this.expandSubject = new Subject<Modal>();
+    this.taskCompletionSubject = new Subject<TaskCompletion>();
     this.taskConfirmationSubject = new Subject<number>();
     this.taskAssignmentSubject = new Subject<AssignTask>();
     this.projectConfirmationSubject = new Subject<number>();

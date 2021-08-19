@@ -9,6 +9,7 @@ import { AssignTask } from '../../model/task/assign-task.model';
 import { AssignedUser } from '../model/assigned-user.model';
 import { RemoveProjectAssignment } from '../../model/project/remove-project-assignment.model';
 import { Subscription } from 'rxjs';
+import { TaskCompletion } from '../../model/task/task-completion.model';
 
 @Component({
   selector: 'app-modal',
@@ -104,6 +105,10 @@ export class ModalComponent implements OnInit, OnDestroy {
           this.modalService.taskAssignmentSubject.next(new AssignTask(this.getTaskData().id, this.getTaskData().user.id, 0, false));
         } else if (this.action === ModalAction.DELETE || this.action === ModalAction.UPDATE) {
           this.modalService.taskConfirmationSubject.next(this.id);
+        } else if (this.action === ModalAction.COMPLETE) {
+          this.modalService.taskCompletionSubject.next(new TaskCompletion(this.getTaskData().id, this.getTaskData().user.id, true));
+        } else if (this.action === ModalAction.INCOMPLETE) {
+          this.modalService.taskCompletionSubject.next(new TaskCompletion(this.getTaskData().id, this.getTaskData().user.id, false));
         }
         break;
       case
@@ -122,6 +127,10 @@ export class ModalComponent implements OnInit, OnDestroy {
 
   isDeleteOrUpdate(): boolean {
     return this.action === ModalAction.DELETE || this.action === ModalAction.UPDATE || this.action === ModalAction.REMOVE;
+  }
+
+  isMark(): boolean {
+    return this.action === ModalAction.COMPLETE || this.action === ModalAction.INCOMPLETE;
   }
 
   isAssignTask(): boolean {

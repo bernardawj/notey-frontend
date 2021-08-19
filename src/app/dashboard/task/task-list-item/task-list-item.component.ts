@@ -57,6 +57,7 @@ export class TaskListItemComponent implements OnInit, OnDestroy {
 
           if (this.loadProjectTasks) {
             this.getProjectTasks(1, '');
+            this.loadTaskCompletionSubscription();
             this.loadAssignTaskSubscription(this.userId);
             this.loadDeleteTaskSubscription(this.userId);
             this.loadReloadTaskListSubscription();
@@ -78,6 +79,14 @@ export class TaskListItemComponent implements OnInit, OnDestroy {
 
   // Toggle
 
+  onToggleCompletionModal(task: Task, complete: boolean): void {
+    if (complete) {
+      this.modalService.expandSubject.next(new Modal(task, ModalType.TASK, ModalAction.COMPLETE, true));
+    } else {
+      this.modalService.expandSubject.next(new Modal(task, ModalType.TASK, ModalAction.INCOMPLETE, true));
+    }
+  }
+
   onToggleAssignTaskModal(task: Task, assign: boolean): void {
     if (assign) {
       this.modalService.expandSubject.next(new Modal(task, ModalType.TASK, ModalAction.ASSIGN, true));
@@ -91,6 +100,27 @@ export class TaskListItemComponent implements OnInit, OnDestroy {
   }
 
   // Subscriptions
+
+  loadTaskCompletionSubscription(): void {
+    const confirmSub: Subscription = this.modalService.taskCompletionSubject.subscribe(
+      taskCompletion => {
+        if (taskCompletion) {
+          const completionSub: Subscription = this.taskService.markTaskAsCompleted(taskCompletion).subscribe(
+            () => {
+              this.getProjectTasks(1, '');
+              this.alertService.alertSubject.next(new Alert(`Successfully marked task as ${ taskCompletion.complete ? 'completed' : 'incomplete' }.`, AlertType.SUCCESS));
+            }, error => {
+              this.alertService.alertSubject.next(new Alert(error.error.message, AlertType.DANGER));
+            }
+          );
+
+          this.subscriptions.push(completionSub);
+        }
+      }
+    );
+
+    this.subscriptions.push(confirmSub);
+  }
 
   loadAssignTaskSubscription(userId: number): void {
     const taskAssignmentSub: Subscription = this.modalService.taskAssignmentSubject.subscribe(

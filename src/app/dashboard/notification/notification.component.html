@@ -1,4 +1,4 @@
-<div id="notification" *ngIf="expandNotification" [@openClose]="expandNotification ? 'open' : 'close'">
+<div id="notification" *ngIf="expandNotification">
   <div id="notification__items" *ngIf="!isLoading && notifications.length > 0; else emptyNotification">
     <ul>
       <li *ngFor="let notification of notifications" class="notification__item">

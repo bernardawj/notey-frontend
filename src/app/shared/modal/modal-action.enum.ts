@@ -3,5 +3,7 @@ export enum ModalAction {
   DELETE = 'DELETE',
   UPDATE = 'UPDATE',
   ASSIGN = 'ASSIGN',
-  REMOVE = 'REMOVE'
+  REMOVE = 'REMOVE',
+  COMPLETE = 'COMPLETE',
+  INCOMPLETE = 'INCOMPLETE'
 }

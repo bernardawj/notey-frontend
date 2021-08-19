@@ -10,6 +10,7 @@ import { CreateTask } from '../../model/task/create-task.model';
 import { AssignTask } from '../../model/task/assign-task.model';
 import { UpdateTask } from '../../model/task/update-task.model';
 import { GetTask } from '../../model/task/get-task.model';
+import { TaskCompletion } from '../../model/task/task-completion.model';
 
 @Injectable({
   providedIn: 'root'
@@ -48,5 +49,9 @@ export class TaskService {
 
   deleteTask(taskId: number, managerId: number): Observable<any> {
     return this.httpClient.delete(`${ environment.endpoints.task.deleteTask }/${ taskId }/${ managerId }`);
+  }
+
+  markTaskAsCompleted(taskCompletion: TaskCompletion): Observable<any> {
+    return this.httpClient.post(environment.endpoints.task.markTaskAsCompleted, taskCompletion);
   }
 }

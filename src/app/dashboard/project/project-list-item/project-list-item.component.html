@@ -1,7 +1,7 @@
 <div class="project__list">
   <div class="card">
     <h3 class="clearfix">
-      {{ isManaged ? 'Managed' : 'Assigned' }} Projects
+      {{ isManaged ? 'Managed' : 'Assigned' }} Project List
       <a [routerLink]="['../create']" class="button button--primary pull-right no-margin" *ngIf="isManaged">New Project</a>
     </h3>
     <app-filter (filterEmitter)="filterProjects($event)"></app-filter>
