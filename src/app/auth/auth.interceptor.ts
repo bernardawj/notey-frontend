@@ -11,19 +11,19 @@ export class AuthInterceptor implements HttpInterceptor {
   }
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    if (!this.authService.user) {
+    if (this.authService.auth) {
+      return this.authService.auth.pipe(take(1), exhaustMap(auth => {
+        if (auth) {
+          const modifiedRequest: HttpRequest<any> = req.clone({
+            headers: new HttpHeaders().set('Authorization', `Bearer ${auth.token.accessToken}`)
+          });
+          return next.handle(modifiedRequest);
+        } else {
+          return next.handle(req);
+        }
+      }));
+    } else {
       return next.handle(req);
     }
-
-    return this.authService.user.pipe(take(1), exhaustMap(user => {
-      if (user) {
-        const modifiedRequest: HttpRequest<any> = req.clone({
-          headers: new HttpHeaders().set('Authorization', `Basic ${btoa(`${user.email}:${user.password}`)}`)
-        });
-        return next.handle(modifiedRequest);
-      } else {
-        return next.handle(req);
-      }
-    }));
   }
 }

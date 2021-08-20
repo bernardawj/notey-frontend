@@ -18,6 +18,7 @@ export class NotificationComponent implements OnInit, OnDestroy {
   notifications: Notification[];
   isLoading: boolean;
   notificationInterval: any;
+  userId: number | null;
 
   subscriptions: Subscription[];
 
@@ -30,16 +31,16 @@ export class NotificationComponent implements OnInit, OnDestroy {
     this.isLoading = true;
     this.expandNotification = false;
     this.subscriptions = [];
+    this.userId = null;
   }
 
   ngOnInit(): void {
-    this.authService.user.pipe(take(1)).subscribe(user => {
-      if (!user) {
-        return;
+    this.authService.auth.pipe(take(1)).subscribe(auth => {
+      if (auth) {
+        this.userId = auth.user.id;
+        this.getAllUserNotifications(this.userId);
+        this.silentRefreshNotification(this.userId);
       }
-
-      this.getAllUserNotifications(user.id);
-      this.silentRefreshNotification(user.id);
     });
   }
 
@@ -51,20 +52,18 @@ export class NotificationComponent implements OnInit, OnDestroy {
   }
 
   onClearAll(): void {
-    this.authService.user.pipe(take(1)).subscribe(user => {
-      if (user) {
-        const clearNotificationsSub: Subscription = this.notificationService.clearAllUserNotifications(user.id).subscribe(
-          () => {
-            this.getAllUserNotifications(user.id);
-            this.alertService.alertSubject.next(new Alert(`All notifications are cleared.`, AlertType.SUCCESS));
-          }, error => {
-            this.alertService.alertSubject.next(new Alert(error.error.message, AlertType.DANGER));
-          }
-        );
+    if (this.userId) {
+      const clearNotificationsSub: Subscription = this.notificationService.clearAllUserNotifications(this.userId).subscribe(
+        () => {
+          this.getAllUserNotifications(this.userId!);
+          this.alertService.alertSubject.next(new Alert(`All notifications are cleared.`, AlertType.SUCCESS));
+        }, error => {
+          this.alertService.alertSubject.next(new Alert(error.error.message, AlertType.DANGER));
+        }
+      );
 
-        this.subscriptions.push(clearNotificationsSub);
-      }
-    });
+      this.subscriptions.push(clearNotificationsSub);
+    }
   }
 
   private getAllUserNotifications(userId: number): void {

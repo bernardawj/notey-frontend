@@ -53,10 +53,10 @@ export class TaskListItemComponent implements OnInit, OnDestroy {
   // Angular lifecycles
 
   ngOnInit(): void {
-    const authSub: Subscription = this.authService.user.pipe(take(1)).subscribe(
-      user => {
-        if (user) {
-          this.userId = user.id;
+    const authSub: Subscription = this.authService.auth.pipe(take(1)).subscribe(
+      auth => {
+        if (auth) {
+          this.userId = auth.user.id;
 
           if (this.loadProjectTasks) {
             this.getProjectTasks(1, this.filter);

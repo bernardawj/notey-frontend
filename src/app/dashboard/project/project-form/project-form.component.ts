@@ -42,10 +42,10 @@ export class ProjectFormComponent implements OnInit, OnDestroy {
     this.initFormData(false);
 
     // Load project data
-    const authSub: Subscription = this.authService.user.subscribe(user => {
-      if (user) {
+    const authSub: Subscription = this.authService.auth.subscribe(auth => {
+      if (auth) {
         // Set user ID for easier usage
-        this.userId = user.id;
+        this.userId = auth.user.id;
 
         this.activatedRoute.params.subscribe(param => {
           if (param['id']) {

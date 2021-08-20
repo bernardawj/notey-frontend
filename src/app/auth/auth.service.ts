@@ -3,34 +3,36 @@ import { BehaviorSubject, Observable } from 'rxjs';
 import { User } from '../shared/user/user.model';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../environments/environment';
+import { Auth } from '../model/auth/auth.model';
+import { Login } from '../model/auth/login.model';
+import { Token } from '../model/auth/token.model';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
 
-  user: BehaviorSubject<User | undefined>;
+  auth: BehaviorSubject<Auth | null>;
 
   constructor(private httpClient: HttpClient) {
-    this.user = new BehaviorSubject<User | undefined>(undefined);
+    this.auth = new BehaviorSubject<Auth | null>(null);
   }
 
-  login(email: string, password: string): Observable<User> {
-    return this.httpClient.post<User>(environment.endpoints.auth.login, {
-      email: email,
-      password: password
-    });
+  login(login: Login): Observable<Auth> {
+    return this.httpClient.post<Auth>(environment.endpoints.auth.login, login);
   }
 
   autoLogin(): void {
-    const userData = JSON.parse(<string>localStorage.getItem('user'));
+    const userData = JSON.parse(<string>localStorage.getItem('auth'));
 
     if (!userData) {
       return;
     }
 
-    const user = new User(userData.id, userData.email, userData.password, userData.firstName, userData.lastName);
-    this.user.next(user);
+    const user: User = new User(userData.user.id, userData.user.email, userData.user.password, userData.user.firstName, userData.user.lastName);
+    const token: Token = new Token(userData.token.accessToken);
+    const auth = new Auth(user, token);
+    this.auth.next(auth);
   }
 
   // register(user: User): Observable<User> {
@@ -38,9 +40,9 @@ export class AuthService {
   // }
 
   logout(): void {
-    if (this.user) {
-      this.user.unsubscribe();
-      this.user.next(new User(0, '', '', '', ''));
+    if (this.auth) {
+      this.auth.unsubscribe();
+      this.auth.next(null);
     }
   }
 }

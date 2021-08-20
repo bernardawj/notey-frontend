@@ -47,17 +47,15 @@ export class ProjectListItemComponent implements OnInit, OnDestroy {
   // Angular lifecycles
 
   ngOnInit(): void {
-    const authSub: Subscription = this.authService.user.pipe(take(1)).subscribe(user => {
-      if (!user) {
-        return;
+    const authSub: Subscription = this.authService.auth.pipe(take(1)).subscribe(auth => {
+      if (auth) {
+        // Update user ID
+        this.userId = auth.user.id;
+
+        // Get project lists and init subscriptions
+        this.getProject(this.userId, 1, '');
+        this.initDeleteConfirmationSubscription(this.userId);
       }
-
-      // Update user ID
-      this.userId = user.id;
-
-      // Get project lists and init subscriptions
-      this.getProject(this.userId, 1, '');
-      this.initDeleteConfirmationSubscription(this.userId);
     });
 
     this.subscriptions.push(authSub);

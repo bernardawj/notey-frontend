@@ -30,9 +30,12 @@ export class HeaderComponent implements OnInit, OnDestroy {
   // Angular lifecycles
 
   ngOnInit(): void {
-    const authSub: Subscription = this.authService.user.subscribe(user => {
-      this.user = user;
-    });
+    const authSub: Subscription = this.authService.auth.subscribe(
+      auth => {
+        if (auth) {
+          this.user = auth.user;
+        }
+      });
 
     this.subscriptions.push(authSub);
   }
@@ -52,8 +55,8 @@ export class HeaderComponent implements OnInit, OnDestroy {
   }
 
   onLogout(): void {
-    this.authService.user.next(undefined);
-    localStorage.removeItem('user');
+    this.authService.auth.next(null);
+    localStorage.removeItem('auth');
     this.alertService.alertSubject.next(new Alert('Successfully logged out from your account', AlertType.SUCCESS));
     this.router.navigate(['/auth']).finally();
   }

@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 import { Alert } from '../../shared/alert/alert.model';
 import { AlertType } from '../../shared/alert/alert-type.enum';
 import { AlertService } from '../../shared/alert/alert.service';
+import { Login } from '../../model/auth/login.model';
 
 @Component({
   selector: 'app-login',
@@ -33,11 +34,10 @@ export class LoginComponent implements OnInit {
     const email = this.loginForm.get('email')?.value;
     const password = this.loginForm.get('password')?.value;
 
-    this.authService.login(email, password).subscribe(
-      response => {
-        response.password = password;
-        localStorage.setItem('user', JSON.stringify(response));
-        this.authService.user.next(response);
+    this.authService.login(new Login(email, password)).subscribe(
+      auth => {
+        localStorage.setItem('user', JSON.stringify(auth));
+        this.authService.auth.next(auth);
         this.alertService.alertSubject.next(new Alert(`Successfully authenticated your account.`, AlertType.SUCCESS));
         this.router.navigate(['/dashboard']).finally();
       }, error => {

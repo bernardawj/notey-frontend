@@ -1,5 +1,5 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
-import { AbstractControl, FormBuilder, FormControl, FormGroup, ValidationErrors, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Task } from '../task.model';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TaskService } from '../task.service';
@@ -11,7 +11,6 @@ import { GetTask } from '../../../model/task/get-task.model';
 import { AuthService } from '../../../auth/auth.service';
 import { take } from 'rxjs/operators';
 import { Observable, Subscription } from 'rxjs';
-import { TaskType } from '../task-type.enum';
 import { TaskValidator } from '../../validator/task.validator';
 import { UpdateTask } from '../../../model/task/update-task.model';
 
@@ -48,15 +47,15 @@ export class TaskFormComponent implements OnInit, OnDestroy {
       endAt: new FormControl(null, [Validators.required])
     });
 
-    const authSub: Subscription = this.authService.user.pipe(take(1)).subscribe(
-      user => {
+    const authSub: Subscription = this.authService.auth.pipe(take(1)).subscribe(
+      auth => {
         // Check if user is in a valid state
-        if (user) {
-          this.userId = user.id;
+        if (auth) {
+          this.userId = auth.user.id;
           this.activatedRoute.params.subscribe(
             param => {
               if (this.isEdit) {
-                this.getTaskDetails(+param['id'], user.id);
+                this.getTaskDetails(+param['id'], auth.user.id);
               } else {
                 this.projectId = this.activatedRoute.snapshot.queryParams['projectId'];
               }

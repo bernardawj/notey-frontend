@@ -46,10 +46,10 @@ export class ProjectDetailsComponent implements OnInit, OnDestroy {
   // Angular lifecycles
 
   ngOnInit(): void {
-    const authSub: Subscription = this.authService.user.subscribe(user => {
-      if (user) {
+    const authSub: Subscription = this.authService.auth.subscribe(auth => {
+      if (auth) {
         // Set user ID for easier retrieval
-        this.userId = user.id;
+        this.userId = auth.user.id;
 
         this.activatedRoute.params.subscribe(
           param => {
