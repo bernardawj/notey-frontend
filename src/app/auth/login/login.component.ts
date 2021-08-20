@@ -36,7 +36,7 @@ export class LoginComponent implements OnInit {
 
     this.authService.login(new Login(email, password)).subscribe(
       auth => {
-        localStorage.setItem('user', JSON.stringify(auth));
+        localStorage.setItem('auth', JSON.stringify(auth));
         this.authService.auth.next(auth);
         this.alertService.alertSubject.next(new Alert(`Successfully authenticated your account.`, AlertType.SUCCESS));
         this.router.navigate(['/dashboard']).finally();

@@ -25,14 +25,12 @@ export class AuthService {
   autoLogin(): void {
     const userData = JSON.parse(<string>localStorage.getItem('auth'));
 
-    if (!userData) {
-      return;
+    if (userData) {
+      const user: User = new User(userData.user.id, userData.user.email, userData.user.password, userData.user.firstName, userData.user.lastName);
+      const token: Token = new Token(userData.token.accessToken);
+      const auth = new Auth(user, token);
+      this.auth.next(auth);
     }
-
-    const user: User = new User(userData.user.id, userData.user.email, userData.user.password, userData.user.firstName, userData.user.lastName);
-    const token: Token = new Token(userData.token.accessToken);
-    const auth = new Auth(user, token);
-    this.auth.next(auth);
   }
 
   // register(user: User): Observable<User> {
