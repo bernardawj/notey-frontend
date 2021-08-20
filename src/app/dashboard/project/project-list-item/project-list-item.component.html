@@ -2,9 +2,10 @@
   <div class="card">
     <h3 class="clearfix">
       {{ isManaged ? 'Managed' : 'Assigned' }} Project List
-      <a [routerLink]="['../create']" class="button button--primary pull-right no-margin" *ngIf="isManaged">New Project</a>
+      <a [routerLink]="['../create']" class="button button--primary pull-right no-margin" *ngIf="isManaged">New
+        Project</a>
     </h3>
-    <app-filter (filterEmitter)="filterProjects($event)"></app-filter>
+    <app-filter [isTask]="false" (filterEmitter)="filterProjects($event)"></app-filter>
     <div class="table" *ngIf="!isLoading && projectList?.projects!.length > 0">
       <table>
         <thead>
@@ -16,22 +17,32 @@
         <tbody>
         <tr *ngFor="let project of projectList?.projects">
           <td>
-            <div class="table-group">
-              <label>Name</label>
-              <p><a [routerLink]="['/dashboard/project/details', project.id]">{{ project.name }}</a></p>
+            <div class="table__group">
+              <label class="table__label">Name</label>
+              <div class="table__content">
+                <a [routerLink]="['/dashboard/project/details', project.id]">{{ project.name }}</a>
+              </div>
             </div>
-            <div class="table-group">
-              <label>Description</label>
-              <p>{{ project.description }}</p>
+            <div class="table__group">
+              <label class="table__label">Description</label>
+              <div class="table__content">
+                {{ project.description }}
+              </div>
             </div>
-            <div class="table-group">
-              <label>Duration</label>
-              <p>{{ project.startAt | date: 'dd MMM yyyy, hh:mm aa' }} - {{ project.endAt | date: 'dd MMM yyyy, hh:mm aa' }}</p>
+            <div class="table__group">
+              <label class="table__label">Duration</label>
+              <div class="table__content">
+                {{ project.startAt | date: 'dd MMM yyyy, hh:mm aa' }}
+                - {{ project.endAt | date: 'dd MMM yyyy, hh:mm aa' }}
+              </div>
             </div>
           </td>
           <td *ngIf="isManaged">
-            <a [routerLink]="['/dashboard/project/edit', project.id]" class="button button--primary button--width-full">Edit Project</a>
-            <button (click)="onToggleDeleteModal(project)" class="button button--danger button--width-full">Delete Project</button>
+            <a [routerLink]="['/dashboard/project/edit', project.id]" class="button button--primary button--width-full">Edit
+              Project</a>
+            <button (click)="onToggleDeleteModal(project)" class="button button--danger button--width-full">Delete
+              Project
+            </button>
           </td>
         </tr>
         </tbody>
@@ -48,7 +59,7 @@
       </div>
     </div>
     <div class="svg__wrapper" *ngIf="!isLoading && projectList?.projects!.length === 0">
-      <img src="../../../../assets/svg/folder.svg" alt="empty-project" />
+      <img src="../../../../assets/svg/folder.svg" alt="empty-project"/>
       <span class="svg-wrapper__text">No projects found.</span>
     </div>
     <div class="load" *ngIf="isLoading"></div>

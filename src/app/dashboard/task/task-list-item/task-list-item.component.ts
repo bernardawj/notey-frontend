@@ -16,9 +16,10 @@ import { ModalAction } from '../../../shared/modal/modal-action.enum';
 import { Alert } from '../../../shared/alert/alert.model';
 import { AlertType } from '../../../shared/alert/alert-type.enum';
 import { AlertService } from '../../../shared/alert/alert.service';
-import { Filter } from '../../../shared/model/filter.model';
 import { InputPage } from '../../../shared/model/input-page.model';
 import { Subscription } from 'rxjs';
+import { TaskFilter } from '../../../shared/model/filter/task-filter.model';
+import { ProjectFilter } from '../../../shared/model/filter/project-filter.model';
 
 @Component({
   selector: 'app-task-list-item',
@@ -31,6 +32,7 @@ export class TaskListItemComponent implements OnInit, OnDestroy {
   isLoading: boolean;
   taskList: TaskList | null;
   subscriptions: Subscription[];
+  filter: TaskFilter;
 
   @Input() loadProjectTasks: boolean;
   @Input() hasAccepted: boolean;
@@ -45,6 +47,7 @@ export class TaskListItemComponent implements OnInit, OnDestroy {
     this.taskList = null;
     this.hasAccepted = false;
     this.subscriptions = [];
+    this.filter = new TaskFilter('', null, null);
   }
 
   // Angular lifecycles
@@ -56,7 +59,7 @@ export class TaskListItemComponent implements OnInit, OnDestroy {
           this.userId = user.id;
 
           if (this.loadProjectTasks) {
-            this.getProjectTasks(1, '');
+            this.getProjectTasks(1, this.filter);
             this.loadTaskCompletionSubscription();
             this.loadAssignTaskSubscription(this.userId);
             this.loadDeleteTaskSubscription(this.userId);
@@ -107,7 +110,7 @@ export class TaskListItemComponent implements OnInit, OnDestroy {
         if (taskCompletion) {
           const completionSub: Subscription = this.taskService.markTaskAsCompleted(taskCompletion).subscribe(
             () => {
-              this.getProjectTasks(1, '');
+              this.getProjectTasks(1, this.filter);
               this.alertService.alertSubject.next(new Alert(`Successfully marked task as ${ taskCompletion.complete ? 'completed' : 'incomplete' }.`, AlertType.SUCCESS));
             }, error => {
               this.alertService.alertSubject.next(new Alert(error.error.message, AlertType.DANGER));
@@ -140,7 +143,7 @@ export class TaskListItemComponent implements OnInit, OnDestroy {
           () => {
             if (this.taskList && this.taskList.pagination) {
               this.alertService.alertSubject.next(new Alert(`Successfully deleted task.`, AlertType.SUCCESS));
-              this.getProjectTasks(this.taskList.pagination.currentPage, '');
+              this.getProjectTasks(this.taskList.pagination.currentPage, this.filter);
             }
           }, error => {
             this.alertService.alertSubject.next(new Alert(error.error.message, AlertType.DANGER));
@@ -156,7 +159,7 @@ export class TaskListItemComponent implements OnInit, OnDestroy {
     const reloadSub: Subscription = this.taskService.reloadTask.subscribe(
       response => {
         if (response) {
-          this.getProjectTasks(1, '');
+          this.getProjectTasks(1, this.filter);
         }
       }
     );
@@ -209,24 +212,25 @@ export class TaskListItemComponent implements OnInit, OnDestroy {
       this.alertService.alertSubject.next(
         new Alert(`Viewing page ${ pageNo } of ${ this.taskList?.pagination.totalPages } of ${ this.loadProjectTasks ? 'project\'s' : 'assigned' } tasks.`, AlertType.INFO));
       if (this.loadProjectTasks) {
-        this.getProjectTasks(pageNo, '');
+        this.getProjectTasks(pageNo, this.filter);
       } else {
         this.getUserTasks(this.userId, pageNo);
       }
     }
   }
 
-  filterTasks(searchString: string): void {
+  filterTasks(filter: TaskFilter | ProjectFilter): void {
     if (this.loadProjectTasks) {
-      this.getProjectTasks(1, searchString);
+      this.filter = <TaskFilter>filter;
+      console.log(this.filter);
+      this.getProjectTasks(1, this.filter);
     }
   }
 
   // Private methods
 
-  private getProjectTasks(pageNo: number, searchString: string): void {
+  private getProjectTasks(pageNo: number, filter: TaskFilter): void {
     const projectId = this.activatedRoute.snapshot.params['id'];
-    const filter = new Filter(searchString);
     const inputPage = new InputPage(pageNo, 5);
 
     const getProjectTasksSub: Subscription = this.taskService.getAllProjectTasks(new GetProjectTasks(projectId, filter, inputPage)).subscribe(
@@ -266,7 +270,7 @@ export class TaskListItemComponent implements OnInit, OnDestroy {
           }
 
           // Reload project tasks
-          this.getProjectTasks(this.taskList.pagination.totalPages, '');
+          this.getProjectTasks(this.taskList.pagination.totalPages, this.filter);
         }
       }, error => {
         this.alertService.alertSubject.next(new Alert(error.error.message, AlertType.DANGER));

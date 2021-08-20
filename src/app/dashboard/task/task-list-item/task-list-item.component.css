@@ -8,10 +8,14 @@ td > .button {
 
 .task__completion,
 .task__action {
-  width: 300px;
+  width: 250px;
 }
 
 .task__completion > span {
   display: inline-block;
   margin-bottom: 5px;
+}
+
+.table__label {
+
 }

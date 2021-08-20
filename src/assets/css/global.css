@@ -286,18 +286,19 @@ form > .form-group:nth-last-child(1) {
 /*  box-shadow: 0 3px 5px 0 rgba(0, 0, 0, 0.1);*/
 /*}*/
 
-.table-group {
+.table__group {
   margin-bottom: 20px;
 }
 
-.table-group > label {
+.table__group > .row:nth-last-child(1),
+td > .table__group:nth-last-child(1) {
+  margin-bottom: 0;
+}
+
+.table__group .table__label {
   font-weight: 700;
   display: inline-block;
   margin-bottom: 10px;
-}
-
-.table-group > p {
-
 }
 
 table {
@@ -452,6 +453,7 @@ div > .row:nth-last-child(1) {
   padding: 5px;
   box-shadow: 0 3px 5px 0 rgba(0, 0, 0, 0.1);
   margin-bottom: 5px;
+  margin-right: 5px;
 }
 
 .label-tag--info {

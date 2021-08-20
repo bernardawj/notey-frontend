@@ -1,8 +1,5 @@
 <h3>{{ isEdit ? 'Edit Task' : 'Create Task' }}</h3>
 <div class="card">
-  <div class="alert alert--danger" *ngIf="error">
-    {{ error }}
-  </div>
   <form [formGroup]="form" (ngSubmit)="onSubmit()">
     <div class="form-group">
       <label for="name">Task Name <span class="text--required">*</span></label>
@@ -21,7 +18,7 @@
         <option value="NON_URGENT">Non-Urgent</option>
         <option value="URGENT">Urgent</option>
       </select>
-      <span class="form-validation" *ngIf="form.get('description')?.invalid && form.get('description')?.dirty">Please enter a valid description.</span>
+      <span class="form-validation" *ngIf="form.get('type')?.invalid && form.get('type')?.dirty">Please select a valid type.</span>
     </div>
     <div class="form-group">
       <label for="startAt">Start At <span class="text--required">*</span></label>

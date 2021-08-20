@@ -1,10 +1,10 @@
 import { BaseList } from '../../shared/model/base-list.model';
-import { Filter } from '../../shared/model/filter.model';
 import { InputPage } from '../../shared/model/input-page.model';
+import { TaskFilter } from '../../shared/model/filter/task-filter.model';
 
-export class GetProjectTasks extends BaseList {
+export class GetProjectTasks extends BaseList<TaskFilter> {
 
-  constructor(public projectId: number, public filter: Filter, public inputPage: InputPage) {
+  constructor(public projectId: number, public filter: TaskFilter, public inputPage: InputPage) {
     super(filter, inputPage);
   }
 }

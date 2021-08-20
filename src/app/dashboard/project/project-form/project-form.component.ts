@@ -86,7 +86,7 @@ export class ProjectFormComponent implements OnInit, OnDestroy {
       },
       error => {
         this.alertService.alertSubject.next(new Alert(error.error.message, AlertType.DANGER));
-        this.router.navigate(['/project']).finally();
+        this.router.navigate(['/dashboard/project/list']).finally();
       }
     );
 
@@ -103,8 +103,8 @@ export class ProjectFormComponent implements OnInit, OnDestroy {
       }
     } else {
       this.form = this.formBuilder.group({
-        name: new FormControl(null, [Validators.required]),
-        description: new FormControl(null, [Validators.required]),
+        name: new FormControl(null, [Validators.required, Validators.max(50)]),
+        description: new FormControl(null, [Validators.required, Validators.max(255)]),
         startAt: new FormControl(null, [Validators.required]),
         endAt: new FormControl(null, [Validators.required])
       });

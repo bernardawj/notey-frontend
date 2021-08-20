@@ -9,7 +9,7 @@ import { Observable, Subscription } from 'rxjs';
 import { AlertService } from '../../../shared/alert/alert.service';
 import { Alert } from '../../../shared/alert/alert.model';
 import { AlertType } from '../../../shared/alert/alert-type.enum';
-import { Filter } from '../../../shared/model/filter.model';
+import { Filter } from '../../../shared/model/filter/filter.model';
 import { InputPage } from '../../../shared/model/input-page.model';
 import { ModalService } from '../../../shared/modal/modal.service';
 import { Modal } from '../../../shared/modal/modal.model';
@@ -17,6 +17,8 @@ import { ModalAction } from '../../../shared/modal/modal-action.enum';
 import { ModalType } from '../../../shared/modal/modal-type.enum';
 import { Project } from '../project.model';
 import { DeleteProject } from '../../../model/project/delete-project.model';
+import { ProjectFilter } from '../../../shared/model/filter/project-filter.model';
+import { TaskFilter } from '../../../shared/model/filter/task-filter.model';
 
 @Component({
   selector: 'app-project-list-item',
@@ -120,8 +122,8 @@ export class ProjectListItemComponent implements OnInit, OnDestroy {
     this.getProject(this.userId, pageNo, '');
   }
 
-  filterProjects(searchString: string): void {
-    this.getProject(this.userId, 1, searchString);
+  filterProjects(filter: ProjectFilter): void {
+    this.getProject(this.userId, 1, filter.searchString);
   }
 
   // Private methods

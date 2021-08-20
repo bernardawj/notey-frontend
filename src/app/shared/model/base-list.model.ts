@@ -1,8 +1,7 @@
 import { InputPage } from './input-page.model';
-import { Filter } from './filter.model';
 
-export class BaseList {
+export abstract class BaseList<Filter> {
 
-  constructor(public filter: Filter, public inputPage: InputPage) {
+  protected constructor(public filter: Filter, public inputPage: InputPage) {
   }
 }

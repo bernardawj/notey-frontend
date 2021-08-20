@@ -12,6 +12,7 @@ import { TaskListItemComponent } from './task/task-list-item/task-list-item.comp
 import { CreditsComponent } from './credits/credits.component';
 import { TaskCreateComponent } from './task/task-create/task-create.component';
 import { TaskEditComponent } from './task/task-edit/task-edit.component';
+import { TaskDetailComponent } from './task/task-detail/task-detail.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/dashboard/home', pathMatch: 'full' },
@@ -34,7 +35,7 @@ const routes: Routes = [
       { path: '', redirectTo: '/dashboard/task/list', pathMatch: 'full' },
       { path: 'list', component: TaskListItemComponent },
       { path: 'create', component: TaskCreateComponent },
-      { path: 'details/:id', component: TaskCreateComponent },
+      { path: 'details/:id', component: TaskDetailComponent },
       { path: 'edit/:id', component: TaskEditComponent }
     ]
   },

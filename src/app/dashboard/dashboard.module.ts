@@ -25,6 +25,7 @@ import { CreditsComponent } from './credits/credits.component';
 import { TaskCreateComponent } from './task/task-create/task-create.component';
 import { TaskFormComponent } from './task/task-form/task-form.component';
 import { TaskEditComponent } from './task/task-edit/task-edit.component';
+import { TaskDetailComponent } from './task/task-detail/task-detail.component';
 
 @NgModule({
   declarations: [
@@ -48,7 +49,8 @@ import { TaskEditComponent } from './task/task-edit/task-edit.component';
     RenameTaskTypePipe,
     TaskCreateComponent,
     TaskFormComponent,
-    TaskEditComponent
+    TaskEditComponent,
+    TaskDetailComponent
   ],
   imports: [
     SharedModule,
