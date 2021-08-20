@@ -12,7 +12,7 @@
         <thead>
         <tr>
           <th>Task</th>
-          <th>Action</th>
+          <th *ngIf="loadProjectTasks">Action</th>
         </tr>
         </thead>
         <tbody>
@@ -62,11 +62,13 @@
               </div>
             </div>
             <div class="table__group" *ngIf="!loadProjectTasks">
-              <label>Project</label>
-              <p><a [routerLink]="['/dashboard/project/details', task.project.id]">{{ task.project.name }}</a></p>
+              <label class="table__label">Project</label>
+              <div class="table__content">
+                <a [routerLink]="['/dashboard/project/details', task.project.id]">{{ task.project.name }}</a>
+              </div>
             </div>
           </td>
-          <td class="task__action">
+          <td class="task__action" *ngIf="loadProjectTasks">
             <a [routerLink]="['/dashboard/task/edit', task.id]" class="button button--primary button--width-full"
                *ngIf="isManaged">Edit Task</a>
             <button class="button button--success button--width-full" *ngIf="!task.user && isManaged"
@@ -83,8 +85,9 @@
                     (click)="onToggleCompletionModal(task, true)">
               Mark As Completed
             </button>
-            <button class="button button--danger button--width-full" *ngIf="task.completed"
-                    (click)="onToggleCompletionModal(task, false)">Mark As Incomplete
+            <button class="button button--danger button--width-full" *ngIf="task.completed && task.user && isUser(task.user.id)"
+                    (click)="onToggleCompletionModal(task, false)">
+              Mark As Incomplete
             </button>
           </td>
         </tr>

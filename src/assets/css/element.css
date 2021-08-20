@@ -1,0 +1,130 @@
+/******************************
+  Card
+*******************************/
+
+.card {
+  display: block;
+  background-color: #F6F6F6;
+  padding: 15px;
+  border-top: 2px solid #ff6f6f;
+  height: 100%;
+  box-shadow: 0 3px 5px 0 rgba(0, 0, 0, 0.1);
+}
+
+.card-rounded {
+  border-radius: 5px;
+}
+
+.card-title,
+.card-subtitle,
+.card-content {
+  display: block;
+}
+
+.card-title {
+  font-size: 16px;
+  font-weight: 700;
+  margin-bottom: 10px;
+}
+
+.card-subtitle {
+  font-style: italic;
+  margin-bottom: 15px;
+}
+
+.card-content {
+  font-size: 14px;
+}
+
+.card-subtitle,
+.card-data {
+  font-size: 12px;
+}
+
+.card-group {
+  margin-bottom: 20px;
+}
+
+.card-group > label {
+  display: inline-block;
+  font-weight: 600;
+  margin-bottom: 10px;
+}
+
+.card > .card-group:nth-last-child(1) {
+  margin-bottom: 0;
+}
+
+.card__alert {
+  width: 100%;
+  background-color: #6f6fff;
+  color: #f6f6f6;
+  text-align: center;
+  padding: 10px;
+  margin-bottom: 10px;
+}
+
+/******************************
+  Tags
+*******************************/
+
+.label-tag {
+  display: inline-block;
+  background-color: transparent;
+  border: 1px solid transparent;
+  color: #f6f6f6;
+  padding: 5px;
+  box-shadow: 0 3px 5px 0 rgba(0, 0, 0, 0.1);
+  margin-bottom: 5px;
+  margin-right: 5px;
+}
+
+.label-tag--info {
+  background-color: #6f6fff;
+  border-color: #6f6fff;
+  color: #f6f6f6;
+}
+
+.label-tag--danger {
+  background-color: #7f0000;
+  border-color: #7f0000;
+  color: #f6f6f6;
+}
+
+.label-tag--success {
+  background-color: #429942;
+  border-color: #429942;
+  color: #f6f6f6;
+}
+
+/******************************
+  Dropdown
+*******************************/
+
+.dropdown {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  z-index: 5;
+  background-color: #f6f6f6;
+  width: 100%;
+  box-shadow: 0 3px 5px 0 rgba(0, 0, 0, 0.1);
+}
+
+.dropdown > ul > li {
+  border-bottom: 1px solid #bababa;
+}
+
+.dropdown > ul > li:nth-last-child(1) {
+  border-bottom: 0;
+}
+
+.dropdown > ul > li > a {
+  display: block;
+  padding: 10px 15px;
+}
+
+.dropdown > ul > li > a:hover {
+  background-color: #ff6f6f;
+  color: #f6f6f6;
+}

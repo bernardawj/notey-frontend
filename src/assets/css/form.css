@@ -1,0 +1,143 @@
+/******************************
+  Form
+*******************************/
+
+.form-group {
+  margin-bottom: 15px;
+}
+
+div > .form-group:nth-last-child(1),
+form > .form-group:nth-last-child(1) {
+  margin-bottom: 0;
+}
+
+.form-group > label {
+  display: inline-block;
+  font-weight: 600;
+  margin-bottom: 10px;
+}
+
+.form-group > .button {
+  margin-bottom: 0;
+}
+
+.form-group > .button:nth-last-child(1) {
+  margin-right: 0;
+}
+
+.form-validation {
+  display: inline-block;
+  margin-top: 10px;
+  color: #7f0000;
+}
+
+.form-control {
+  width: 100%;
+  padding: 10px 15px;
+  border: 0;
+  font-size: 14px;
+  line-height: normal;
+  box-shadow: 0 3px 5px 0 rgba(0, 0, 0, 0.1);
+  height: 40px;
+}
+
+.form-control:focus {
+  outline: #ff6f6f solid 2px;
+}
+
+.form-control[disabled] {
+  background-color: #E8E8E8;
+  color: #F7F7F7;
+}
+
+.form-control,
+::placeholder {
+  font-family: inherit;
+  font-weight: 500;
+}
+
+.form-group__auth-link {
+  display: block;
+  text-align: center;
+  font-size: 14px;
+  margin-top: 10px;
+}
+
+.form-group__auth-link:nth-child(1) {
+  margin-top: 10px;
+}
+
+/******************************
+  Button
+*******************************/
+
+.button {
+  display: inline-block;
+  padding: 10px 15px;
+  background-color: transparent;
+  border-color: transparent;
+  text-align: center;
+  margin-right: 5px;
+  margin-bottom: 10px;
+  font-weight: 500;
+  font-size: 1rem;
+  line-height: 1.25em;
+  box-shadow: 0 3px 5px 0 rgba(0, 0, 0, 0.1);
+  outline: 0;
+}
+
+.button--primary {
+  background-color: #ff6f6f;
+  border-color: #ff6f6f;
+  color: #F6F6F6;
+}
+
+.button--secondary {
+  background-color: #fff0f0;
+  border-color: #fff0f0;
+  color: #ff6f6f;
+}
+
+.button--success {
+  background-color: #429942;
+  border-color: #429942;
+  color: #f6f6f6;
+}
+
+.button--info {
+  background-color: #6f6fff;
+  border-color: #6f6fff;
+  color: #f6f6f6;
+}
+
+.button--warning {
+  background-color: #ffb76f;
+  border-color: #ffb76f;
+  color: #f6f6f6;
+}
+
+.button--danger {
+  background-color: #7f0000;
+  border-color: #7f0000;
+  color: #f6f6f6;
+}
+
+.button--width-full {
+  width: 100%;
+}
+
+/******************************
+  Text
+*******************************/
+
+.text--danger {
+  color: #7f0000;
+}
+
+.text--success {
+  color: #429942;
+}
+
+.text--required {
+  color: #ff6f6f;
+}

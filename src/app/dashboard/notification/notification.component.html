@@ -1,6 +1,9 @@
 <div id="notification" *ngIf="expandNotification">
   <div id="notification__items" *ngIf="!isLoading && notifications.length > 0; else emptyNotification">
     <ul>
+      <li>
+        <button class="button button--warning button--width-full no-margin-bottom" (click)="onClearAll()">Clear All Notifications</button>
+      </li>
       <li *ngFor="let notification of notifications" class="notification__item">
         <div class="notification__item-content">
           {{ notification.message }}
@@ -8,9 +11,6 @@
         <div class="notification__item-footer">
           <span class="notification__item-date">{{ notification.createdAt | date: 'short' }}</span>
         </div>
-      </li>
-      <li>
-        <button class="button button--danger button--width-full no-margin-bottom" (click)="onClearAll()">Clear All Notifications</button>
       </li>
     </ul>
   </div>

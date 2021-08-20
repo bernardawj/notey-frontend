@@ -2,7 +2,7 @@
   <div class="col-lg-8">
     <div class="card">
       <h3>Project Details</h3>
-      <div *ngIf="!hasAccepted" class="alert alert--info">
+      <div class="card__alert" *ngIf="!hasAccepted">
         {{ project?.manager?.firstName }} {{ project?.manager?.lastName }} has assigned you this project.
         <button (click)="onUpdateAcceptance(true)" class="button button--primary no-margin-bottom">Accept</button>
         <button (click)="onUpdateAcceptance(false)" class="button button--danger no-margin-bottom">Reject</button>
@@ -59,7 +59,8 @@
             <div class="project__user-name clearfix" *ngIf="!isLoading">
               {{ user.firstName + ' ' + user.lastName }}
               <span *ngIf="user.userId === userId">(You)</span> <span *ngIf="!user.hasAccepted">(Pending)</span>
-              <a *ngIf="isManager && manageUserMode" (click)="onToggleRemoveUserAssignmentModal(user)" class="pull-right manage-mode">Remove</a>
+              <a *ngIf="isManager && manageUserMode" (click)="onToggleRemoveUserAssignmentModal(user)"
+                 class="pull-right manage-mode">Remove</a>
             </div>
           </div>
         </div>
@@ -72,6 +73,7 @@
 </div>
 <div class="row">
   <div class="col-lg-12">
-    <app-task-list-item [isManaged]="isManager" [loadProjectTasks]="true" [projectId]="project?.id" [hasAccepted]="hasAccepted"></app-task-list-item>
+    <app-task-list-item [isManaged]="isManager" [loadProjectTasks]="true" [projectId]="project?.id"
+                        [hasAccepted]="hasAccepted"></app-task-list-item>
   </div>
 </div>

@@ -78,7 +78,12 @@ export class ProjectDetailsComponent implements OnInit, OnDestroy {
         () => {
           if (this.project) {
             this.alertService.alertSubject.next(new Alert(`Successfully ${ accept ? 'accepted' : 'rejected' } the project invitation.`, AlertType.SUCCESS));
-            this.getProject(this.project.id, this.userId, false);
+
+            if (accept) {
+              this.getProject(this.project.id, this.userId, false);
+            } else {
+              this.router.navigate(['/dashboard/project/list']).finally();
+            }
           }
         }
       );
