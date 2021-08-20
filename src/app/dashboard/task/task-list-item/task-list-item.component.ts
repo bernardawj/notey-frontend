@@ -65,7 +65,7 @@ export class TaskListItemComponent implements OnInit, OnDestroy {
             this.loadDeleteTaskSubscription(this.userId);
             this.loadReloadTaskListSubscription();
           } else {
-            this.getUserTasks(this.userId, 1);
+            this.getUserTasks(this.userId, 1, this.filter);
           }
         }
       }
@@ -214,16 +214,20 @@ export class TaskListItemComponent implements OnInit, OnDestroy {
       if (this.loadProjectTasks) {
         this.getProjectTasks(pageNo, this.filter);
       } else {
-        this.getUserTasks(this.userId, pageNo);
+        this.getUserTasks(this.userId, pageNo, this.filter);
       }
     }
   }
 
   filterTasks(filter: TaskFilter | ProjectFilter): void {
+    this.filter = <TaskFilter>filter;
+
     if (this.loadProjectTasks) {
-      this.filter = <TaskFilter>filter;
-      console.log(this.filter);
       this.getProjectTasks(1, this.filter);
+    } else {
+      if (this.userId) {
+        this.getUserTasks(this.userId, 1, this.filter);
+      }
     }
   }
 
@@ -243,8 +247,10 @@ export class TaskListItemComponent implements OnInit, OnDestroy {
     this.subscriptions.push(getProjectTasksSub);
   }
 
-  private getUserTasks(userId: number, pageNo: number): void {
-    const getUserTasksSub: Subscription = this.taskService.getAllUserTasks(new GetUserTasks(userId, pageNo, 5)).subscribe(
+  private getUserTasks(userId: number, pageNo: number, filter: TaskFilter): void {
+    const inputPage = new InputPage(pageNo, 5);
+
+    const getUserTasksSub: Subscription = this.taskService.getAllUserTasks(new GetUserTasks(userId, filter, inputPage)).subscribe(
       taskList => {
         this.taskList = taskList;
         this.isLoading = false;

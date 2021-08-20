@@ -24,7 +24,7 @@ export class TaskService {
   }
 
   getAllUserTasks(getUserTasks: GetUserTasks): Observable<TaskList> {
-    return this.httpClient.get<TaskList>(`${ environment.endpoints.task.getAllUserTasks }/${ getUserTasks.userId }/${ getUserTasks.pageNo }/${ getUserTasks.pageSize }`);
+    return this.httpClient.post<TaskList>(environment.endpoints.task.getAllUserTasks, getUserTasks);
   }
 
   getAllProjectTasks(getProjectTasks: GetProjectTasks): Observable<TaskList> {
