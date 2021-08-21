@@ -1,6 +1,9 @@
 <section id="auth-section">
-  <div id="auth-section__disclaimer">
-    <h2>Notey</h2>
+  <div id="auth-section__disclaimer" *ngIf="expandDescription">
+    <h2 class="clearfix">
+      Notey
+      <span class="pull-right close" (click)="toggleDescription()">&times;</span>
+    </h2>
     <ul>
       <li>
         <h3>Description</h3>

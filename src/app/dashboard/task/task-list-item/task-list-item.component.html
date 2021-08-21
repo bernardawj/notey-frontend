@@ -1,7 +1,7 @@
 <div id="task__list">
   <div class="card">
     <h3 class="clearfix">
-      {{ loadProjectTasks ? 'Project Tasks' : 'Task List' }}
+      {{ loadProjectTasks ? 'Project Tasks' : 'Assigned Task List' }}
       <a [routerLink]="['/dashboard/task/create']" [queryParams]="{ projectId: projectId }"
          class="button button--primary pull-right no-margin"
          *ngIf="isManaged">New Task</a>

@@ -62,9 +62,7 @@ export class ModalComponent implements OnInit, OnDestroy {
       this.data = modal.data;
       this.type = modal.type;
 
-      if (this.action === ModalAction.ASSIGN) {
-        this.buildForm();
-      }
+      this.buildForm();
     });
 
     this.subscriptions.push(expandSub);
@@ -144,6 +142,8 @@ export class ModalComponent implements OnInit, OnDestroy {
   private buildForm(): void {
     if (this.action === ModalAction.ASSIGN) {
       this.assignmentForm.addControl('user', new FormControl('', [Validators.required]));
+    } else {
+      this.assignmentForm.removeControl('user');
     }
   }
 }

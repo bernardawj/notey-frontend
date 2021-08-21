@@ -26,11 +26,13 @@ import { TaskCreateComponent } from './task/task-create/task-create.component';
 import { TaskFormComponent } from './task/task-form/task-form.component';
 import { TaskEditComponent } from './task/task-edit/task-edit.component';
 import { TaskDetailComponent } from './task/task-detail/task-detail.component';
+import { ContentComponent } from './content/content.component';
 
 @NgModule({
   declarations: [
     HeaderComponent,
     SidebarComponent,
+    ContentComponent,
     HomeComponent,
     ProjectComponent,
     RecentProjectComponent,
@@ -58,7 +60,8 @@ import { TaskDetailComponent } from './task/task-detail/task-detail.component';
   ],
   exports: [
     HeaderComponent,
-    SidebarComponent
+    SidebarComponent,
+    ContentComponent
   ],
   providers: [{
     provide: HTTP_INTERCEPTORS,

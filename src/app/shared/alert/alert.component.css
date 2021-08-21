@@ -1,3 +1,7 @@
+/******************************
+  Alert
+*******************************/
+
 .alert {
   position: absolute;
   top: 80px;
@@ -39,5 +43,15 @@
   }
   to {
     opacity: 0;
+  }
+}
+
+/******************************
+  Media Queries
+*******************************/
+
+@media only screen and (max-width: 480px) {
+  .alert {
+    width: calc(100% - 40px);
   }
 }

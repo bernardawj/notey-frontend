@@ -46,3 +46,16 @@
 .svg__wrapper img {
   max-width: 50px;
 }
+
+/******************************
+  Media Queries
+*******************************/
+
+@media only screen and (max-width: 1024px) {
+  #notification {
+    position: fixed;
+    top: 60px;
+    left: 0;
+    width: 100%;
+  }
+}

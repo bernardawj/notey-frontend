@@ -5,3 +5,15 @@
   height: calc(100% - 60px);
   overflow-y: scroll;
 }
+
+/******************************
+  Media Queries
+*******************************/
+
+@media only screen and (max-width: 1024px) {
+  #content {
+    position: relative;
+    width: 100%;
+    left: initial;
+  }
+}

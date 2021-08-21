@@ -4,12 +4,12 @@
     <div class="form-group">
       <label for="name">Task Name <span class="text--required">*</span></label>
       <input type="text" id="name" formControlName="name" class="form-control"/>
-      <span class="form-validation" *ngIf="form.get('name')?.invalid && form.get('name')?.dirty">Please enter a valid name.</span>
+      <span class="form-validation" *ngIf="form.get('name')?.invalid && form.get('name')?.touched">Please enter a valid task name (max. of 50 characters).</span>
     </div>
     <div class="form-group">
       <label for="description">Task Description <span class="text--required">*</span></label>
       <textarea id="description" formControlName="description" class="form-control" rows="6"></textarea>
-      <span class="form-validation" *ngIf="form.get('description')?.invalid && form.get('description')?.dirty">Please enter a valid description.</span>
+      <span class="form-validation" *ngIf="form.get('description')?.invalid && form.get('description')?.touched">Please enter a valid task description (max. of 255 characters).</span>
     </div>
     <div class="form-group">
       <label for="type">Type <span class="text--required">*</span></label>
@@ -18,17 +18,17 @@
         <option value="NON_URGENT">Non-Urgent</option>
         <option value="URGENT">Urgent</option>
       </select>
-      <span class="form-validation" *ngIf="form.get('type')?.invalid && form.get('type')?.dirty">Please select a valid type.</span>
+      <span class="form-validation" *ngIf="form.get('type')?.invalid && form.get('type')?.touched">Please select a valid task type.</span>
     </div>
     <div class="form-group">
       <label for="startAt">Start At <span class="text--required">*</span></label>
       <input type="datetime-local" id="startAt" formControlName="startAt" class="form-control"/>
-      <span class="form-validation" *ngIf="form.get('startAt')?.invalid && form.get('startAt')?.touched">Please enter a valid start date.</span>
+      <span class="form-validation" *ngIf="form.get('startAt')?.invalid && form.get('startAt')?.touched">Please enter a valid task start date.</span>
     </div>
     <div class="form-group">
       <label for="endAt">End At <span class="text--required">*</span></label>
       <input type="datetime-local" id="endAt" formControlName="endAt" class="form-control"/>
-      <span class="form-validation" *ngIf="form.get('endAt')?.invalid && form.get('endAt')?.touched">Please enter a valid end date.</span>
+      <span class="form-validation" *ngIf="form.get('endAt')?.invalid && form.get('endAt')?.touched">Please enter a valid task end date.</span>
     </div>
     <div class="form-group">
       <a [routerLink]="isEdit ? ['../../details', task?.id] : ['/dashboard/project/details', projectId]" class="button button--secondary">Back</a>

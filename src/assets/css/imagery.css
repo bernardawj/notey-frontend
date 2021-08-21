@@ -30,3 +30,14 @@
   display: block;
   font-weight: 600;
 }
+
+/******************************
+  Media Queries
+*******************************/
+
+@media only screen and (max-width: 1024px) {
+  .svg__wrapper > object,
+  .svg__wrapper img {
+    max-width: 50px !important;
+  }
+}

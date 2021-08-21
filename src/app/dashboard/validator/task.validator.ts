@@ -1,7 +1,21 @@
-import { AbstractControl, ValidationErrors } from '@angular/forms';
+import { AbstractControl, ValidationErrors, ValidatorFn } from '@angular/forms';
 import { TaskType } from '../task/task-type.enum';
 
 export class TaskValidator {
+
+  static validateMaxLength(maxLength: number): ValidatorFn {
+    return (control: AbstractControl) => {
+      if (control) {
+        let value = control.value.trim();
+
+        if (value.length < maxLength) {
+          return null;
+        }
+      }
+
+      return { invalidLength: true };
+    }
+  }
 
   static validateType(control: AbstractControl): ValidationErrors | null {
     if (control) {

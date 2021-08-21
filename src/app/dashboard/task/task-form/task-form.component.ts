@@ -13,6 +13,7 @@ import { take } from 'rxjs/operators';
 import { Observable, Subscription } from 'rxjs';
 import { TaskValidator } from '../../validator/task.validator';
 import { UpdateTask } from '../../../model/task/update-task.model';
+import { FormUtility } from '../../../shared/utility/form.utility';
 
 @Component({
   selector: 'app-task-form',
@@ -40,11 +41,11 @@ export class TaskFormComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.form = this.formBuilder.group({
-      name: new FormControl(null, [Validators.required, Validators.max(50)]),
-      description: new FormControl(null, [Validators.required, Validators.max(255)]),
-      type: new FormControl(null, [Validators.required, TaskValidator.validateType]),
-      startAt: new FormControl(null, [Validators.required]),
-      endAt: new FormControl(null, [Validators.required])
+      name: new FormControl('', [Validators.required, TaskValidator.validateMaxLength(50)]),
+      description: new FormControl('', [Validators.required, Validators.max(255)]),
+      type: new FormControl('', [Validators.required, TaskValidator.validateType]),
+      startAt: new FormControl('', [Validators.required]),
+      endAt: new FormControl('', [Validators.required])
     });
 
     const authSub: Subscription = this.authService.auth.pipe(take(1)).subscribe(
@@ -77,12 +78,17 @@ export class TaskFormComponent implements OnInit, OnDestroy {
   // Events
 
   onSubmit(): void {
-    const name = this.form.get('name')?.value;
-    const description = this.form.get('description')?.value;
-    const type = this.form.get('type')?.value;
-    const startAt = this.form.get('startAt')?.value;
-    const endAt = this.form.get('endAt')?.value;
+    // Trim all control values
+    FormUtility.trimValues(this.form.controls);
 
+    // Retrieve form data
+    const name = this.form.get('name')?.value.trim();
+    const description = this.form.get('description')?.value.trim();
+    const type = this.form.get('type')?.value.trim();
+    const startAt = this.form.get('startAt')?.value.trim();
+    const endAt = this.form.get('endAt')?.value.trim();
+
+    // Call service
     if (this.isEdit) {
       if (this.task && this.userId) {
         this.callTaskServices(new UpdateTask(this.task.id, name, description, type, this.task.completed, startAt, endAt, this.userId));
@@ -128,11 +134,7 @@ export class TaskFormComponent implements OnInit, OnDestroy {
     const taskSub: Subscription = callingService.subscribe(
       task => {
         this.alertService.alertSubject.next(new Alert(`Successfully ${ this.isEdit ? 'updated' : 'created' } Task (${ task.name }).`, AlertType.SUCCESS));
-        if (this.isEdit) {
-
-        } else {
-          this.router.navigate(['/dashboard/project/details', task.project.id]).finally();
-        }
+        this.router.navigate(['/dashboard/project/details', task.project.id]).finally();
       }, error => {
         this.alertService.alertSubject.next(new Alert(error.error.message, AlertType.DANGER));
       }

@@ -8,13 +8,13 @@
   <div class="filter__body" *ngIf="toggled">
     <form [formGroup]="filterForm" (ngSubmit)="onFilter()">
       <div class="row">
-        <div class="col-lg-3">
+        <div class="col col-xs-12 col-sm-12 col-md-6 col-lg-3 no-margin-bottom">
           <div class="form-group">
             <label for="search">Search</label>
             <input type="text" id="search" formControlName="search" class="form-control"/>
           </div>
         </div>
-        <div class="col-lg-3" *ngIf="isTask">
+        <div class="col col-xs-12 col-sm-12 col-md-6 col-lg-3 no-margin-bottom" *ngIf="isTask">
           <div class="form-group">
             <label for="type">Type</label>
             <select id="type" formControlName="type" class="form-control">
@@ -24,7 +24,7 @@
             </select>
           </div>
         </div>
-        <div class="col-lg-3" *ngIf="isTask">
+        <div class="col col-xs-12 col-sm-12 col-md-6 col-lg-3 no-margin-bottom" *ngIf="isTask">
           <div class="form-group">
             <label for="completed">Completion</label>
             <select id="completed" formControlName="completed" class="form-control">
@@ -36,7 +36,7 @@
         </div>
       </div>
       <div class="row" *ngIf="filter?.searchString || getTaskFilter()?.type || getTaskFilter()?.completed !== null">
-        <div class="col-lg-9">
+        <div class="col col-xs-12 col-sm-12 col-md-12 col-lg-12 no-margin-bottom">
           <div class="form-group">
             <label>Filtered By</label>
             <br/>
@@ -55,7 +55,7 @@
         </div>
       </div>
       <div class="row">
-        <div class="col-lg-12">
+        <div class="col col-xs-12 col-sm-12 col-md-12 col-lg-12 no-margin-bottom">
           <div class="form-group">
             <button type="submit" class="button button--secondary button--width-full">Filter</button>
           </div>

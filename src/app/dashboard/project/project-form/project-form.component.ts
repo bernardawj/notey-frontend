@@ -10,6 +10,7 @@ import { AlertService } from '../../../shared/alert/alert.service';
 import { Alert } from '../../../shared/alert/alert.model';
 import { AlertType } from '../../../shared/alert/alert-type.enum';
 import { Observable, Subscription } from 'rxjs';
+import { FormUtility } from '../../../shared/utility/form.utility';
 
 @Component({
   selector: 'app-project-form',
@@ -65,6 +66,9 @@ export class ProjectFormComponent implements OnInit, OnDestroy {
   }
 
   onSubmit(): void {
+    // Trim all control values
+    FormUtility.trimValues(this.form.controls);
+
     // Retrieve form data
     const name = this.form.get('name')?.value;
     const description = this.form.get('description')?.value;
@@ -80,6 +84,7 @@ export class ProjectFormComponent implements OnInit, OnDestroy {
   private loadProject(projectId: number, userId: number): void {
     const projectSub: Subscription = this.projectService.getProject(projectId, userId).subscribe(
       project => {
+        // Check if user is the project manager
         this.project = project;
         this.initFormData(true);
         this.alertService.alertSubject.next(new Alert('Successfully retrieved project details.', AlertType.SUCCESS));
@@ -103,10 +108,10 @@ export class ProjectFormComponent implements OnInit, OnDestroy {
       }
     } else {
       this.form = this.formBuilder.group({
-        name: new FormControl(null, [Validators.required, Validators.max(50)]),
-        description: new FormControl(null, [Validators.required, Validators.max(255)]),
-        startAt: new FormControl(null, [Validators.required]),
-        endAt: new FormControl(null, [Validators.required])
+        name: new FormControl(''.trim(), [Validators.required, Validators.maxLength(50)]),
+        description: new FormControl(''.trim(), [Validators.required, Validators.maxLength(255)]),
+        startAt: new FormControl(''.trim(), [Validators.required]),
+        endAt: new FormControl(''.trim(), [Validators.required])
       });
     }
   }

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, HostListener, OnInit } from '@angular/core';
 
 @Component({
   selector: 'app-auth',
@@ -7,9 +7,26 @@ import { Component, OnInit } from '@angular/core';
 })
 export class AuthComponent implements OnInit {
 
+  expandDescription: boolean;
+
+  @HostListener('window:resize', ['$event']) onResize() {
+    this.resetElements();
+  }
+
   constructor() {
+    this.expandDescription = true;
   }
 
   ngOnInit(): void {
+  }
+
+  toggleDescription(): void {
+    this.expandDescription = !this.expandDescription;
+  }
+
+  private resetElements(): void {
+    if (window.outerWidth >= 1024) {
+      this.expandDescription = false;
+    }
   }
 }

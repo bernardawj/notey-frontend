@@ -38,7 +38,7 @@ form > .form-group:nth-last-child(1) {
   font-size: 14px;
   line-height: normal;
   box-shadow: 0 3px 5px 0 rgba(0, 0, 0, 0.1);
-  height: 40px;
+  min-height: 40px;
 }
 
 .form-control:focus {

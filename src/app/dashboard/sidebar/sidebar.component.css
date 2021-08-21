@@ -1,3 +1,7 @@
+/******************************
+  Sidebar
+*******************************/
+
 #sidebar {
   position: absolute;
   height: calc(100% - 60px);
@@ -55,4 +59,21 @@
 .navigation-link--active {
   background-color: #ff6f6f;
   color: #f6f6f6 !important;
+}
+
+/******************************
+  Media Queries
+*******************************/
+
+@media only screen and (max-width: 1024px) {
+  #sidebar {
+    display: none;
+    padding: 20px;
+    position: fixed;
+    width: 100%;
+    z-index: 5;
+    background-color: #ecf0f1;
+    max-height: calc(100% - 60px);
+    height: 100%;
+  }
 }
