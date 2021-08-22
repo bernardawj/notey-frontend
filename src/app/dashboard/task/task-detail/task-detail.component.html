@@ -1,1 +1,63 @@
-<p>task-detail works!</p>
+<div class="row">
+  <div class="col col-xs-12 col-sm-12 col-md-12 col-lg-8">
+    <div class="card" [ngClass]="isLoading ? 'load' : ''">
+      <h3>Task Details</h3>
+      <div class="card__group">
+        <label>Name</label>
+        <p>{{ task?.name }}</p>
+      </div>
+      <div class="card__group">
+        <label>Description</label>
+        <p>{{ task?.description }}</p>
+      </div>
+      <div class="card__group">
+        <label>Duration</label>
+        <p>
+          {{ task?.startAt | date: 'dd MMM yyyy hh:mm aa' }} - {{ task?.endAt | date: 'dd MMM yyyy, hh:mm aa' }}
+        </p>
+      </div>
+      <div class="card__group">
+        <a [routerLink]="['../../list']" class="button button--secondary">Back</a>
+        <a [routerLink]="['../../edit', task?.id]" *ngIf="isManager" class="button button--primary">Edit</a>
+      </div>
+    </div>
+  </div>
+  <div class="col col-xs-12 col-sm-12 col-md-12 col-lg-4">
+    <div class="card" [ngClass]="isLoading ? 'load' : ''">
+      <h3>Task Assignment</h3>
+      <div class="card__group task__user">
+        <div class="task__user-label">Assigned By</div>
+        <div class="task__user-details">
+          <div class="user__initials image-rounded" *ngIf="!isLoading">
+            <span>{{ task?.project?.manager?.firstName + ' ' + task?.project?.manager?.lastName | nameInitials }}</span>
+          </div>
+          <div class="task__user-name" *ngIf="!isLoading">
+            {{ task?.project?.manager?.firstName + ' ' + task?.project?.manager?.lastName }}
+            <span *ngIf="isManager">(You)</span>
+          </div>
+        </div>
+      </div>
+      <div class="card__group task__user">
+        <div class="task__user-label clearfix">
+          Assigned To
+        </div>
+        <div *ngIf="task && task.user; else noneAssigned">
+          <div class="task__user-details">
+            <div class="user__initials image-rounded" *ngIf="!isLoading">
+              <span>{{ task?.user?.firstName + ' ' + task?.user?.lastName | nameInitials }}</span>
+            </div>
+            <div class="task__user-name clearfix" *ngIf="!isLoading">
+              {{ task?.user?.firstName + ' ' + task?.user?.lastName }}
+              <span *ngIf="task?.user?.id === userId">(You)</span>
+              <a *ngIf="isManager" (click)="onToggleRemoveUserFromTaskModal(task)"
+                 class="pull-right manage-mode">Remove</a>
+            </div>
+          </div>
+        </div>
+        <ng-template #noneAssigned>
+          <a *ngIf="isManager && task" (click)="onToggleAssignUserToTaskModal(task)">Assign User</a>
+        </ng-template>
+      </div>
+    </div>
+  </div>
+</div>

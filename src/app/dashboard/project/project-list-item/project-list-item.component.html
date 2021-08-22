@@ -2,10 +2,10 @@
   <div class="card" [ngClass]="isLoading ? 'load' : ''">
     <h3 class="clearfix">
       {{ isManaged ? 'Managed' : 'Assigned' }} Project List
-      <a [routerLink]="['../create']" class="button button--primary pull-right no-margin" *ngIf="isManaged && !isLoadingFromDashboard">New
+      <a [routerLink]="['../create']" class="button button--primary pull-right no-margin" *ngIf="isManaged">New
         Project</a>
     </h3>
-    <app-filter [isTask]="false" (filterEmitter)="filterProjects($event)" *ngIf="!isLoadingFromDashboard"></app-filter>
+    <app-filter [isTask]="false" (filterEmitter)="filterProjects($event)"></app-filter>
     <div class="table" *ngIf="projectList?.projects && projectList?.projects!.length > 0">
       <table>
         <thead>

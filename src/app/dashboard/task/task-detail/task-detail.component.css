@@ -1,0 +1,34 @@
+.task__user {
+  margin-bottom: 10px;
+}
+
+.task__user-label {
+  margin-bottom: 10px;
+  font-weight: 600;
+}
+
+.task__user-details {
+  position: relative;
+  padding-left: 50px;
+  height: 40px;
+  margin-bottom: 10px;
+}
+
+.task__user-name {
+  position: absolute;
+  top: 50%;
+  -webkit-transform: translateY(-50%);
+  -moz-transform: translateY(-50%);
+  -o-transform: translateY(-50%);
+  transform: translateY(-50%);
+  width: calc(100% - 50px);
+}
+
+.task__user-name > span {
+  color: #bababa;
+}
+
+.manage-mode {
+  font-weight: 600;
+}
+

@@ -30,6 +30,7 @@ import { SortType } from '../../../shared/sort/sort-type.enum';
 })
 export class TaskListItemComponent implements OnInit, OnDestroy {
 
+  currentPage: number;
   userId?: number;
   isLoading: boolean;
   taskList: TaskList | null;
@@ -43,6 +44,7 @@ export class TaskListItemComponent implements OnInit, OnDestroy {
 
   constructor(private authService: AuthService, private taskService: TaskService, private modalService: ModalService,
               private alertService: AlertService, private activatedRoute: ActivatedRoute) {
+    this.currentPage = 1;
     this.loadProjectTasks = false;
     this.isManaged = false;
     this.isLoading = true;
@@ -61,13 +63,13 @@ export class TaskListItemComponent implements OnInit, OnDestroy {
           this.userId = auth.user.id;
 
           if (this.loadProjectTasks) {
-            this.getProjectTasks(1, this.filter);
+            this.getProjectTasks(this.currentPage, this.filter);
             this.loadTaskCompletionSubscription();
             this.loadAssignTaskSubscription(this.userId);
             this.loadDeleteTaskSubscription(this.userId);
             this.loadReloadTaskListSubscription();
           } else {
-            this.getUserTasks(this.userId, 1, this.filter);
+            this.getUserTasks(this.userId, this.currentPage, this.filter);
           }
         }
       }
@@ -112,7 +114,7 @@ export class TaskListItemComponent implements OnInit, OnDestroy {
         if (taskCompletion) {
           const completionSub: Subscription = this.taskService.markTaskAsCompleted(taskCompletion).subscribe(
             () => {
-              this.getProjectTasks(1, this.filter);
+              this.getProjectTasks(this.currentPage, this.filter);
               this.alertService.alertSubject.next(new Alert(`Successfully marked task as ${ taskCompletion.complete ? 'completed' : 'incomplete' }.`, AlertType.SUCCESS));
             }, error => {
               this.alertService.alertSubject.next(new Alert(error.error.message, AlertType.DANGER));
@@ -161,7 +163,7 @@ export class TaskListItemComponent implements OnInit, OnDestroy {
     const reloadSub: Subscription = this.taskService.reloadTask.subscribe(
       response => {
         if (response) {
-          this.getProjectTasks(1, this.filter);
+          this.getProjectTasks(this.currentPage, this.filter);
         }
       }
     );
@@ -210,13 +212,16 @@ export class TaskListItemComponent implements OnInit, OnDestroy {
   }
 
   getPage(pageNo: number): void {
+    this.currentPage = pageNo;
+
     if (this.userId) {
       this.alertService.alertSubject.next(
         new Alert(`Viewing page ${ pageNo } of ${ this.taskList?.pagination.totalPages } of ${ this.loadProjectTasks ? 'project\'s' : 'assigned' } tasks.`, AlertType.INFO));
+
       if (this.loadProjectTasks) {
-        this.getProjectTasks(pageNo, this.filter);
+        this.getProjectTasks(this.currentPage, this.filter);
       } else {
-        this.getUserTasks(this.userId, pageNo, this.filter);
+        this.getUserTasks(this.userId, this.currentPage, this.filter);
       }
     }
   }
@@ -225,10 +230,10 @@ export class TaskListItemComponent implements OnInit, OnDestroy {
     this.filter = <TaskFilter>filter;
 
     if (this.loadProjectTasks) {
-      this.getProjectTasks(1, this.filter);
+      this.getProjectTasks(this.currentPage, this.filter);
     } else {
       if (this.userId) {
-        this.getUserTasks(this.userId, 1, this.filter);
+        this.getUserTasks(this.userId, this.currentPage, this.filter);
       }
     }
   }
@@ -284,7 +289,7 @@ export class TaskListItemComponent implements OnInit, OnDestroy {
           }
 
           // Reload project tasks
-          this.getProjectTasks(this.taskList.pagination.totalPages, this.filter);
+          this.getProjectTasks(this.currentPage, this.filter);
         }
       }, error => {
         this.alertService.alertSubject.next(new Alert(error.error.message, AlertType.DANGER));

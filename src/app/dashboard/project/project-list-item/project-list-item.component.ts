@@ -35,14 +35,12 @@ export class ProjectListItemComponent implements OnInit, OnDestroy {
   subscriptions: Subscription[];
 
   @Input() isManaged: boolean;
-  @Input() isLoadingFromDashboard: boolean;
 
   constructor(private authService: AuthService, private projectService: ProjectService, private modalService: ModalService,
               private alertService: AlertService) {
     this.projectList = null;
     this.isLoading = true;
     this.isManaged = true;
-    this.isLoadingFromDashboard = false;
     this.subscriptions = [];
   }
 
