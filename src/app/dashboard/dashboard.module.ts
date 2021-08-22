@@ -27,6 +27,8 @@ import { TaskFormComponent } from './task/task-form/task-form.component';
 import { TaskEditComponent } from './task/task-edit/task-edit.component';
 import { TaskDetailComponent } from './task/task-detail/task-detail.component';
 import { ContentComponent } from './content/content.component';
+import { HamburgerDirective } from './header/hamburger/hamburger.directive';
+import { LinkDirective } from './sidebar/link.directive';
 
 @NgModule({
   declarations: [
@@ -52,7 +54,9 @@ import { ContentComponent } from './content/content.component';
     TaskCreateComponent,
     TaskFormComponent,
     TaskEditComponent,
-    TaskDetailComponent
+    TaskDetailComponent,
+    HamburgerDirective,
+    LinkDirective
   ],
   imports: [
     SharedModule,
@@ -61,7 +65,9 @@ import { ContentComponent } from './content/content.component';
   exports: [
     HeaderComponent,
     SidebarComponent,
-    ContentComponent
+    ContentComponent,
+    HamburgerDirective,
+    LinkDirective
   ],
   providers: [{
     provide: HTTP_INTERCEPTORS,

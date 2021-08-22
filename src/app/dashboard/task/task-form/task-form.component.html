@@ -1,5 +1,5 @@
 <h3>{{ isEdit ? 'Edit Task' : 'Create Task' }}</h3>
-<div class="card">
+<div class="card" [ngClass]="isLoading ? 'load' : ''">
   <form [formGroup]="form" (ngSubmit)="onSubmit()">
     <div class="form-group">
       <label for="name">Task Name <span class="text--required">*</span></label>

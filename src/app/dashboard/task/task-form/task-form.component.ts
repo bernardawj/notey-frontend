@@ -26,6 +26,7 @@ export class TaskFormComponent implements OnInit, OnDestroy {
   task?: Task;
   projectId?: number;
   userId?: number;
+  isLoading: boolean;
 
   subscriptions: Subscription[];
 
@@ -34,6 +35,7 @@ export class TaskFormComponent implements OnInit, OnDestroy {
   constructor(private taskService: TaskService, private alertService: AlertService, private authService: AuthService,
               private formBuilder: FormBuilder, private router: Router, private activatedRoute: ActivatedRoute) {
     this.isEdit = false;
+    this.isLoading = true;
     this.subscriptions = [];
   }
 
@@ -78,6 +80,9 @@ export class TaskFormComponent implements OnInit, OnDestroy {
   // Events
 
   onSubmit(): void {
+    // Starts loading
+    this.isLoading = true;
+
     // Trim all control values
     FormUtility.trimValues(this.form.controls);
 
@@ -114,8 +119,10 @@ export class TaskFormComponent implements OnInit, OnDestroy {
         this.form.get('startAt')?.setValue(this.task.startAt);
         this.form.get('endAt')?.setValue(this.task.endAt);
 
+        this.isLoading = false;
         this.alertService.alertSubject.next(new Alert('Successfully retrieved task details.', AlertType.SUCCESS));
       }, error => {
+        this.isLoading = false;
         this.alertService.alertSubject.next(new Alert(error.error.message, AlertType.DANGER));
       }
     );
@@ -136,6 +143,7 @@ export class TaskFormComponent implements OnInit, OnDestroy {
         this.alertService.alertSubject.next(new Alert(`Successfully ${ this.isEdit ? 'updated' : 'created' } Task (${ task.name }).`, AlertType.SUCCESS));
         this.router.navigate(['/dashboard/project/details', task.project.id]).finally();
       }, error => {
+        this.isLoading = false;
         this.alertService.alertSubject.next(new Alert(error.error.message, AlertType.DANGER));
       }
     );

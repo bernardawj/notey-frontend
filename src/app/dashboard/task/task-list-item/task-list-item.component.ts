@@ -234,6 +234,8 @@ export class TaskListItemComponent implements OnInit, OnDestroy {
   // Private methods
 
   private getProjectTasks(pageNo: number, filter: TaskFilter): void {
+    this.isLoading = true;
+
     const projectId = this.activatedRoute.snapshot.params['id'];
     const inputPage = new InputPage(pageNo, 5);
 
@@ -248,6 +250,8 @@ export class TaskListItemComponent implements OnInit, OnDestroy {
   }
 
   private getUserTasks(userId: number, pageNo: number, filter: TaskFilter): void {
+    this.isLoading = true;
+
     const inputPage = new InputPage(pageNo, 5);
 
     const getUserTasksSub: Subscription = this.taskService.getAllUserTasks(new GetUserTasks(userId, filter, inputPage)).subscribe(

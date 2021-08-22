@@ -1,4 +1,20 @@
-<aside id="sidebar">
+<nav id="sidebar">
+  <div id="sidebar__user" class="sidebar__sections">
+    <label>User</label>
+    <div class="sidebar__navigation-links">
+      <ul>
+        <li>
+          <div class="user__details">
+            <div class="user__initials image-rounded">
+              <span>{{ user?.firstName + ' ' + user?.lastName | nameInitials }}</span>
+            </div>
+            <span id="user-details__welcome" class="user-name">Hi, {{ user?.firstName }}!</span>
+          </div>
+        </li>
+        <li><a (click)="onLogout()" appLink>Logout</a></li>
+      </ul>
+    </div>
+  </div>
   <div id="sidebar__tools" class="sidebar__sections">
     <label>Quick Access</label>
     <div id="sidebar__quick-access">
@@ -9,9 +25,9 @@
     <label>Management</label>
     <div class="sidebar__navigation-links">
       <ul>
-        <li><a routerLinkActive="navigation-link--active" [routerLink]="['/dashboard/home']">Dashboard</a></li>
-        <li><a routerLinkActive="navigation-link--active" [routerLink]="['/dashboard/project']">Project</a></li>
-        <li><a routerLinkActive="navigation-link--active" [routerLink]="['/dashboard/task']">Task</a></li>
+        <li><a routerLinkActive="navigation-link--active" [routerLink]="['/dashboard/home']" appLink>Dashboard</a></li>
+        <li><a routerLinkActive="navigation-link--active" [routerLink]="['/dashboard/project']" appLink>Project</a></li>
+        <li><a routerLinkActive="navigation-link--active" [routerLink]="['/dashboard/task']" appLink>Task</a></li>
       </ul>
     </div>
   </div>
@@ -19,10 +35,10 @@
     <label>Copyright &copy; 2021 | bernardawj</label>
     <div class="sidebar__navigation-links">
       <ul>
-        <li><a href="https://www.github.com/bernardawj" target="_blank">My Github</a></li>
-        <li><a href="https://www.linkedin.com/in/bernardawj" target="_blank">My LinkedIn</a></li>
-        <li><a routerLinkActive="navigation-link--active" [routerLink]="['/dashboard/credits']">Credits</a></li>
+        <li><a href="https://www.github.com/bernardawj" target="_blank" appLink>My Github</a></li>
+        <li><a href="https://www.linkedin.com/in/bernardawj" target="_blank" appLink>My LinkedIn</a></li>
+        <li><a routerLinkActive="navigation-link--active" [routerLink]="['/dashboard/credits']" appLink>Credits</a></li>
       </ul>
     </div>
   </div>
-</aside>
+</nav>

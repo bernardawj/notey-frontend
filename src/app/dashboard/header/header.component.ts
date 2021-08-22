@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, HostListener, OnDestroy, OnInit } from '@angular/core';
 import { User } from '../../shared/user/user.model';
 import { AuthService } from '../../auth/auth.service';
 import { Router } from '@angular/router';
@@ -55,9 +55,6 @@ export class HeaderComponent implements OnInit, OnDestroy {
   }
 
   onLogout(): void {
-    this.authService.auth.next(null);
-    localStorage.removeItem('auth');
-    this.alertService.alertSubject.next(new Alert('Successfully logged out from your account', AlertType.SUCCESS));
-    this.router.navigate(['/auth']).finally();
+    this.authService.logout();
   }
 }

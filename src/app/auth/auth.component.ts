@@ -14,10 +14,11 @@ export class AuthComponent implements OnInit {
   }
 
   constructor() {
-    this.expandDescription = true;
+    this.expandDescription = false;
   }
 
   ngOnInit(): void {
+    this.expandDescription = window.outerWidth >= 1024;
   }
 
   toggleDescription(): void {
@@ -25,8 +26,6 @@ export class AuthComponent implements OnInit {
   }
 
   private resetElements(): void {
-    if (window.outerWidth >= 1024) {
-      this.expandDescription = false;
-    }
+    this.expandDescription = window.outerWidth >= 1024;
   }
 }

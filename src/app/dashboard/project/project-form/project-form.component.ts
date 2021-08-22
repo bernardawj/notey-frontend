@@ -66,6 +66,8 @@ export class ProjectFormComponent implements OnInit, OnDestroy {
   }
 
   onSubmit(): void {
+    this.isLoading = true;
+
     // Trim all control values
     FormUtility.trimValues(this.form.controls);
 
@@ -87,9 +89,11 @@ export class ProjectFormComponent implements OnInit, OnDestroy {
         // Check if user is the project manager
         this.project = project;
         this.initFormData(true);
+        this.isLoading = false;
         this.alertService.alertSubject.next(new Alert('Successfully retrieved project details.', AlertType.SUCCESS));
       },
       error => {
+        this.isLoading = false;
         this.alertService.alertSubject.next(new Alert(error.error.message, AlertType.DANGER));
         this.router.navigate(['/dashboard/project/list']).finally();
       }

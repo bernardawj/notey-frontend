@@ -144,6 +144,8 @@ export class ProjectDetailsComponent implements OnInit, OnDestroy {
   // Private methods
 
   private getProject(projectId: number, userId: number, firstLoad: boolean): void {
+    this.isLoading = true;
+    
     const projectSub: Subscription = this.projectService.getProject(projectId, userId).subscribe(
       project => {
         this.isLoading = false;

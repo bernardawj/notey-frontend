@@ -55,7 +55,7 @@
   top: 50%;
   left: 50%;
   width: 400px;
-  padding: 20px 20px 40px 20px;
+  padding: 20px 20px 20px 20px;
   background-color: #F6F6F6;
   -webkit-transform: translate(-50%, -50%);
   -moz-transform: translate(-50%, -50%);
@@ -97,6 +97,11 @@ ul#auth-section__social-media {
   margin-right: 0;
 }
 
+#auth-section__project-description-button {
+  display: none;
+  margin-top: 10px;
+}
+
 /******************************
   Media Queries
 *******************************/
@@ -114,8 +119,18 @@ ul#auth-section__social-media {
     max-height: 100%;
   }
 
+  #auth-section__project-description-button {
+    display: block;
+  }
+
   .close {
     display: block;
+  }
+}
+
+@media only screen and (max-width: 480px) {
+  #auth-section__form-wrapper {
+    width: calc(100% - 40px);
   }
 }
 

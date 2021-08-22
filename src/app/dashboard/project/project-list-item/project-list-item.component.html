@@ -11,7 +11,7 @@
         <thead>
         <tr>
           <th>Project</th>
-          <th *ngIf="isManaged" class="project__action">Actions</th>
+          <th *ngIf="isManaged" class="table__action">Actions</th>
         </tr>
         </thead>
         <tbody>
@@ -36,8 +36,16 @@
                 - {{ project.endAt | date: 'dd MMM yyyy, hh:mm aa' }}
               </div>
             </div>
+            <div class="table__group table__group-action">
+              <label class="table__label">Actions</label>
+              <a [routerLink]="['/dashboard/project/edit', project.id]" class="button button--primary button--width-full">Edit
+                Project</a>
+              <button (click)="onToggleDeleteModal(project)" class="button button--danger button--width-full">Delete
+                Project
+              </button>
+            </div>
           </td>
-          <td *ngIf="isManaged">
+          <td class="table__action" *ngIf="isManaged">
             <a [routerLink]="['/dashboard/project/edit', project.id]" class="button button--primary button--width-full">Edit
               Project</a>
             <button (click)="onToggleDeleteModal(project)" class="button button--danger button--width-full">Delete

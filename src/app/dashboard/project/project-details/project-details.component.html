@@ -1,6 +1,6 @@
 <div class="row">
   <div class="col col-xs-12 col-sm-12 col-md-12 col-lg-8">
-    <div class="card">
+    <div class="card" [ngClass]="isLoading ? 'load' : ''">
       <h3>Project Details</h3>
       <div class="card__alert" *ngIf="!hasAccepted">
         {{ project?.manager?.firstName }} {{ project?.manager?.lastName }} has assigned you this project.
@@ -9,15 +9,15 @@
       </div>
       <div class="card-group">
         <label>Name</label>
-        <p [ngClass]="isLoading ? 'load' : ''">{{ project?.name }}</p>
+        <p>{{ project?.name }}</p>
       </div>
       <div class="card-group">
         <label>Description</label>
-        <p [ngClass]="isLoading ? 'load' : ''">{{ project?.description }}</p>
+        <p>{{ project?.description }}</p>
       </div>
       <div class="card-group">
         <label>Duration</label>
-        <p [ngClass]="isLoading ? 'load' : ''">
+        <p>
           {{ project?.startAt | date: 'dd MMM yyyy hh:mm aa' }} - {{ project?.endAt | date: 'dd MMM yyyy, hh:mm aa' }}
         </p>
       </div>
@@ -28,11 +28,11 @@
     </div>
   </div>
   <div class="col col-xs-12 col-sm-12 col-md-12 col-lg-4">
-    <div class="card">
+    <div class="card" [ngClass]="isLoading ? 'load' : ''">
       <h3>Assigned Users</h3>
       <div class="card-group project__user">
         <div class="project__user-label">Project Manager</div>
-        <div class="project__user-details" [ngClass]="isLoading ? 'load' : ''">
+        <div class="project__user-details">
           <div class="user__initials image-rounded" *ngIf="!isLoading">
             <span>{{ project?.manager?.firstName + ' ' + project?.manager?.lastName | nameInitials }}</span>
           </div>
@@ -51,8 +51,7 @@
         <app-assign-user [manageUser]="manageUserMode" [project]="project"
                          (assignEvent)="onAssignUser($event)"></app-assign-user>
         <div *ngIf="project && project.assignedUsers && project.assignedUsers.length > 0; else noMembers">
-          <div class="project__user-details" [ngClass]="isLoading ? 'load' : ''"
-               *ngFor="let user of project?.assignedUsers">
+          <div class="project__user-details" *ngFor="let user of project?.assignedUsers">
             <div class="user__initials image-rounded" *ngIf="!isLoading">
               <span>{{ user.firstName + ' ' + user.lastName | nameInitials }}</span>
             </div>

@@ -18,7 +18,6 @@ import { ModalType } from '../../../shared/modal/modal-type.enum';
 import { Project } from '../project.model';
 import { DeleteProject } from '../../../model/project/delete-project.model';
 import { ProjectFilter } from '../../../shared/model/filter/project-filter.model';
-import { TaskFilter } from '../../../shared/model/filter/task-filter.model';
 
 @Component({
   selector: 'app-project-list-item',

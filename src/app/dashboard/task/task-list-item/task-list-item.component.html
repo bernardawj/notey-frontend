@@ -1,5 +1,5 @@
 <div id="task__list">
-  <div class="card">
+  <div class="card" [ngClass]="isLoading ? 'load' : ''">
     <h3 class="clearfix">
       {{ loadProjectTasks ? 'Project Tasks' : 'Assigned Task List' }}
       <a [routerLink]="['/dashboard/task/create']" [queryParams]="{ projectId: projectId }"
@@ -12,7 +12,7 @@
         <thead>
         <tr>
           <th>Task</th>
-          <th *ngIf="loadProjectTasks">Action</th>
+          <th *ngIf="loadProjectTasks" class="table__action">Action</th>
         </tr>
         </thead>
         <tbody>
@@ -67,8 +67,31 @@
                 <a [routerLink]="['/dashboard/project/details', task.project.id]">{{ task.project.name }}</a>
               </div>
             </div>
+            <div class="table__group table__group-action">
+              <label class="table__label">Actions</label>
+              <a [routerLink]="['/dashboard/task/edit', task.id]" class="button button--primary button--width-full"
+                 *ngIf="isManaged">Edit Task</a>
+              <button class="button button--success button--width-full" *ngIf="!task.user && isManaged"
+                      (click)="onToggleAssignTaskModal(task, true)">Assign Task
+              </button>
+              <button class="button button--danger button--width-full" *ngIf="task.user && isManaged"
+                      (click)="onToggleAssignTaskModal(task, false)">Remove Task Assignment
+              </button>
+              <button class="button button--danger button--width-full" *ngIf="isManaged"
+                      (click)="onToggleDeleteTaskModal(task)">Delete Task
+              </button>
+              <button class="button button--success button--width-full"
+                      *ngIf="!task.completed && task.user && isUser(task.user.id)"
+                      (click)="onToggleCompletionModal(task, true)">
+                Mark As Completed
+              </button>
+              <button class="button button--danger button--width-full" *ngIf="task.completed && task.user && isUser(task.user.id)"
+                      (click)="onToggleCompletionModal(task, false)">
+                Mark As Incomplete
+              </button>
+            </div>
           </td>
-          <td class="task__action" *ngIf="loadProjectTasks">
+          <td class="table__action" *ngIf="loadProjectTasks">
             <a [routerLink]="['/dashboard/task/edit', task.id]" class="button button--primary button--width-full"
                *ngIf="isManaged">Edit Task</a>
             <button class="button button--success button--width-full" *ngIf="!task.user && isManaged"

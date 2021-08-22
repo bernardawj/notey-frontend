@@ -1,3 +1,7 @@
+/******************************
+  Header
+*******************************/
+
 #header {
   display: flex;
   background-color: #ff6f6f;
@@ -126,4 +130,61 @@
 #user-details__welcome,
 #user__details > mat-icon {
   margin: auto;
+}
+
+#header__hamburger {
+  display: none;
+  height: 100%;
+}
+
+.hamburger {
+  margin: auto;
+  display: block;
+}
+
+.hamburger__line {
+  display: block;
+  width: 18px;
+  height: 2px;
+  background-color: #ecf0f1;
+  margin: 3px 0;
+  border-radius: 5px;
+  -webkit-transition: all 0.3s ease-in-out;
+  -moz-transition: all 0.3s ease-in-out;
+  -o-transition: all 0.3s ease-in-out;
+  transition: all 0.3s ease-in-out;
+}
+
+.hamburger > .hamburger__line:nth-child(1) {
+  margin-top: 0;
+}
+
+.hamburger > .hamburger__line:nth-last-child(1) {
+  margin-bottom: 0;
+}
+
+.hamburger--open > .hamburger__line:nth-child(1) {
+  transform: translateY(5px) rotate(45deg);
+}
+
+.hamburger--open > .hamburger__line:nth-child(2) {
+  opacity: 0;
+}
+
+.hamburger--open > .hamburger__line:nth-last-child(1) {
+  transform: translateY(-5px) rotate(-45deg);
+}
+
+/******************************
+  Media Queries
+*******************************/
+
+@media only screen and (max-width: 1024px) {
+  #header__user-profile-image {
+    display: none;
+  }
+
+  #header__hamburger {
+    display: flex;
+  }
 }

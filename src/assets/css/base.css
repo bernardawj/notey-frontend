@@ -85,13 +85,36 @@ select {
 *******************************/
 
 .load {
-  position: relative;
-  padding: 0.5em;
-  border-radius: 5px;
+  /*position: relative;*/
+  /*padding: 0.5em;*/
+  /*border-radius: 5px;*/
+  /*width: 100%;*/
+  /*background: linear-gradient(to right, rgba(0, 0, 0, 0.3) 0%, #F6F6F6 45%, rgba(0, 0, 0, 0.3) 100%) 0 50% no-repeat;*/
+  /*background-size: 300% 100%;*/
+  /*animation: load 1.5s linear infinite;*/
+}
+
+.load::before {
+  content: "";
+  position: absolute;
+  background-color: rgba(0, 0, 0, 0.5);
+  top: 0;
+  left: 0;
+  height: 100%;
   width: 100%;
-  background: linear-gradient(to right, rgba(0, 0, 0, 0.3) 0%, #F6F6F6 45%, rgba(0, 0, 0, 0.3) 100%) 0 50% no-repeat;
-  background-size: 300% 100%;
-  animation: load 1.5s linear infinite;
+  z-index: 1;
+}
+
+.load::after {
+  content: url(src/assets/svg/preloader.svg);
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  -webkit-transform: translate(-50%, -50%);
+  -moz-transform: translate(-50%, -50%);
+  -o-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+  z-index: 1;
 }
 
 @keyframes load {

@@ -6,6 +6,10 @@ import { environment } from '../../environments/environment';
 import { Auth } from '../model/auth/auth.model';
 import { Login } from '../model/auth/login.model';
 import { Token } from '../model/auth/token.model';
+import { Router } from '@angular/router';
+import { Alert } from '../shared/alert/alert.model';
+import { AlertType } from '../shared/alert/alert-type.enum';
+import { AlertService } from '../shared/alert/alert.service';
 
 @Injectable({
   providedIn: 'root'
@@ -14,7 +18,7 @@ export class AuthService {
 
   auth: BehaviorSubject<Auth | null>;
 
-  constructor(private httpClient: HttpClient) {
+  constructor(private alertService: AlertService, private httpClient: HttpClient, private router: Router) {
     this.auth = new BehaviorSubject<Auth | null>(null);
   }
 
@@ -39,8 +43,10 @@ export class AuthService {
 
   logout(): void {
     if (this.auth) {
-      this.auth.unsubscribe();
       this.auth.next(null);
+      localStorage.removeItem('auth');
+      this.alertService.alertSubject.next(new Alert('Successfully logged out from your account', AlertType.SUCCESS));
+      this.router.navigate(['/auth']).finally();
     }
   }
 }

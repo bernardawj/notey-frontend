@@ -17,6 +17,19 @@ td > .table__group:nth-last-child(1) {
   margin-bottom: 10px;
 }
 
+.table__action {
+  width: 250px;
+}
+
+.table__group > .button,
+.table__action > .button {
+  margin-bottom: 5px;
+}
+
+.table__group-action {
+  display: none;
+}
+
 table {
   border-spacing: 0;
   width: 100%;
@@ -50,4 +63,18 @@ th, td {
   text-align: left;
   border-right: 1px solid #E8E8E8;
   padding: 8px 12px;
+}
+
+/******************************
+  Media Queries
+*******************************/
+
+@media only screen and (max-width: 1024px) {
+  .table__action {
+    display: none;
+  }
+
+  .table__group-action {
+    display: block;
+  }
 }
