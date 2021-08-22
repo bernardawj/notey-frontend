@@ -1,15 +1,15 @@
 <div id="project__assign-user" *ngIf="manageUser">
   <div class="card">
-    <label class="card-title">Add Project Member</label>
+    <label class="card__title">Add Project Member</label>
     <form [formGroup]="assignForm" (ngSubmit)="onAssign()">
-      <div class="form-group">
+      <div class="form__group">
         <label>Email</label>
-        <input type="email" formControlName="email" class="form-control" required />
-        <span class="form-validation" *ngIf="assignForm.get('email')?.invalid && assignForm.get('email')?.dirty">
+        <input type="email" formControlName="email" class="form__control" required />
+        <span class="form__validation" *ngIf="assignForm.get('email')?.invalid && assignForm.get('email')?.dirty">
           Please enter a valid email address.
         </span>
       </div>
-      <div class="form-group">
+      <div class="form__group">
         <button type="submit" class="button button--primary button--width-full" [disabled]="assignForm.invalid">Assign User</button>
       </div>
     </form>

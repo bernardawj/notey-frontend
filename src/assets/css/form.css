@@ -2,36 +2,36 @@
   Form
 *******************************/
 
-.form-group {
+.form__group {
   margin-bottom: 15px;
 }
 
-div > .form-group:nth-last-child(1),
-form > .form-group:nth-last-child(1) {
+div > .form__group:nth-last-child(1),
+form > .form__group:nth-last-child(1) {
   margin-bottom: 0;
 }
 
-.form-group > label {
+.form__group > label {
   display: inline-block;
   font-weight: 600;
   margin-bottom: 10px;
 }
 
-.form-group > .button {
+.form__group > .button {
   margin-bottom: 0;
 }
 
-.form-group > .button:nth-last-child(1) {
+.form__group > .button:nth-last-child(1) {
   margin-right: 0;
 }
 
-.form-validation {
+.form__validation {
   display: inline-block;
   margin-top: 10px;
   color: #7f0000;
 }
 
-.form-control {
+.form__control {
   width: 100%;
   padding: 10px 15px;
   border: 0;
@@ -41,29 +41,29 @@ form > .form-group:nth-last-child(1) {
   min-height: 40px;
 }
 
-.form-control:focus {
+.form__control:focus {
   outline: #ff6f6f solid 2px;
 }
 
-.form-control[disabled] {
+.form__control[disabled] {
   background-color: #E8E8E8;
   color: #F7F7F7;
 }
 
-.form-control,
+.form__control,
 ::placeholder {
   font-family: inherit;
   font-weight: 500;
 }
 
-.form-group__auth-link {
+.form__group__auth-link {
   display: block;
   text-align: center;
   font-size: 14px;
   margin-top: 10px;
 }
 
-.form-group__auth-link:nth-child(1) {
+.form__group__auth-link:nth-child(1) {
   margin-top: 10px;
 }
 

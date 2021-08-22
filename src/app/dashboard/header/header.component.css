@@ -140,6 +140,7 @@
 .hamburger {
   margin: auto;
   display: block;
+  cursor: pointer;
 }
 
 .hamburger__line {

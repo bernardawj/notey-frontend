@@ -24,7 +24,6 @@ import { TaskCreateComponent } from './task/task-create/task-create.component';
 import { TaskFormComponent } from './task/task-form/task-form.component';
 import { TaskEditComponent } from './task/task-edit/task-edit.component';
 import { TaskDetailComponent } from './task/task-detail/task-detail.component';
-import { ContentComponent } from './content/content.component';
 import { HamburgerDirective } from './header/hamburger/hamburger.directive';
 import { LinkDirective } from './sidebar/link.directive';
 
@@ -32,7 +31,6 @@ import { LinkDirective } from './sidebar/link.directive';
   declarations: [
     HeaderComponent,
     SidebarComponent,
-    ContentComponent,
     ProjectComponent,
     ProjectListComponent,
     ProjectListItemComponent,
@@ -61,7 +59,6 @@ import { LinkDirective } from './sidebar/link.directive';
   exports: [
     HeaderComponent,
     SidebarComponent,
-    ContentComponent,
     HamburgerDirective,
     LinkDirective
   ],

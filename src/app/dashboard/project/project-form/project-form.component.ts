@@ -51,6 +51,8 @@ export class ProjectFormComponent implements OnInit, OnDestroy {
         this.activatedRoute.params.subscribe(param => {
           if (param['id']) {
             this.loadProject(+param['id'], this.userId);
+          } else {
+            this.isLoading = false;
           }
         });
       }
