@@ -7,7 +7,7 @@
          *ngIf="isManaged">New Task</a>
     </h3>
     <app-filter [isTask]="true" (filterEmitter)="filterTasks($event)"></app-filter>
-    <div class="table" *ngIf="!isLoading && taskList?.tasks!.length > 0">
+    <div class="table" *ngIf="taskList?.tasks && taskList?.tasks!.length > 0">
       <table>
         <thead>
         <tr>
@@ -127,10 +127,9 @@
         </ul>
       </div>
     </div>
-    <div class="svg__wrapper" *ngIf="!isLoading && taskList?.tasks!.length === 0">
+    <div class="svg__wrapper" *ngIf="taskList?.tasks && taskList?.tasks!.length === 0">
       <img src="../../../../assets/svg/to-do-list.svg" alt="empty-tasks"/>
       <span class="svg-wrapper__text">No tasks found.</span>
     </div>
-    <div class="load" *ngIf="isLoading"></div>
   </div>
 </div>

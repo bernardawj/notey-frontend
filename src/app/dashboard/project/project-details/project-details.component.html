@@ -7,21 +7,21 @@
         <button (click)="onUpdateAcceptance(true)" class="button button--primary no-margin-bottom">Accept</button>
         <button (click)="onUpdateAcceptance(false)" class="button button--danger no-margin-bottom">Reject</button>
       </div>
-      <div class="card-group">
+      <div class="card__group">
         <label>Name</label>
         <p>{{ project?.name }}</p>
       </div>
-      <div class="card-group">
+      <div class="card__group">
         <label>Description</label>
         <p>{{ project?.description }}</p>
       </div>
-      <div class="card-group">
+      <div class="card__group">
         <label>Duration</label>
         <p>
           {{ project?.startAt | date: 'dd MMM yyyy hh:mm aa' }} - {{ project?.endAt | date: 'dd MMM yyyy, hh:mm aa' }}
         </p>
       </div>
-      <div class="card-group">
+      <div class="card__group">
         <a [routerLink]="['../../list']" class="button button--secondary">Back</a>
         <a [routerLink]="['../../edit', project?.id]" *ngIf="isManager" class="button button--primary">Edit</a>
       </div>
@@ -30,7 +30,7 @@
   <div class="col col-xs-12 col-sm-12 col-md-12 col-lg-4">
     <div class="card" [ngClass]="isLoading ? 'load' : ''">
       <h3>Assigned Users</h3>
-      <div class="card-group project__user">
+      <div class="card__group project__user">
         <div class="project__user-label">Project Manager</div>
         <div class="project__user-details">
           <div class="user__initials image-rounded" *ngIf="!isLoading">
@@ -42,7 +42,7 @@
           </div>
         </div>
       </div>
-      <div class="card-group project__user">
+      <div class="card__group project__user">
         <div class="project__user-label clearfix">
           Project Members
           <a class="pull-right manage-mode" (click)="onManageClick()"

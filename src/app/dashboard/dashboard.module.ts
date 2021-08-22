@@ -5,9 +5,7 @@ import { HTTP_INTERCEPTORS } from '@angular/common/http';
 
 import { HeaderComponent } from './header/header.component';
 import { SidebarComponent } from './sidebar/sidebar.component';
-import { HomeComponent } from './home/home.component';
 import { ProjectComponent } from './project/project.component';
-import { RecentProjectComponent } from './project/recent-project/recent-project.component';
 import { ProjectListComponent } from './project/project-list/project-list.component';
 import { ProjectListItemComponent } from './project/project-list-item/project-list-item.component';
 import { ProjectFormComponent } from './project/project-form/project-form.component';
@@ -35,9 +33,7 @@ import { LinkDirective } from './sidebar/link.directive';
     HeaderComponent,
     SidebarComponent,
     ContentComponent,
-    HomeComponent,
     ProjectComponent,
-    RecentProjectComponent,
     ProjectListComponent,
     ProjectListItemComponent,
     ProjectFormComponent,

@@ -12,47 +12,47 @@
   box-shadow: 0 3px 5px 0 rgba(0, 0, 0, 0.1);
 }
 
-.card-rounded {
+.card--rounded {
   border-radius: 5px;
 }
 
-.card-title,
-.card-subtitle,
-.card-content {
+.card__title,
+.card__subtitle,
+.card__content {
   display: block;
 }
 
-.card-title {
+.card__title {
   font-size: 16px;
   font-weight: 700;
   margin-bottom: 10px;
 }
 
-.card-subtitle {
+.card__subtitle {
   font-style: italic;
   margin-bottom: 15px;
 }
 
-.card-content {
+.card__content {
   font-size: 14px;
 }
 
-.card-subtitle,
-.card-data {
+.card__subtitle,
+.card__data {
   font-size: 12px;
 }
 
-.card-group {
+.card__group {
   margin-bottom: 20px;
 }
 
-.card-group > label {
+.card__group > label {
   display: inline-block;
   font-weight: 600;
   margin-bottom: 10px;
 }
 
-.card > .card-group:nth-last-child(1) {
+.card > .card__group:nth-last-child(1) {
   margin-bottom: 0;
 }
 

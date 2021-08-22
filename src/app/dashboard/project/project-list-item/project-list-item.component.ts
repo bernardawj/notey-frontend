@@ -18,6 +18,8 @@ import { ModalType } from '../../../shared/modal/modal-type.enum';
 import { Project } from '../project.model';
 import { DeleteProject } from '../../../model/project/delete-project.model';
 import { ProjectFilter } from '../../../shared/model/filter/project-filter.model';
+import { Sort } from '../../../shared/sort/sort.model';
+import { SortType } from '../../../shared/sort/sort-type.enum';
 
 @Component({
   selector: 'app-project-list-item',
@@ -32,14 +34,15 @@ export class ProjectListItemComponent implements OnInit, OnDestroy {
 
   subscriptions: Subscription[];
 
-  @Input()
-  isManaged: boolean;
+  @Input() isManaged: boolean;
+  @Input() isLoadingFromDashboard: boolean;
 
   constructor(private authService: AuthService, private projectService: ProjectService, private modalService: ModalService,
               private alertService: AlertService) {
     this.projectList = null;
     this.isLoading = true;
     this.isManaged = true;
+    this.isLoadingFromDashboard = false;
     this.subscriptions = [];
   }
 
@@ -126,16 +129,19 @@ export class ProjectListItemComponent implements OnInit, OnDestroy {
   // Private methods
 
   private getProject(userId: number, pageNo: number, searchString: string): void {
+    this.isLoading = true;
+
     // List settings
     const filter = new Filter(searchString);
+    const sort = new Sort('name', SortType.ASCENDING);
     const inputPage = new InputPage(pageNo, 5);
 
     // Call service to retrieve project lists
     let callingService: Observable<ProjectList>;
     if (this.isManaged) {
-      callingService = this.projectService.getAllManagedProjects(new GetManagedProjects(userId, filter, inputPage));
+      callingService = this.projectService.getAllManagedProjects(new GetManagedProjects(userId, filter, sort, inputPage));
     } else {
-      callingService = this.projectService.getAllAssignedProjects(new GetAssignedProjects(userId, filter, inputPage));
+      callingService = this.projectService.getAllAssignedProjects(new GetAssignedProjects(userId, filter, sort, inputPage));
     }
 
     const projectSub: Subscription = callingService.subscribe(

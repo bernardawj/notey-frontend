@@ -20,6 +20,8 @@ import { InputPage } from '../../../shared/model/input-page.model';
 import { Subscription } from 'rxjs';
 import { TaskFilter } from '../../../shared/model/filter/task-filter.model';
 import { ProjectFilter } from '../../../shared/model/filter/project-filter.model';
+import { Sort } from '../../../shared/sort/sort.model';
+import { SortType } from '../../../shared/sort/sort-type.enum';
 
 @Component({
   selector: 'app-task-list-item',
@@ -237,9 +239,10 @@ export class TaskListItemComponent implements OnInit, OnDestroy {
     this.isLoading = true;
 
     const projectId = this.activatedRoute.snapshot.params['id'];
+    const sort = new Sort('createdAt', SortType.DESCENDING);
     const inputPage = new InputPage(pageNo, 5);
 
-    const getProjectTasksSub: Subscription = this.taskService.getAllProjectTasks(new GetProjectTasks(projectId, filter, inputPage)).subscribe(
+    const getProjectTasksSub: Subscription = this.taskService.getAllProjectTasks(new GetProjectTasks(projectId, filter, sort, inputPage)).subscribe(
       taskList => {
         this.taskList = taskList;
         this.isLoading = false;
@@ -253,8 +256,9 @@ export class TaskListItemComponent implements OnInit, OnDestroy {
     this.isLoading = true;
 
     const inputPage = new InputPage(pageNo, 5);
+    const sort = new Sort('createdAt', SortType.DESCENDING);
 
-    const getUserTasksSub: Subscription = this.taskService.getAllUserTasks(new GetUserTasks(userId, filter, inputPage)).subscribe(
+    const getUserTasksSub: Subscription = this.taskService.getAllUserTasks(new GetUserTasks(userId, filter, sort, inputPage)).subscribe(
       taskList => {
         this.taskList = taskList;
         this.isLoading = false;

@@ -61,6 +61,7 @@ export class TaskFormComponent implements OnInit, OnDestroy {
                 this.getTaskDetails(+param['id'], auth.user.id);
               } else {
                 this.projectId = this.activatedRoute.snapshot.queryParams['projectId'];
+                this.isLoading = false;
               }
             }
           );

@@ -1,12 +1,12 @@
 <div class="project__list">
-  <div class="card">
+  <div class="card" [ngClass]="isLoading ? 'load' : ''">
     <h3 class="clearfix">
       {{ isManaged ? 'Managed' : 'Assigned' }} Project List
-      <a [routerLink]="['../create']" class="button button--primary pull-right no-margin" *ngIf="isManaged">New
+      <a [routerLink]="['../create']" class="button button--primary pull-right no-margin" *ngIf="isManaged && !isLoadingFromDashboard">New
         Project</a>
     </h3>
-    <app-filter [isTask]="false" (filterEmitter)="filterProjects($event)"></app-filter>
-    <div class="table" *ngIf="!isLoading && projectList?.projects!.length > 0">
+    <app-filter [isTask]="false" (filterEmitter)="filterProjects($event)" *ngIf="!isLoadingFromDashboard"></app-filter>
+    <div class="table" *ngIf="projectList?.projects && projectList?.projects!.length > 0">
       <table>
         <thead>
         <tr>
@@ -58,7 +58,7 @@
       <div class="pagination">
         <ul>
           <li *ngFor="let page of calculatePages()"
-              [ngClass]="this.projectList?.pagination?.currentPage === page ? 'pagination--active' : ''">
+              [ngClass]="projectList?.pagination?.currentPage === page ? 'pagination--active' : ''">
             <a (click)="getPage(page)">
               <span>{{ page }}</span>
             </a>
@@ -66,10 +66,9 @@
         </ul>
       </div>
     </div>
-    <div class="svg__wrapper" *ngIf="!isLoading && projectList?.projects!.length === 0">
+    <div class="svg__wrapper" *ngIf="projectList?.projects && projectList?.projects!.length === 0">
       <img src="../../../../assets/svg/folder.svg" alt="empty-project"/>
       <span class="svg-wrapper__text">No projects found.</span>
     </div>
-    <div class="load" *ngIf="isLoading"></div>
   </div>
 </div>

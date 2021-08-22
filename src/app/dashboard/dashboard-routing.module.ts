@@ -1,7 +1,5 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-
-import { HomeComponent } from './home/home.component';
 import { ProjectComponent } from './project/project.component';
 import { ProjectListComponent } from './project/project-list/project-list.component';
 import { ProjectCreateComponent } from './project/project-create/project-create.component';
@@ -15,8 +13,7 @@ import { TaskEditComponent } from './task/task-edit/task-edit.component';
 import { TaskDetailComponent } from './task/task-detail/task-detail.component';
 
 const routes: Routes = [
-  { path: '', redirectTo: '/dashboard/home', pathMatch: 'full' },
-  { path: 'home', component: HomeComponent },
+  { path: '', redirectTo: '/dashboard/project/list', pathMatch: 'full' },
   {
     path: 'project',
     component: ProjectComponent,
