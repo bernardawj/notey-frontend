@@ -1,6 +1,6 @@
 import { getEndpoints } from './endpoints';
 
-const INITIAL_URI = 'https://notey-api-dev.herokuapp.com/api';
+const INITIAL_URI = 'https://notey-api.herokuapp.com/api';
 
 export const environment = {
   production: true,
