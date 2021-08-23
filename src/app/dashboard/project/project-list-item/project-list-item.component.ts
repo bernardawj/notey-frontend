@@ -131,7 +131,7 @@ export class ProjectListItemComponent implements OnInit, OnDestroy {
 
     // List settings
     const filter = new Filter(searchString);
-    const sort = new Sort('name', SortType.ASCENDING);
+    const sort = new Sort('createdAt', SortType.DESCENDING);
     const inputPage = new InputPage(pageNo, 5);
 
     // Call service to retrieve project lists

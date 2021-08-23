@@ -9,14 +9,14 @@
         <br/><br/>
         <span *ngIf="isDeleteOrUpdate()">Are you sure you want to {{ action | lowercase }} it?</span>
         <span *ngIf="isMark()">Are you sure you to mark as {{ action | lowercase }}?</span>
-        <div class="form-group" *ngIf="isAssignTask()">
+        <div class="form__group" *ngIf="isAssignTask()">
           <label for="user">User</label>
-          <select id="user" formControlName="user" class="form-control">
+          <select id="user" formControlName="user" class="form__control">
             <option value="" disabled selected="selected">-- Select User --</option>
             <option *ngFor="let user of getTaskData().project.assignedUsers"
                     [value]="user.userId">{{ user.firstName }}</option>
           </select>
-          <span class="form-validation" *ngIf="assignmentForm.get('user')?.invalid && assignmentForm.get('user')?.touched">Please select a user.</span>
+          <span class="form__validation" *ngIf="assignmentForm.get('user')?.invalid && assignmentForm.get('user')?.touched">Please select a user.</span>
         </div>
       </div>
       <div class="modal__footer">

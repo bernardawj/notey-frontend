@@ -8,6 +8,7 @@ import { AlertService } from '../../../shared/alert/alert.service';
 import { Alert } from '../../../shared/alert/alert.model';
 import { AlertType } from '../../../shared/alert/alert-type.enum';
 import { Subscription } from 'rxjs';
+import { AuthService } from '../../../auth/auth.service';
 
 @Component({
   selector: 'app-assign-user',
@@ -17,6 +18,7 @@ import { Subscription } from 'rxjs';
 export class AssignUserComponent implements OnInit, OnDestroy {
 
   assignForm!: FormGroup;
+  userId?: number;
 
   subscriptions: Subscription[];
 
@@ -26,7 +28,7 @@ export class AssignUserComponent implements OnInit, OnDestroy {
   @Output() assignEvent: EventEmitter<boolean>;
 
   constructor(private userService: UserService, private projectService: ProjectService, private alertService: AlertService,
-              private formBuilder: FormBuilder) {
+              private authService: AuthService, private formBuilder: FormBuilder) {
     this.manageUser = false;
     this.assignEvent = new EventEmitter<boolean>();
     this.subscriptions = [];
@@ -38,6 +40,16 @@ export class AssignUserComponent implements OnInit, OnDestroy {
     this.assignForm = this.formBuilder.group({
       email: new FormControl('', [Validators.required, Validators.email])
     });
+
+    const authSub: Subscription = this.authService.auth.subscribe(
+      auth => {
+        if (auth) {
+          this.userId = auth.user.id;
+        }
+      }
+    );
+
+    this.subscriptions.push(authSub);
   }
 
   ngOnDestroy(): void {
@@ -49,10 +61,10 @@ export class AssignUserComponent implements OnInit, OnDestroy {
   // Assign user to project
 
   onAssign(): void {
-    if (this.project) {
+    if (this.project && this.userId) {
       const email = this.assignForm.get('email')?.value;
 
-      const assignSub: Subscription = this.projectService.assignProject(new AssignProject(this.project.id, email)).subscribe(
+      const assignSub: Subscription = this.projectService.assignProject(new AssignProject(this.project.id, this.userId, email)).subscribe(
         () => {
           this.alertService.alertSubject.next(new Alert(`Successfully invited ${ email }.`, AlertType.SUCCESS));
           this.resetForm();

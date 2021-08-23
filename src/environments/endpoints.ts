@@ -28,8 +28,8 @@ export const getEndpoints = (INITIAL_URI: string) => {
       markTaskAsCompleted: `${ INITIAL_URI }/v1/task/mark-completion`
     },
     notification: {
-      getAllUserNotifications: `${ INITIAL_URI }/v1/notification`,
-      clearAllUserNotifications: `${ INITIAL_URI }/v1/notification`
+      getAllUserNotifications: `${ INITIAL_URI }/v1/notification/user`,
+      clearAllUserNotifications: `${ INITIAL_URI }/v1/notification/user`
     }
   }
 }

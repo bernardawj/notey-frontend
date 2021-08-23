@@ -1,5 +1,5 @@
 export class AssignProject {
 
-  constructor(public projectId: number, public email: string) {
+  constructor(public projectId: number, public managerId: number, public email: string) {
   }
 }

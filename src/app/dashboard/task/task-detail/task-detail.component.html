@@ -55,6 +55,7 @@
           </div>
         </div>
         <ng-template #noneAssigned>
+          <p>Task is not assigned to any user.</p>
           <a *ngIf="isManager && task" (click)="onToggleAssignUserToTaskModal(task)">Assign User</a>
         </ng-template>
       </div>
