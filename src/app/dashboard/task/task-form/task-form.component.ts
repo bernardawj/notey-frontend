@@ -14,6 +14,7 @@ import { Observable, Subscription } from 'rxjs';
 import { TaskValidator } from '../../validator/task.validator';
 import { UpdateTask } from '../../../model/task/update-task.model';
 import { FormUtility } from '../../../shared/utility/form.utility';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-task-form',
@@ -33,7 +34,8 @@ export class TaskFormComponent implements OnInit, OnDestroy {
   @Input() isEdit: boolean;
 
   constructor(private taskService: TaskService, private alertService: AlertService, private authService: AuthService,
-              private formBuilder: FormBuilder, private router: Router, private activatedRoute: ActivatedRoute) {
+              private formBuilder: FormBuilder, private router: Router, private activatedRoute: ActivatedRoute,
+              private location: Location) {
     this.isEdit = false;
     this.isLoading = true;
     this.subscriptions = [];
@@ -104,6 +106,10 @@ export class TaskFormComponent implements OnInit, OnDestroy {
         this.callTaskServices(new CreateTask(name, description, type, startAt, endAt, this.projectId));
       }
     }
+  }
+
+  goBack(): void {
+    this.location.back();
   }
 
   // Private methods

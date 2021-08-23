@@ -31,7 +31,7 @@
       <span class="form__validation" *ngIf="form.get('endAt')?.invalid && form.get('endAt')?.touched">Please enter a valid task end date.</span>
     </div>
     <div class="form__group">
-      <a [routerLink]="isEdit ? ['../../details', task?.id] : ['/dashboard/project/details', projectId]" class="button button--secondary">Back</a>
+      <a (click)="goBack()" class="button button--secondary">Back</a>
       <button type="submit" class="button button--primary"
               [disabled]="form?.invalid">{{ !isEdit ? 'Create' : 'Update' }}</button>
     </div>

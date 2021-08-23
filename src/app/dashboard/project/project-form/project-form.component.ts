@@ -11,6 +11,7 @@ import { Alert } from '../../../shared/alert/alert.model';
 import { AlertType } from '../../../shared/alert/alert-type.enum';
 import { Observable, Subscription } from 'rxjs';
 import { FormUtility } from '../../../shared/utility/form.utility';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-project-form',
@@ -30,7 +31,7 @@ export class ProjectFormComponent implements OnInit, OnDestroy {
   isLoading: boolean;
 
   constructor(private projectService: ProjectService, private authService: AuthService, private alertService: AlertService,
-              private formBuilder: FormBuilder, private activatedRoute: ActivatedRoute, private router: Router) {
+              private formBuilder: FormBuilder, private activatedRoute: ActivatedRoute, private router: Router, private location: Location) {
     this.isEdit = false;
     this.isLoading = true;
     this.subscriptions = [];
@@ -81,6 +82,10 @@ export class ProjectFormComponent implements OnInit, OnDestroy {
 
     // Call service
     this.callProjectService(name, description, startAt, endAt);
+  }
+
+  goBack(): void {
+    this.location.back();
   }
 
   // Private methods
