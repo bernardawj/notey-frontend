@@ -82,6 +82,11 @@ export class ModalComponent implements OnInit, OnDestroy {
     }
   }
 
+  actionText(): string {
+    const type = this.type?.replace('_', ' ');
+    return `${this.action} ${type}: ${ this.name }`;
+  }
+
   onConfirm(): void {
     switch (this.type) {
       case ModalType.PROJECT:

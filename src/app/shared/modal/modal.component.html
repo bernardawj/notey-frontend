@@ -5,7 +5,7 @@
         Confirmation
       </div>
       <div class="modal__body">
-        <span [ngClass]="actionColorClass()">{{ action }}: {{ name }}</span>
+        <span [ngClass]="actionColorClass()">{{ actionText() }}</span>
         <br/><br/>
         <span *ngIf="isDeleteOrUpdate()">Are you sure you want to {{ action | lowercase }} it?</span>
         <span *ngIf="isMark()">Are you sure you to mark as {{ action | lowercase }}?</span>

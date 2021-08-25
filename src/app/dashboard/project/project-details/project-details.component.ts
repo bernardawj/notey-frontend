@@ -15,6 +15,7 @@ import { Alert } from '../../../shared/alert/alert.model';
 import { AlertType } from '../../../shared/alert/alert-type.enum';
 import { Subscription } from 'rxjs';
 import { TaskService } from '../../task/task.service';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-project-details',
@@ -35,7 +36,7 @@ export class ProjectDetailsComponent implements OnInit, OnDestroy {
 
   constructor(private projectService: ProjectService, private userService: UserService, private authService: AuthService,
               private taskService: TaskService, private modalService: ModalService, private alertService: AlertService,
-              private router: Router, private activatedRoute: ActivatedRoute) {
+              private router: Router, private activatedRoute: ActivatedRoute, private location: Location) {
     this.isManager = false;
     this.isLoading = true;
     this.hasAccepted = true;
@@ -141,11 +142,15 @@ export class ProjectDetailsComponent implements OnInit, OnDestroy {
     this.manageUserMode = !this.manageUserMode;
   }
 
+  goBack(): void {
+    this.location.back();
+  }
+
   // Private methods
 
   private getProject(projectId: number, userId: number, firstLoad: boolean): void {
     this.isLoading = true;
-    
+
     const projectSub: Subscription = this.projectService.getProject(projectId, userId).subscribe(
       project => {
         this.isLoading = false;

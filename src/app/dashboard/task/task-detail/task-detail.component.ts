@@ -8,12 +8,12 @@ import { AlertService } from '../../../shared/alert/alert.service';
 import { ActivatedRoute } from '@angular/router';
 import { Alert } from '../../../shared/alert/alert.model';
 import { AlertType } from '../../../shared/alert/alert-type.enum';
-import { User } from '../../../shared/user/user.model';
 import { ModalService } from '../../../shared/modal/modal.service';
 import { Modal } from '../../../shared/modal/modal.model';
 import { ModalAction } from '../../../shared/modal/modal-action.enum';
 import { ModalType } from '../../../shared/modal/modal-type.enum';
 import { AssignTask } from '../../../model/task/assign-task.model';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-task-detail',
@@ -31,7 +31,7 @@ export class TaskDetailComponent implements OnInit, OnDestroy {
   subscriptions: Subscription[];
 
   constructor(private taskService: TaskService, private authService: AuthService, private alertService: AlertService,
-              private modalService: ModalService, private activatedRoute: ActivatedRoute) {
+              private modalService: ModalService, private activatedRoute: ActivatedRoute, private location: Location) {
     this.isLoading = true;
     this.isManager = false;
     this.subscriptions = [];
@@ -80,6 +80,12 @@ export class TaskDetailComponent implements OnInit, OnDestroy {
     );
 
     this.subscriptions.push(taskAssignmentSub);
+  }
+
+  // Events
+
+  goBack(): void {
+    this.location.back();
   }
 
   // Private methods
