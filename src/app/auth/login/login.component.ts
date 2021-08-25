@@ -6,6 +6,7 @@ import { Alert } from '../../shared/alert/alert.model';
 import { AlertType } from '../../shared/alert/alert-type.enum';
 import { AlertService } from '../../shared/alert/alert.service';
 import { Login } from '../../model/auth/login.model';
+import { Token } from '../../model/auth/token.model';
 
 @Component({
   selector: 'app-login',

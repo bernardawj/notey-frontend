@@ -31,9 +31,14 @@ export class AuthService {
 
     if (userData) {
       const user: User = new User(userData.user.id, userData.user.email, userData.user.password, userData.user.firstName, userData.user.lastName);
-      const token: Token = new Token(userData.token.accessToken);
-      const auth = new Auth(user, token);
-      this.auth.next(auth);
+      const token: Token = new Token(userData.token.accessToken, new Date(userData.token.expiryDate));
+
+      if (token.accessToken) {
+        const auth = new Auth(user, token);
+        this.auth.next(auth);
+      } else {
+        this.logout(true);
+      }
     }
   }
 
@@ -41,11 +46,17 @@ export class AuthService {
   //   return this.httpClient.post<User>(environment.endpoints.auth.register, user);
   // }
 
-  logout(): void {
+  logout(auto: boolean): void {
     if (this.auth) {
       this.auth.next(null);
       localStorage.removeItem('auth');
-      this.alertService.alertSubject.next(new Alert('Successfully logged out from your account', AlertType.SUCCESS));
+
+      if (auto) {
+        this.alertService.alertSubject.next(new Alert('The authenticated session has expired. Please login again.', AlertType.INFO));
+      } else {
+        this.alertService.alertSubject.next(new Alert('Successfully logged out from your account', AlertType.SUCCESS));
+      }
+
       this.router.navigate(['/auth']).finally();
     }
   }

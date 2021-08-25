@@ -1,9 +1,7 @@
-import { Component, HostListener, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { User } from '../../shared/user/user.model';
 import { AuthService } from '../../auth/auth.service';
 import { Router } from '@angular/router';
-import { Alert } from '../../shared/alert/alert.model';
-import { AlertType } from '../../shared/alert/alert-type.enum';
 import { AlertService } from '../../shared/alert/alert.service';
 import { Subscription } from 'rxjs';
 
@@ -21,7 +19,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   subscriptions: Subscription[];
 
-  constructor(private authService: AuthService, private alertService: AlertService, private router: Router) {
+  constructor(private authService: AuthService) {
     this.notificationCount = 0;
     this.expandNotification = this.expandDropdown = false;
     this.subscriptions = [];
@@ -55,6 +53,6 @@ export class HeaderComponent implements OnInit, OnDestroy {
   }
 
   onLogout(): void {
-    this.authService.logout();
+    this.authService.logout(false);
   }
 }

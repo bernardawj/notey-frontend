@@ -39,7 +39,7 @@ export class SidebarComponent implements OnInit, OnDestroy {
   // Events
 
   onLogout(): void {
-    this.authService.logout();
+    this.authService.logout(false);
   }
 
   // Private methods

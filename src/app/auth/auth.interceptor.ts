@@ -1,4 +1,4 @@
-import { HttpEvent, HttpHandler, HttpHeaders, HttpInterceptor, HttpParams, HttpRequest } from '@angular/common/http';
+import { HttpEvent, HttpHandler, HttpHeaders, HttpInterceptor, HttpRequest } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Injectable } from '@angular/core';
 import { AuthService } from './auth.service';
@@ -14,8 +14,12 @@ export class AuthInterceptor implements HttpInterceptor {
     if (this.authService.auth) {
       return this.authService.auth.pipe(take(1), exhaustMap(auth => {
         if (auth) {
+          if (!auth.token.accessToken) {
+            this.authService.logout(true);
+          }
+
           const modifiedRequest: HttpRequest<any> = req.clone({
-            headers: new HttpHeaders().set('Authorization', `Bearer ${auth.token.accessToken}`)
+            headers: new HttpHeaders().set('Authorization', `Bearer ${ auth.token.accessToken }`)
           });
           return next.handle(modifiedRequest);
         } else {
