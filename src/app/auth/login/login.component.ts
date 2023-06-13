@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
 import { AuthService } from '../auth.service';
 import { Router } from '@angular/router';
 import { Alert } from '../../shared/alert/alert.model';
@@ -15,16 +15,16 @@ import { Token } from '../../model/auth/token.model';
 })
 export class LoginComponent implements OnInit {
 
-  loginForm!: FormGroup;
+  loginForm!: UntypedFormGroup;
 
-  constructor(private authService: AuthService, private alertService: AlertService, private formBuilder: FormBuilder,
+  constructor(private authService: AuthService, private alertService: AlertService, private formBuilder: UntypedFormBuilder,
               private router: Router) {
   }
 
   ngOnInit(): void {
     this.loginForm = this.formBuilder.group({
-      email: new FormControl('', [Validators.required, Validators.email]),
-      password: new FormControl('', [Validators.required])
+      email: new UntypedFormControl('', [Validators.required, Validators.email]),
+      password: new UntypedFormControl('', [Validators.required])
     });
   }
 

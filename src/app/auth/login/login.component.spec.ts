@@ -2,7 +2,7 @@ import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testin
 import { LoginComponent } from './login.component';
 import { DebugElement } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
-import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { UntypedFormControl, UntypedFormGroup, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { RouterTestingModule } from '@angular/router/testing';
@@ -37,7 +37,7 @@ describe('LoginComponent', () => {
   });
 
   it('should initialize with login form', () => {
-    let loginForm: FormGroup = component.loginForm;
+    let loginForm: UntypedFormGroup = component.loginForm;
 
     expect(loginForm).toBeTruthy();
     expect(loginForm.contains('email')).toBeTrue();
@@ -45,7 +45,7 @@ describe('LoginComponent', () => {
   });
 
   it('should be invalid if email and password is empty', () => {
-    let loginForm: FormGroup = component.loginForm;
+    let loginForm: UntypedFormGroup = component.loginForm;
     let email: string = loginForm.get('email')?.value;
     let password: string = loginForm.get('password')?.value;
 
@@ -55,9 +55,9 @@ describe('LoginComponent', () => {
   });
 
   it('should display validation message if email is empty', () => {
-    let loginForm: FormGroup = component.loginForm;
+    let loginForm: UntypedFormGroup = component.loginForm;
     let email: string = loginForm.get('email')?.value;
-    let control: FormControl = <FormControl>loginForm.get('email');
+    let control: UntypedFormControl = <UntypedFormControl>loginForm.get('email');
     control.markAsDirty();
     control.setValue('weird')
 

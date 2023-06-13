@@ -1,5 +1,5 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
 import { Task } from '../task.model';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TaskService } from '../task.service';
@@ -23,7 +23,7 @@ import { Location } from '@angular/common';
 })
 export class TaskFormComponent implements OnInit, OnDestroy {
 
-  form!: FormGroup;
+  form!: UntypedFormGroup;
   task?: Task;
   projectId?: number;
   userId?: number;
@@ -34,7 +34,7 @@ export class TaskFormComponent implements OnInit, OnDestroy {
   @Input() isEdit: boolean;
 
   constructor(private taskService: TaskService, private alertService: AlertService, private authService: AuthService,
-              private formBuilder: FormBuilder, private router: Router, private activatedRoute: ActivatedRoute,
+              private formBuilder: UntypedFormBuilder, private router: Router, private activatedRoute: ActivatedRoute,
               private location: Location) {
     this.isEdit = false;
     this.isLoading = true;
@@ -45,11 +45,11 @@ export class TaskFormComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.form = this.formBuilder.group({
-      name: new FormControl('', [Validators.required, TaskValidator.validateMaxLength(50)]),
-      description: new FormControl('', [Validators.required, Validators.max(255)]),
-      type: new FormControl('', [Validators.required, TaskValidator.validateType]),
-      startAt: new FormControl('', [Validators.required]),
-      endAt: new FormControl('', [Validators.required])
+      name: new UntypedFormControl('', [Validators.required, TaskValidator.validateMaxLength(50)]),
+      description: new UntypedFormControl('', [Validators.required, Validators.max(255)]),
+      type: new UntypedFormControl('', [Validators.required, TaskValidator.validateType]),
+      startAt: new UntypedFormControl('', [Validators.required]),
+      endAt: new UntypedFormControl('', [Validators.required])
     });
 
     const authSub: Subscription = this.authService.auth.pipe(take(1)).subscribe(

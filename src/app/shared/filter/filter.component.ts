@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormControl, UntypedFormGroup } from '@angular/forms';
 import { AlertService } from '../alert/alert.service';
 import { TaskFilter } from '../model/filter/task-filter.model';
 import { TaskType } from '../../dashboard/task/task-type.enum';
@@ -13,13 +13,13 @@ import { ProjectFilter } from '../model/filter/project-filter.model';
 export class FilterComponent implements OnInit {
 
   toggled: boolean;
-  filterForm!: FormGroup;
+  filterForm!: UntypedFormGroup;
   filter: TaskFilter | ProjectFilter | null;
 
   @Input() isTask?: boolean;
   @Output() filterEmitter: EventEmitter<ProjectFilter | TaskFilter>;
 
-  constructor(private alertService: AlertService, private formBuilder: FormBuilder) {
+  constructor(private alertService: AlertService, private formBuilder: UntypedFormBuilder) {
     this.toggled = false;
     this.filterEmitter = new EventEmitter<ProjectFilter | TaskFilter>();
     this.filter = null;
@@ -27,12 +27,12 @@ export class FilterComponent implements OnInit {
 
   ngOnInit(): void {
     this.filterForm = this.formBuilder.group({
-      search: new FormControl('')
+      search: new UntypedFormControl('')
     });
 
     if (this.isTask) {
-      this.filterForm.addControl('type', new FormControl(''));
-      this.filterForm.addControl('completed', new FormControl(''));
+      this.filterForm.addControl('type', new UntypedFormControl(''));
+      this.filterForm.addControl('completed', new UntypedFormControl(''));
     }
   }
 

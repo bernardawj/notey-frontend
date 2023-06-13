@@ -4,7 +4,7 @@ import { Task } from '../../dashboard/task/task.model';
 import { Project } from '../../dashboard/project/project.model';
 import { ModalType } from './modal-type.enum';
 import { ModalAction } from './modal-action.enum';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
 import { AssignTask } from '../../model/task/assign-task.model';
 import { AssignedUser } from '../model/assigned-user.model';
 import { RemoveProjectAssignment } from '../../model/project/remove-project-assignment.model';
@@ -25,11 +25,11 @@ export class ModalComponent implements OnInit, OnDestroy {
   id: number;
   name: string;
 
-  assignmentForm!: FormGroup;
+  assignmentForm!: UntypedFormGroup;
 
   subscriptions: Subscription[];
 
-  constructor(private modalService: ModalService, private formBuilder: FormBuilder) {
+  constructor(private modalService: ModalService, private formBuilder: UntypedFormBuilder) {
     this.expandModal = false;
     this.id = 0;
     this.name = '';
@@ -146,7 +146,7 @@ export class ModalComponent implements OnInit, OnDestroy {
 
   private buildForm(): void {
     if (this.action === ModalAction.ASSIGN) {
-      this.assignmentForm.addControl('user', new FormControl('', [Validators.required]));
+      this.assignmentForm.addControl('user', new UntypedFormControl('', [Validators.required]));
     } else {
       this.assignmentForm.removeControl('user');
     }

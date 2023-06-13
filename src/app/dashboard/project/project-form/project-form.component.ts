@@ -1,5 +1,5 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
 import { ProjectService } from '../project.service';
 import { Project } from '../project.model';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -20,7 +20,7 @@ import { Location } from '@angular/common';
 })
 export class ProjectFormComponent implements OnInit, OnDestroy {
 
-  form!: FormGroup;
+  form!: UntypedFormGroup;
   project?: Project;
   userId!: number;
 
@@ -31,7 +31,7 @@ export class ProjectFormComponent implements OnInit, OnDestroy {
   isLoading: boolean;
 
   constructor(private projectService: ProjectService, private authService: AuthService, private alertService: AlertService,
-              private formBuilder: FormBuilder, private activatedRoute: ActivatedRoute, private router: Router, private location: Location) {
+              private formBuilder: UntypedFormBuilder, private activatedRoute: ActivatedRoute, private router: Router, private location: Location) {
     this.isEdit = false;
     this.isLoading = true;
     this.subscriptions = [];
@@ -119,10 +119,10 @@ export class ProjectFormComponent implements OnInit, OnDestroy {
       }
     } else {
       this.form = this.formBuilder.group({
-        name: new FormControl(''.trim(), [Validators.required, Validators.maxLength(50)]),
-        description: new FormControl(''.trim(), [Validators.required, Validators.maxLength(255)]),
-        startAt: new FormControl(''.trim(), [Validators.required]),
-        endAt: new FormControl(''.trim(), [Validators.required])
+        name: new UntypedFormControl(''.trim(), [Validators.required, Validators.maxLength(50)]),
+        description: new UntypedFormControl(''.trim(), [Validators.required, Validators.maxLength(255)]),
+        startAt: new UntypedFormControl(''.trim(), [Validators.required]),
+        endAt: new UntypedFormControl(''.trim(), [Validators.required])
       });
     }
   }
