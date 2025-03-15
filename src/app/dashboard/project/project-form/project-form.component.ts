@@ -143,6 +143,7 @@ export class ProjectFormComponent implements OnInit, OnDestroy {
       },
       error => {
         this.alertService.alertSubject.next(new Alert(error.error.message, AlertType.DANGER));
+        this.isLoading = false;
       }
     );
 
